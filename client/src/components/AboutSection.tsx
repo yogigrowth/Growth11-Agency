@@ -2,26 +2,48 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ExternalLink, Users, TrendingUp, Award } from "lucide-react";
+import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Building2 } from "lucide-react";
 
 const teamMembers = [
   {
     name: "Satyaprem Upadhyay",
     role: "Co-Founder",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
-    description: "Led Nojoto's growth strategy and business development"
+    description: "Led Nojoto's growth strategy and business development",
+    workExperience: 12,
+    companies: [
+      { name: "Nojoto", logoSrc: "/placeholder-logo.png" },
+      { name: "Growth11", logoSrc: "/placeholder-logo.png" }
+    ],
+    education: "MBA, Strategic Management",
+    photo: "/placeholder-profile.jpg"
   },
   {
     name: "Himanshu", 
     role: "Co-Founder",
     linkedin: "https://www.linkedin.com/in/himanshucmo/",
-    description: "Architected Nojoto's tech infrastructure and product vision"
+    description: "Architected Nojoto's tech infrastructure and product vision",
+    workExperience: 10,
+    companies: [
+      { name: "Nojoto", logoSrc: "/placeholder-logo.png" },
+      { name: "Growth11", logoSrc: "/placeholder-logo.png" },
+      { name: "Tech Corp", logoSrc: "/placeholder-logo.png" }
+    ],
+    education: "B.Tech Computer Science",
+    photo: "/placeholder-profile.jpg"
   },
   {
     name: "Nandini Upadhyay",
     role: "Team Member",
     linkedin: "https://www.linkedin.com/in/nandini-upadhyay0127/",
-    description: "Contributing to Growth11's mission of scaling businesses"
+    description: "Contributing to Growth11's mission of scaling businesses",
+    workExperience: 5,
+    companies: [
+      { name: "Growth11", logoSrc: "/placeholder-logo.png" },
+      { name: "Marketing Pro", logoSrc: "/placeholder-logo.png" }
+    ],
+    education: "Bachelor's in Business Administration",
+    photo: "/placeholder-profile.jpg"
   }
 ];
 
@@ -97,40 +119,112 @@ export default function AboutSection() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto space-y-8">
           {teamMembers.map((member, index) => (
             <Card 
               key={member.name}
               className="hover-elevate transition-all duration-200"
               data-testid={`card-team-member-${index + 1}`}
             >
-              <CardContent className="p-6 text-center">
-                <Avatar className="w-24 h-24 mx-auto mb-4">
-                  <AvatarFallback className="text-lg font-semibold">
-                    {member.name.split(' ').map(n => n[0]).join('')}
-                  </AvatarFallback>
-                </Avatar>
-                
-                <h4 className="font-semibold text-lg mb-1" data-testid={`text-team-member-${index + 1}-name`}>
-                  {member.name}
-                </h4>
-                <p className="text-primary font-medium mb-3" data-testid={`text-team-member-${index + 1}-role`}>
-                  {member.role}
-                </p>
-                <p className="text-muted-foreground text-sm mb-4" data-testid={`text-team-member-${index + 1}-description`}>
-                  {member.description}
-                </p>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleLinkedInClick(member.linkedin, member.name)}
-                  data-testid={`button-team-member-${index + 1}-linkedin`}
-                  className="hover-elevate"
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  LinkedIn Profile
-                </Button>
+              <CardContent className="p-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Large Avatar on Left */}
+                  <div className="flex-shrink-0 flex justify-center md:justify-start">
+                    <Avatar className="w-32 h-32">
+                      <AvatarImage src={member.photo} alt={`${member.name} profile`} />
+                      <AvatarFallback className="text-2xl font-semibold">
+                        {member.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                  </div>
+                  
+                  {/* Content on Right */}
+                  <div className="flex-1 space-y-4">
+                    {/* Name and Role */}
+                    <div>
+                      <h4 className="font-bold text-2xl mb-1" data-testid={`text-team-member-${index + 1}-name`}>
+                        {member.name}
+                      </h4>
+                      <p className="text-primary font-semibold text-lg" data-testid={`text-team-member-${index + 1}-role`}>
+                        {member.role}
+                      </p>
+                    </div>
+                    
+                    {/* Description */}
+                    <p className="text-muted-foreground" data-testid={`text-team-member-${index + 1}-description`}>
+                      {member.description}
+                    </p>
+                    
+                    {/* Work Experience */}
+                    <div className="flex items-center gap-2">
+                      <Briefcase className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground" data-testid={`text-team-member-${index + 1}-experience`}>
+                        {member.workExperience}+ years of experience
+                      </span>
+                    </div>
+                    
+                    {/* Education */}
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground" data-testid={`text-team-member-${index + 1}-education`}>
+                        {member.education}
+                      </span>
+                    </div>
+                    
+                    {/* Companies */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Building2 className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">Companies</span>
+                      </div>
+                      <div className="flex flex-wrap gap-3 items-center">
+                        {member.companies.map((company, companyIndex) => (
+                          <div key={company.name} className="flex items-center">
+                            {company.logoSrc ? (
+                              <img
+                                src={company.logoSrc}
+                                alt={`${company.name} logo`}
+                                className="h-6 w-auto object-contain"
+                                data-testid={`img-team-member-${index + 1}-company-logo-${companyIndex + 1}`}
+                                onError={(e) => {
+                                  // Fallback to badge if image fails to load
+                                  const target = e.target as HTMLImageElement;
+                                  const badge = document.createElement('div');
+                                  badge.className = 'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80';
+                                  badge.textContent = company.name;
+                                  badge.setAttribute('data-testid', `badge-team-member-${index + 1}-company-${companyIndex + 1}`);
+                                  target.parentNode?.replaceChild(badge, target);
+                                }}
+                              />
+                            ) : (
+                              <Badge 
+                                variant="secondary" 
+                                className="text-xs"
+                                data-testid={`badge-team-member-${index + 1}-company-${companyIndex + 1}`}
+                              >
+                                {company.name}
+                              </Badge>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* LinkedIn Button */}
+                    <div className="pt-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleLinkedInClick(member.linkedin, member.name)}
+                        data-testid={`button-team-member-${index + 1}-linkedin`}
+                        className="hover-elevate"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        LinkedIn Profile
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           ))}
