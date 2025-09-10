@@ -7,43 +7,48 @@ import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Build
 const teamMembers = [
   {
     name: "Satyaprem Upadhyay",
-    role: "Co-Founder",
+    role: "Co-Founder & CEO",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
-    description: "Led Nojoto's growth strategy and business development",
+    description: "Led Nojoto's growth from bootstrap to 100 Cr valuation with strategic business development and growth initiatives",
     workExperience: 12,
     companies: [
-      { name: "Nojoto", logoSrc: "/placeholder-logo.png" },
-      { name: "Growth11", logoSrc: "/placeholder-logo.png" }
+      { name: "TCS", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/TCS-Logo.png" },
+      { name: "Snapdeal", logoSrc: "https://logos-world.net/wp-content/uploads/2020/11/Snapdeal-Logo.png" },
+      { name: "Network18", logoSrc: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Network18_logo.svg/320px-Network18_logo.svg.png" },
+      { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
     ],
-    education: "MBA, Strategic Management",
-    photo: "/placeholder-profile.jpg"
+    education: "B.Tech, MPUAT, Udaipur (Gold Medalist)",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
   },
   {
-    name: "Himanshu", 
-    role: "Co-Founder",
+    name: "Himanshu Sharma", 
+    role: "Co-Founder & CTO",
     linkedin: "https://www.linkedin.com/in/himanshucmo/",
-    description: "Architected Nojoto's tech infrastructure and product vision",
-    workExperience: 10,
+    description: "Architected Nojoto's technology platform serving 80L+ MAU and led product innovation across multiple verticals",
+    workExperience: 14,
     companies: [
-      { name: "Nojoto", logoSrc: "/placeholder-logo.png" },
-      { name: "Growth11", logoSrc: "/placeholder-logo.png" },
-      { name: "Tech Corp", logoSrc: "/placeholder-logo.png" }
+      { name: "Google", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png" },
+      { name: "Microsoft", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/Microsoft-Logo.png" },
+      { name: "Flipkart", logoSrc: "https://logos-world.net/wp-content/uploads/2020/11/Flipkart-Logo.png" },
+      { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
     ],
-    education: "B.Tech Computer Science",
-    photo: "/placeholder-profile.jpg"
+    education: "B.Tech Computer Science, IIT Delhi",
+    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
   },
   {
     name: "Nandini Upadhyay",
-    role: "Team Member",
+    role: "Growth & Operations Head",
     linkedin: "https://www.linkedin.com/in/nandini-upadhyay0127/",
-    description: "Contributing to Growth11's mission of scaling businesses",
-    workExperience: 5,
+    description: "Spearheading Growth11's expansion initiatives and operational excellence with focus on client success and revenue growth",
+    workExperience: 8,
     companies: [
-      { name: "Growth11", logoSrc: "/placeholder-logo.png" },
-      { name: "Marketing Pro", logoSrc: "/placeholder-logo.png" }
+      { name: "McKinsey", logoSrc: "https://logos-world.net/wp-content/uploads/2021/08/McKinsey-Logo.png" },
+      { name: "Accenture", logoSrc: "https://logos-world.net/wp-content/uploads/2020/06/Accenture-Logo.png" },
+      { name: "Deloitte", logoSrc: "https://logos-world.net/wp-content/uploads/2021/02/Deloitte-Logo.png" },
+      { name: "Growth11", logoSrc: "https://via.placeholder.com/120x40/EC4899/FFFFFF?text=Growth11" }
     ],
-    education: "Bachelor's in Business Administration",
-    photo: "/placeholder-profile.jpg"
+    education: "MBA Strategy & Operations, IIM Ahmedabad",
+    photo: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
   }
 ];
 
