@@ -7,7 +7,6 @@ import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Build
 const teamMembers = [
   {
     name: "Satyaprem Upadhyay",
-    role: "Co-Founder & CEO",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
     description: "Led Nojoto's growth from bootstrap to 100 Cr valuation with strategic business development and growth initiatives",
     workExperience: 12,
@@ -22,7 +21,6 @@ const teamMembers = [
   },
   {
     name: "Himanshu Sharma", 
-    role: "Co-Founder & CTO",
     linkedin: "https://www.linkedin.com/in/himanshucmo/",
     description: "Architected Nojoto's technology platform serving 80L+ MAU and led product innovation across multiple verticals",
     workExperience: 14,
@@ -37,7 +35,6 @@ const teamMembers = [
   },
   {
     name: "Nandini Upadhyay",
-    role: "Growth & Operations Head",
     linkedin: "https://www.linkedin.com/in/nandini-upadhyay0127/",
     description: "Spearheading Growth11's expansion initiatives and operational excellence with focus on client success and revenue growth",
     workExperience: 8,
@@ -150,9 +147,6 @@ export default function AboutSection() {
                       <h4 className="font-bold text-2xl mb-1" data-testid={`text-team-member-${index + 1}-name`}>
                         {member.name}
                       </h4>
-                      <p className="text-primary font-semibold text-lg" data-testid={`text-team-member-${index + 1}-role`}>
-                        {member.role}
-                      </p>
                     </div>
                     
                     {/* Description */}
