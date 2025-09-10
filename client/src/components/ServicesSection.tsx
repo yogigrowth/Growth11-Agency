@@ -35,10 +35,10 @@ const services = [
     icon: Target,
     services: [
       { 
-        name: "Social Media Marketing", 
-        icon: Users, 
+        name: "Social Media & PR", 
+        icon: Megaphone, 
         image: socialMediaImg,
-        description: "Engaging social strategies that build vibrant communities and drive meaningful customer connections." 
+        description: "Comprehensive social media strategies and PR campaigns that build brand presence and drive meaningful engagement." 
       },
       { 
         name: "Influencer Marketing", 
@@ -57,12 +57,6 @@ const services = [
         icon: Target, 
         image: performanceMarketingImg,
         description: "Data-driven campaigns optimized for ROI with proven results for D2C and e-commerce clients." 
-      },
-      { 
-        name: "Branding & PR", 
-        icon: Megaphone, 
-        image: brandingImg,
-        description: "Build a compelling brand story and strategic PR that resonates with your audience and media." 
       }
     ]
   },
