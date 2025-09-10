@@ -1,7 +1,6 @@
 import Navigation from "@/components/Navigation";
 import PartnerBrands from "@/components/PartnerBrands";
 import Footer from "@/components/Footer";
-import FloatingContactButtons from "@/components/FloatingContactButtons";
 import { Badge } from "@/components/ui/badge";
 
 export default function Partners() {
@@ -27,7 +26,6 @@ export default function Partners() {
         <PartnerBrands />
       </main>
       <Footer />
-      <FloatingContactButtons />
     </div>
   );
 }

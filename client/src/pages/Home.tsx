@@ -4,7 +4,6 @@ import ServicesSection from "@/components/ServicesSection";
 import PartnerBrands from "@/components/PartnerBrands";
 import CaseStudySection from "@/components/CaseStudySection";
 import Footer from "@/components/Footer";
-import FloatingContactButtons from "@/components/FloatingContactButtons";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
         <CaseStudySection />
       </main>
       <Footer />
-      <FloatingContactButtons />
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { MessageCircle, Phone } from "lucide-react";
 
 // todo: replace with real phone number
 const PHONE_NUMBER = "+919999999999";
-const WHATSAPP_NUMBER = "+919999999999";
+const WHATSAPP_NUMBER = "919999999999";
 
 export default function FloatingContactButtons() {
   const handleCall = () => {
@@ -22,8 +22,10 @@ export default function FloatingContactButtons() {
       <Button
         size="icon"
         onClick={handleWhatsApp}
-        className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg hover-elevate"
+        className="rounded-full bg-green-500 text-white shadow-lg"
         data-testid="button-floating-whatsapp"
+        aria-label="Contact us on WhatsApp"
+        title="Contact us on WhatsApp"
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
@@ -31,8 +33,10 @@ export default function FloatingContactButtons() {
       <Button
         size="icon"
         onClick={handleCall}
-        className="h-14 w-14 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-lg hover-elevate"
+        className="rounded-full bg-blue-500 text-white shadow-lg"
         data-testid="button-floating-call"
+        aria-label="Call us now"
+        title="Call us now"
       >
         <Phone className="h-6 w-6" />
       </Button>
