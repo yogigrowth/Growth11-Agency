@@ -1,33 +1,87 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Globe, Search, Users, Video, Target, Megaphone, ShoppingCart, Repeat } from "lucide-react";
+import websiteBuildingImg from "@assets/generated_images/Website_building_workspace_6f5bce90.png";
+import seoImg from "@assets/generated_images/SEO_analytics_dashboard_be8c4a6f.png";
+import socialMediaImg from "@assets/generated_images/Social_media_marketing_setup_3a484532.png";
+import influencerImg from "@assets/generated_images/Influencer_marketing_studio_308a274f.png";
+import videoCreationImg from "@assets/generated_images/AI_video_creation_setup_18eeaf60.png";
+import performanceMarketingImg from "@assets/generated_images/Performance_marketing_dashboard_d850e09d.png";
+import brandingImg from "@assets/generated_images/Branding_and_PR_studio_cf71a773.png";
+import conversionImg from "@assets/generated_images/E-commerce_conversion_optimization_add4237c.png";
+import productGrowthImg from "@assets/generated_images/Product_growth_strategy_727ddc51.png";
 
 const services = [
   {
     category: "Tech",
     icon: Globe,
     services: [
-      { name: "Website Building", icon: Globe, description: "Modern, responsive websites that convert visitors into customers" },
-      { name: "SEO", icon: Search, description: "Strategic search optimization to increase organic visibility and traffic" }
+      { 
+        name: "Website Building", 
+        icon: Globe, 
+        image: websiteBuildingImg,
+        description: "Modern, responsive websites that convert visitors into customers with cutting-edge design and functionality." 
+      },
+      { 
+        name: "SEO", 
+        icon: Search, 
+        image: seoImg,
+        description: "Strategic search optimization to increase organic visibility, drive quality traffic, and boost your rankings." 
+      }
     ]
   },
   {
     category: "Marketing",
     icon: Target,
     services: [
-      { name: "Social Media Marketing", icon: Users, description: "Engaging social strategies that build community and drive sales" },
-      { name: "Influencer Marketing", icon: Users, description: "Connect with influencers who authentically represent your brand" },
-      { name: "AI Video Creation", icon: Video, description: "Cutting-edge AI-powered video content for maximum engagement" },
-      { name: "Performance Marketing", icon: Target, description: "Data-driven campaigns optimized for D2C client success" },
-      { name: "Branding & PR", icon: Megaphone, description: "Build a compelling brand story that resonates with your audience" }
+      { 
+        name: "Social Media Marketing", 
+        icon: Users, 
+        image: socialMediaImg,
+        description: "Engaging social strategies that build vibrant communities and drive meaningful customer connections." 
+      },
+      { 
+        name: "Influencer Marketing", 
+        icon: Users, 
+        image: influencerImg,
+        description: "Connect with authentic influencers who represent your brand values and reach your target audience." 
+      },
+      { 
+        name: "AI Video Creation", 
+        icon: Video, 
+        image: videoCreationImg,
+        description: "Cutting-edge AI-powered video content that maximizes engagement and storytelling impact." 
+      },
+      { 
+        name: "Performance Marketing", 
+        icon: Target, 
+        image: performanceMarketingImg,
+        description: "Data-driven campaigns optimized for ROI with proven results for D2C and e-commerce clients." 
+      },
+      { 
+        name: "Branding & PR", 
+        icon: Megaphone, 
+        image: brandingImg,
+        description: "Build a compelling brand story and strategic PR that resonates with your audience and media." 
+      }
     ]
   },
   {
     category: "Product Management",
     icon: ShoppingCart,
     services: [
-      { name: "Conversion & Retention", icon: ShoppingCart, description: "Optimize your E-Commerce & D2C funnel for maximum ROI" },
-      { name: "Product Driven Growth", icon: Repeat, description: "Implement referral systems and growth loops for sustainable scaling" }
+      { 
+        name: "Conversion & Retention", 
+        icon: ShoppingCart, 
+        image: conversionImg,
+        description: "Optimize your e-commerce funnel for maximum ROI with proven conversion and retention strategies." 
+      },
+      { 
+        name: "Product Driven Growth", 
+        icon: Repeat, 
+        image: productGrowthImg,
+        description: "Implement smart referral systems and growth loops for sustainable, exponential scaling." 
+      }
     ]
   }
 ];
@@ -68,11 +122,19 @@ export default function ServicesSection() {
                 {category.services.map((service, serviceIndex) => (
                   <Card 
                     key={service.name}
-                    className="hover-elevate cursor-pointer transition-all duration-200"
+                    className="hover-elevate cursor-pointer transition-all duration-200 overflow-hidden"
                     onClick={() => handleServiceClick(service.name)}
                     data-testid={`card-service-${service.name.toLowerCase().replace(/\s+/g, '-')}`}
                   >
-                    <CardHeader>
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={service.image} 
+                        alt={service.name}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
+                    <CardHeader className="pb-2">
                       <div className="flex items-center gap-3">
                         <div className="p-2 rounded-lg bg-primary/10">
                           <service.icon className="h-5 w-5 text-primary" />
@@ -80,8 +142,8 @@ export default function ServicesSection() {
                         <CardTitle className="text-lg">{service.name}</CardTitle>
                       </div>
                     </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-base">
+                    <CardContent className="pt-0">
+                      <CardDescription className="text-sm leading-relaxed">
                         {service.description}
                       </CardDescription>
                     </CardContent>
