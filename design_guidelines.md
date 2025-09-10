@@ -1,16 +1,16 @@
 # Growth11 Design Guidelines
 
 ## Design Approach
-**Reference-Based Approach**: Drawing inspiration from premium marketing agencies and tech consultancies like Linear, Stripe, and Vercel. Focus on professional credibility with modern, clean aesthetics that convey expertise and trustworthiness.
+**Reference-Based Approach**: Drawing inspiration from vibrant community platforms like StarArtist with modern, energetic aesthetics. Focus on dynamic growth and entrepreneurial energy with vibrant colors that convey innovation and forward-thinking approach.
 
 ## Core Design Elements
 
 ### Color Palette
-- **Primary Brand**: 220 85% 25% (deep professional blue)
-- **Secondary**: 220 15% 95% (light gray-blue)
+- **Primary Brand**: 347 84% 48% (vibrant pink/magenta inspired by StarArtist)
+- **Secondary**: 320 15% 95% (light pink-gray)
 - **Accent**: 142 76% 36% (success green for metrics/ROAs)
-- **Dark Mode Primary**: 220 85% 65%
-- **Background Gradients**: Subtle blue-to-purple gradients (220 85% 25% to 260 60% 30%) for hero sections
+- **Dark Mode Primary**: 347 84% 68%
+- **Background Gradients**: Vibrant pink-to-purple gradients (347 84% 48% to 320 65% 40%) for hero sections
 
 ### Typography
 - **Primary**: Inter (Google Fonts) - clean, professional
@@ -57,9 +57,9 @@ Tailwind spacing: 4, 6, 8, 12, 16, 24 units for consistent rhythm
 - **Case Study Visuals**: Screenshots, graphs, or metrics visualizations
 
 ## Visual Treatment
-- **Gradients**: Subtle blue gradients in hero sections and key CTAs
-- **Contrast**: High contrast for readability and professional appearance
-- **Whitespace**: Generous spacing for premium feel
+- **Gradients**: Vibrant pink/magenta gradients in hero sections and key CTAs
+- **Contrast**: High contrast for readability with energetic color pops
+- **Whitespace**: Generous spacing for modern feel
 - **Animations**: Minimal - subtle fade-ins and hover effects only
 
-This design emphasizes credibility, professionalism, and results-driven messaging appropriate for a growth-focused marketing agency.
+This design emphasizes energy, innovation, and growth-driven messaging appropriate for a dynamic marketing agency.
