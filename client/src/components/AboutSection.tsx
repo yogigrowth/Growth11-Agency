@@ -3,30 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExternalLink, Users, TrendingUp, Award } from "lucide-react";
-import founder1 from "@assets/generated_images/Professional_founder_portrait_one_9942288d.png";
-import founder2 from "@assets/generated_images/Professional_founder_portrait_two_1db2bf91.png";
 
-// todo: remove mock functionality - replace with real founder data
-const founders = [
+const teamMembers = [
   {
-    name: "Co-Founder 1",
-    role: "CEO & Co-Founder",
-    image: founder1,
-    linkedin: "#",
+    name: "Satyaprem Upadhyay",
+    role: "Co-Founder",
+    linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
     description: "Led Nojoto's growth strategy and business development"
   },
   {
-    name: "Co-Founder 2", 
-    role: "CTO & Co-Founder",
-    image: founder2,
-    linkedin: "#",
+    name: "Himanshu", 
+    role: "Co-Founder",
+    linkedin: "https://www.linkedin.com/in/himanshucmo/",
     description: "Architected Nojoto's tech infrastructure and product vision"
+  },
+  {
+    name: "Nandini Upadhyay",
+    role: "Team Member",
+    linkedin: "https://www.linkedin.com/in/nandini-upadhyay0127/",
+    description: "Contributing to Growth11's mission of scaling businesses"
   }
 ];
 
 export default function AboutSection() {
-  const handleLinkedInClick = (founderName: string) => {
-    console.log(`${founderName} LinkedIn clicked`);
+  const handleLinkedInClick = (linkedin: string, memberName: string) => {
+    console.log(`${memberName} LinkedIn clicked`);
+    window.open(linkedin, '_blank');
   };
 
   const handleLearnMore = () => {
@@ -95,34 +97,35 @@ export default function AboutSection() {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {founders.map((founder, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {teamMembers.map((member, index) => (
             <Card 
-              key={founder.name}
+              key={member.name}
               className="hover-elevate transition-all duration-200"
-              data-testid={`card-founder-${index + 1}`}
+              data-testid={`card-team-member-${index + 1}`}
             >
               <CardContent className="p-6 text-center">
                 <Avatar className="w-24 h-24 mx-auto mb-4">
-                  <AvatarImage src={founder.image} alt={founder.name} />
-                  <AvatarFallback>{founder.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                  <AvatarFallback className="text-lg font-semibold">
+                    {member.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
                 </Avatar>
                 
-                <h4 className="font-semibold text-lg mb-1" data-testid={`text-founder-${index + 1}-name`}>
-                  {founder.name}
+                <h4 className="font-semibold text-lg mb-1" data-testid={`text-team-member-${index + 1}-name`}>
+                  {member.name}
                 </h4>
-                <p className="text-primary font-medium mb-3" data-testid={`text-founder-${index + 1}-role`}>
-                  {founder.role}
+                <p className="text-primary font-medium mb-3" data-testid={`text-team-member-${index + 1}-role`}>
+                  {member.role}
                 </p>
-                <p className="text-muted-foreground text-sm mb-4" data-testid={`text-founder-${index + 1}-description`}>
-                  {founder.description}
+                <p className="text-muted-foreground text-sm mb-4" data-testid={`text-team-member-${index + 1}-description`}>
+                  {member.description}
                 </p>
                 
                 <Button 
                   variant="outline" 
                   size="sm"
-                  onClick={() => handleLinkedInClick(founder.name)}
-                  data-testid={`button-founder-${index + 1}-linkedin`}
+                  onClick={() => handleLinkedInClick(member.linkedin, member.name)}
+                  data-testid={`button-team-member-${index + 1}-linkedin`}
                   className="hover-elevate"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
