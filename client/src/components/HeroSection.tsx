@@ -57,21 +57,6 @@ export default function HeroSection() {
               View Case Studies
             </Button>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-border/50">
-            <div className="text-center sm:text-left" data-testid="metric-users">
-              <div className="text-2xl md:text-3xl font-bold text-primary">80L+</div>
-              <div className="text-sm text-muted-foreground">Monthly Active Users</div>
-            </div>
-            <div className="text-center sm:text-left" data-testid="metric-revenue">
-              <div className="text-2xl md:text-3xl font-bold text-chart-2">₹12 Cr</div>
-              <div className="text-sm text-muted-foreground">Annual Revenue</div>
-            </div>
-            <div className="text-center sm:text-left" data-testid="metric-valuation">
-              <div className="text-2xl md:text-3xl font-bold text-primary">₹100 Cr</div>
-              <div className="text-sm text-muted-foreground">Company Valuation</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
