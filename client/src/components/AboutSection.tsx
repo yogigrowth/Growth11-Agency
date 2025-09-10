@@ -2,7 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Users, TrendingUp, Award } from "lucide-react";
 
 const teamMembers = [
   {
@@ -31,6 +31,9 @@ export default function AboutSection() {
     window.open(linkedin, '_blank');
   };
 
+  const handleLearnMore = () => {
+    console.log('Learn more about our journey clicked');
+  };
 
   return (
     <section className="py-24">
@@ -48,6 +51,51 @@ export default function AboutSection() {
           </p>
         </div>
 
+        <div className="max-w-5xl mx-auto mb-16">
+          <Card className="p-8 border-2">
+            <CardContent className="p-0">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div className="text-center" data-testid="metric-journey-mau">
+                  <div className="flex justify-center mb-2">
+                    <Users className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="text-3xl font-bold text-primary">80L+</div>
+                  <div className="text-sm text-muted-foreground">Monthly Active Users</div>
+                </div>
+                <div className="text-center" data-testid="metric-journey-revenue">
+                  <div className="flex justify-center mb-2">
+                    <TrendingUp className="h-6 w-6 text-chart-2" />
+                  </div>
+                  <div className="text-3xl font-bold text-chart-2">₹12 Cr</div>
+                  <div className="text-sm text-muted-foreground">Annual Revenue</div>
+                </div>
+                <div className="text-center" data-testid="metric-journey-valuation">
+                  <div className="flex justify-center mb-2">
+                    <Award className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="text-3xl font-bold text-primary">₹100 Cr</div>
+                  <div className="text-sm text-muted-foreground">Company Valuation</div>
+                </div>
+              </div>
+
+              <div className="text-center">
+                <h3 className="text-xl font-semibold mb-4" data-testid="text-nojoto-story">The Nojoto Journey</h3>
+                <p className="text-muted-foreground mb-6">
+                  From a bootstrap startup to a unicorn-scale platform, we understand what it takes to build and scale businesses. 
+                  Now we help other entrepreneurs and businesses achieve similar growth trajectories.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={handleLearnMore}
+                  data-testid="button-learn-more-journey"
+                  className="hover-elevate"
+                >
+                  Learn More About Our Journey
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {teamMembers.map((member, index) => (
