@@ -9,9 +9,6 @@ const navLinks = [
   { href: "/services", label: "Services" },
   { href: "/partners", label: "Partner Brands" },
   { href: "/case-study", label: "Case Study" },
-  { href: "/career", label: "Career" },
-  { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navigation() {
@@ -39,9 +36,11 @@ export default function Navigation() {
           </div>
 
           <div className="hidden md:flex">
-            <Button data-testid="button-get-started">
-              Get Started
-            </Button>
+            <Link href="/contact">
+              <Button data-testid="button-contact-us">
+                Contact Us
+              </Button>
+            </Link>
           </div>
 
           <button
@@ -66,9 +65,11 @@ export default function Navigation() {
                 </Link>
               ))}
               <div className="px-3 py-2">
-                <Button className="w-full" data-testid="button-mobile-get-started">
-                  Get Started
-                </Button>
+                <Link href="/contact">
+                  <Button className="w-full" data-testid="button-mobile-contact-us">
+                    Contact Us
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
