@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import ServicesSection from "@/components/ServicesSection";
 import Footer from "@/components/Footer";
+import FloatingContactButtons from "@/components/FloatingContactButtons";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -39,6 +40,7 @@ export default function Services() {
         <ServicesSection />
       </main>
       <Footer />
+      <FloatingContactButtons />
     </div>
   );
 }

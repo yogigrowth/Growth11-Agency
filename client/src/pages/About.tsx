@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
+import FloatingContactButtons from "@/components/FloatingContactButtons";
 import { Badge } from "@/components/ui/badge";
 
 export default function About() {
@@ -26,6 +27,7 @@ export default function About() {
         <AboutSection />
       </main>
       <Footer />
+      <FloatingContactButtons />
     </div>
   );
 }
