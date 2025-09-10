@@ -1,34 +1,21 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Search, Users, Video, Target, Megaphone, ShoppingCart, Repeat } from "lucide-react";
 
 const services = [
   {
     category: "Tech",
-    icon: Globe,
-    services: [
-      { name: "Website Building", icon: Globe, description: "Modern, responsive websites that convert visitors into customers" },
-      { name: "SEO", icon: Search, description: "Strategic search optimization to increase organic visibility and traffic" }
-    ]
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=center",
+    description: "Modern tech solutions that scale your business. From responsive websites to SEO optimization, we build the digital foundation that drives sustainable growth and converts visitors into loyal customers."
   },
   {
     category: "Marketing",
-    icon: Target,
-    services: [
-      { name: "Social Media Marketing", icon: Users, description: "Engaging social strategies that build community and drive sales" },
-      { name: "Influencer Marketing", icon: Users, description: "Connect with influencers who authentically represent your brand" },
-      { name: "AI Video Creation", icon: Video, description: "Cutting-edge AI-powered video content for maximum engagement" },
-      { name: "Performance Marketing", icon: Target, description: "Data-driven campaigns optimized for D2C client success" },
-      { name: "Branding & PR", icon: Megaphone, description: "Build a compelling brand story that resonates with your audience" }
-    ]
+    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop&crop=center",
+    description: "Comprehensive marketing strategies that deliver results. Our team specializes in social media, influencer partnerships, AI video creation, performance marketing, and brand building that resonates with your target audience."
   },
   {
     category: "Product Management",
-    icon: ShoppingCart,
-    services: [
-      { name: "Conversion & Retention", icon: ShoppingCart, description: "Optimize your E-Commerce & D2C funnel for maximum ROI" },
-      { name: "Product Driven Growth", icon: Repeat, description: "Implement referral systems and growth loops for sustainable scaling" }
-    ]
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&crop=center",
+    description: "Strategic product management that drives growth. We optimize conversion funnels, implement retention strategies, and build growth loops that create sustainable scaling for E-Commerce and D2C businesses."
   }
 ];
 
@@ -52,43 +39,30 @@ export default function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid gap-8 md:gap-12">
-          {services.map((category, categoryIndex) => (
-            <div key={category.category}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <category.icon className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-2xl font-bold" data-testid={`text-category-${category.category.toLowerCase()}`}>
-                  {category.category}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <Card 
+              key={service.category}
+              className="hover-elevate cursor-pointer transition-all duration-200 overflow-hidden"
+              onClick={() => handleServiceClick(service.category)}
+              data-testid={`card-service-${service.category.toLowerCase().replace(/\s+/g, '-')}`}
+            >
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.category}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </div>
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-3 text-foreground" data-testid={`text-service-${service.category.toLowerCase().replace(/\s+/g, '-')}-title`}>
+                  {service.category}
                 </h3>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {category.services.map((service, serviceIndex) => (
-                  <Card 
-                    key={service.name}
-                    className="hover-elevate cursor-pointer transition-all duration-200"
-                    onClick={() => handleServiceClick(service.name)}
-                    data-testid={`card-service-${service.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  >
-                    <CardHeader>
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <service.icon className="h-5 w-5 text-primary" />
-                        </div>
-                        <CardTitle className="text-lg">{service.name}</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-base">
-                        {service.description}
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+                <p className="text-muted-foreground leading-relaxed" data-testid={`text-service-${service.category.toLowerCase().replace(/\s+/g, '-')}-description`}>
+                  {service.description}
+                </p>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
