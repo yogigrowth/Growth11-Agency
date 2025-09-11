@@ -13,6 +13,7 @@ import CaseStudy from "@/pages/CaseStudy";
 import Career from "@/pages/Career";
 import Blog from "@/pages/Blog";
 import Contact from "@/pages/Contact";
+import WebsiteLanding from "@/pages/WebsiteLanding";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/career" component={Career} />
       <Route path="/blog" component={Blog} />
       <Route path="/contact" component={Contact} />
+      <Route path="/website-9999" component={WebsiteLanding} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>

@@ -19,6 +19,7 @@ const footerLinks = {
   resources: [
     { label: "Blog", href: "/blog" },
     { label: "Partner Brands", href: "/partners" },
+    { label: "Website at 9999 Rs Only", href: "/website-9999" },
     { label: "Contact", href: "/contact" }
   ]
 };
