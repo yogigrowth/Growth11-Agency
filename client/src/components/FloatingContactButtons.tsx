@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
+import whatsappIcon from "@assets/image_1757579425669.png";
 
 const PHONE_NUMBER = "+917014431277";
 const WHATSAPP_NUMBER = "917014431277";
@@ -34,7 +35,11 @@ export default function FloatingContactButtons() {
             aria-label="Contact us on WhatsApp"
             title="Contact us on WhatsApp"
           >
-            <MessageCircle className="h-7 w-7" />
+            <img 
+              src={whatsappIcon} 
+              alt="WhatsApp" 
+              className="h-8 w-8"
+            />
           </Button>
         </div>
       </div>
