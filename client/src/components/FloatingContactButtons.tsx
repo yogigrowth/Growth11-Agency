@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, Phone } from "lucide-react";
 
-// todo: replace with real phone number
-const PHONE_NUMBER = "+919999999999";
-const WHATSAPP_NUMBER = "919999999999";
+const PHONE_NUMBER = "+917014431277";
+const WHATSAPP_NUMBER = "917014431277";
 
 export default function FloatingContactButtons() {
   const handleCall = () => {
