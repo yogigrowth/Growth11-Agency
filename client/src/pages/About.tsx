@@ -15,10 +15,10 @@ export default function About() {
                 About Growth11
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-about-page-title">
-                The Entrepreneurs Behind Your Growth
+                About Growth11
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-about-page-intro">
-                We built Nojoto from nothing to a 100 crore valuation. Now we help businesses like yours achieve similar growth trajectories through proven strategies and entrepreneurial expertise.
+                Your trusted digital marketing and technology partner for sustainable business growth.
               </p>
             </div>
           </div>
