@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import logoImage from "@assets/Logo2_1757571135684.png";
+import logoImage from "@assets/Logo 6_1757575298583.png";
 
 const footerLinks = {
   company: [
