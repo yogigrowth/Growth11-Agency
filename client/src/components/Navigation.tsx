@@ -44,7 +44,7 @@ export default function Navigation() {
           <div className="hidden md:flex">
             <Link href="/contact">
               <Button data-testid="button-contact-us">
-                Contact Us
+                +91 70144 31277 Contact Us
               </Button>
             </Link>
           </div>
@@ -73,7 +73,7 @@ export default function Navigation() {
               <div className="px-3 py-2">
                 <Link href="/contact">
                   <Button className="w-full" data-testid="button-mobile-contact-us">
-                    Contact Us
+                    +91 70144 31277 Contact Us
                   </Button>
                 </Link>
               </div>
