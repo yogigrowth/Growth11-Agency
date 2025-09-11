@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 // todo: remove mock functionality - replace with real blog posts
 const blogPosts = [
@@ -42,6 +43,13 @@ const blogPosts = [
 ];
 
 export default function Blog() {
+  useSEO({
+    title: "Digital Marketing Blog - Growth11 Ajmer | Marketing Insights & Strategies for Rajasthan",
+    description: "Growth11 Ajmer blog - Digital marketing insights, growth strategies, and business tips for entrepreneurs in Ajmer, Rajasthan. Learn from expert marketers.",
+    ogTitle: "Digital Marketing Blog - Growth11 Ajmer, Rajasthan",
+    ogDescription: "Expert digital marketing insights and growth strategies from Growth11 Ajmer. Business tips and lessons for entrepreneurs in Rajasthan."
+  });
+
   const handleReadMore = (postTitle: string) => {
     console.log(`Read more clicked for: ${postTitle}`);
   };
@@ -57,13 +65,13 @@ export default function Blog() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <Badge variant="outline" className="mb-4" data-testid="badge-blog-page">
-                Growth Insights
+                Growth Insights from Ajmer
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-blog-page-title">
-                Learn from Our Growth Journey
+                Learn from Growth11 Ajmer's Journey
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto" data-testid="text-blog-page-intro">
-                Insights, strategies, and lessons learned from scaling businesses and driving sustainable growth.
+                Digital marketing insights, strategies, and lessons from Growth11 Ajmer team for scaling businesses in Rajasthan.
               </p>
             </div>
 

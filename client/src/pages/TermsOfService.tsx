@@ -1,8 +1,16 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function TermsOfService() {
+  useSEO({
+    title: "Terms of Service - Growth11 Ajmer | Digital Marketing Agency Terms in Rajasthan",
+    description: "Terms of Service for Growth11 Ajmer digital marketing agency. Legal terms and conditions for our digital marketing services in Ajmer, Rajasthan.",
+    ogTitle: "Terms of Service - Growth11 Ajmer, Rajasthan",
+    ogDescription: "Terms of Service for Growth11 Ajmer digital marketing agency. Legal terms and service conditions for clients in Rajasthan."
+  });
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -10,13 +18,13 @@ export default function TermsOfService() {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4" data-testid="badge-terms-of-service">
-              Legal Information
+              Legal Information - Ajmer
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-terms-of-service-title">
-              Terms of Service
+              Terms of Service - Growth11 Ajmer
             </h1>
             <p className="text-lg text-muted-foreground" data-testid="text-terms-of-service-subtitle">
-              Effective Date: September 11, 2025
+              Effective Date: September 11, 2025 | Yogi Growth LLP, Ajmer, Rajasthan
             </p>
           </div>
 
