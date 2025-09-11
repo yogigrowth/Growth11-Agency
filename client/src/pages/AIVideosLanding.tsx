@@ -23,6 +23,12 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import aiVideoImage from "@assets/generated_images/AI_video_creation_setup_18eeaf60.png";
 
+// Sample video imports
+import sampleVideo1 from "@assets/WhatsApp Video 2025-09-06 at 13.21.34_1757577539991.mp4";
+import sampleVideo2 from "@assets/WhatsApp Video 2025-09-06 at 13.37.45_1757577539991.mp4";
+import sampleVideo3 from "@assets/WhatsApp Video 2025-09-06 at 15.02.13_1757577539992.mp4";
+import sampleVideo4 from "@assets/WhatsApp Video 2025-09-06 at 15.02.14_1757577539992.mp4";
+
 const features = [
   {
     icon: Video,
@@ -146,6 +152,29 @@ const faqs = [
   }
 ];
 
+const sampleVideos = [
+  {
+    title: "Product Demo Video",
+    description: "Professional product showcase with engaging visuals",
+    videoSrc: sampleVideo1
+  },
+  {
+    title: "Brand Story Video",
+    description: "Compelling brand narrative with emotional connection",
+    videoSrc: sampleVideo2
+  },
+  {
+    title: "Social Media Ad",
+    description: "Eye-catching content perfect for social platforms",
+    videoSrc: sampleVideo3
+  },
+  {
+    title: "Promotional Content",
+    description: "Marketing video designed to drive conversions",
+    videoSrc: sampleVideo4
+  }
+];
+
 export default function AIVideosLanding() {
   const handleContactClick = (method: string) => {
     console.log(`${method} contact clicked`);
@@ -223,6 +252,65 @@ export default function AIVideosLanding() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sample Videos Section */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Badge variant="outline" className="mb-4" data-testid="badge-sample-videos">
+                Sample Work
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-sample-videos-title">
+                See Our AI Videos in Action
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-sample-videos-description">
+                Watch these sample AI-generated videos to understand the quality and style of work we deliver
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {sampleVideos.map((video, index) => (
+                <Card key={index} className="overflow-hidden" data-testid={`card-sample-video-${index}`}>
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <video 
+                        className="w-full aspect-video object-cover"
+                        controls
+                        preload="metadata"
+                        data-testid={`video-sample-${index}`}
+                      >
+                        <source src={video.videoSrc} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-semibold mb-2" data-testid={`text-video-title-${index}`}>
+                        {video.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm" data-testid={`text-video-description-${index}`}>
+                        {video.description}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <p className="text-muted-foreground mb-6">
+                Ready to get similar videos for your business?
+              </p>
+              <Button 
+                size="lg" 
+                onClick={() => handleContactClick('whatsapp')}
+                data-testid="button-sample-videos-cta"
+              >
+                <MessageCircle className="mr-2 h-5 w-5" />
+                Get Started Now
+              </Button>
             </div>
           </div>
         </section>
