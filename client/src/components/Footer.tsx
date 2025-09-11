@@ -13,8 +13,12 @@ const footerLinks = {
   services: [
     { label: "Website Building", href: "/services#tech" },
     { label: "SEO", href: "/services#tech" },
-    { label: "Social Media Marketing", href: "/services#marketing" },
-    { label: "Performance Marketing", href: "/services#marketing" }
+    { label: "Social Media & PR", href: "/services#marketing" },
+    { label: "Influencer Marketing", href: "/services#marketing" },
+    { label: "AI Video Creation", href: "/services#marketing" },
+    { label: "Performance Marketing", href: "/services#marketing" },
+    { label: "Conversion & Retention", href: "/services#product" },
+    { label: "Product Driven Growth", href: "/services#product" }
   ],
   currentOffers: [
     { label: "Website at 10,000 Rs Only", href: "/website-9999" },
