@@ -1,54 +1,23 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, MessageCircle } from "lucide-react";
 
 export default function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    service: "",
-    budget: "",
-    message: ""
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    console.log(`${field} changed to:`, value);
+  const handleWhatsApp = () => {
+    console.log('WhatsApp button clicked');
+    const message = encodeURIComponent("Hi Growth11! I'm interested in your services and would like to discuss my project.");
+    window.open(`https://wa.me/917014431277?text=${message}`, '_blank');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // todo: remove mock functionality - implement real form submission
-    console.log('Form submitted:', formData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Message sent successfully!",
-        description: "We'll get back to you within 24 hours.",
-      });
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        service: "",
-        budget: "",
-        message: ""
-      });
-    }, 1000);
+  const handleCall = () => {
+    console.log('Call button clicked');
+    window.open(`tel:+917014431277`, '_self');
+  };
+
+  const handleEmail = () => {
+    console.log('Email button clicked');
+    window.open(`mailto:Satya.yogigrowth@gmail.com?subject=Growth11 Services Inquiry&body=Hi Growth11 Team,%0D%0A%0D%0AI'm interested in your services and would like to discuss my project.%0D%0A%0D%0ABest regards`, '_self');
   };
 
   return (
@@ -70,109 +39,49 @@ export default function ContactForm() {
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
-                <CardTitle data-testid="text-form-title">Send us a message</CardTitle>
-                <CardDescription data-testid="text-form-description">
-                  Fill out the form below and we'll get back to you within 24 hours.
+                <CardTitle data-testid="text-contact-methods-title">Contact Us Directly</CardTitle>
+                <CardDescription data-testid="text-contact-methods-description">
+                  Choose your preferred way to reach us. We'll respond immediately!
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="name">Full Name *</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
-                        placeholder="John Doe"
-                        required
-                        data-testid="input-name"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="email">Email Address *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        placeholder="john@company.com"
-                        required
-                        data-testid="input-email"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="company">Company Name</Label>
-                    <Input
-                      id="company"
-                      value={formData.company}
-                      onChange={(e) => handleInputChange('company', e.target.value)}
-                      placeholder="Your Company Ltd."
-                      data-testid="input-company"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="service">Service Interest</Label>
-                      <Select onValueChange={(value) => handleInputChange('service', value)}>
-                        <SelectTrigger data-testid="select-service">
-                          <SelectValue placeholder="Select a service" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="website-building">Website Building</SelectItem>
-                          <SelectItem value="seo">SEO</SelectItem>
-                          <SelectItem value="social-media">Social Media Marketing</SelectItem>
-                          <SelectItem value="influencer">Influencer Marketing</SelectItem>
-                          <SelectItem value="ai-video">AI Video Creation</SelectItem>
-                          <SelectItem value="performance">Performance Marketing</SelectItem>
-                          <SelectItem value="branding">Branding & PR</SelectItem>
-                          <SelectItem value="conversion">Conversion & Retention</SelectItem>
-                          <SelectItem value="growth">Product Driven Growth</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label htmlFor="budget">Budget Range</Label>
-                      <Select onValueChange={(value) => handleInputChange('budget', value)}>
-                        <SelectTrigger data-testid="select-budget">
-                          <SelectValue placeholder="Select budget range" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="under-1l">Under ₹1 Lakh</SelectItem>
-                          <SelectItem value="1l-5l">₹1-5 Lakhs</SelectItem>
-                          <SelectItem value="5l-10l">₹5-10 Lakhs</SelectItem>
-                          <SelectItem value="10l-25l">₹10-25 Lakhs</SelectItem>
-                          <SelectItem value="25l-plus">₹25+ Lakhs</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="message">Project Details *</Label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      placeholder="Tell us about your project, current challenges, and growth goals..."
-                      rows={5}
-                      required
-                      data-testid="textarea-message"
-                    />
-                  </div>
-
+                <div className="space-y-4">
+                  {/* WhatsApp Button */}
                   <Button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className="w-full hover-elevate"
-                    data-testid="button-submit-contact"
+                    onClick={handleWhatsApp}
+                    className="w-full h-16 bg-[#25d366] hover:bg-[#128c7e] text-white text-lg font-semibold border-0 no-default-hover-elevate"
+                    data-testid="button-contact-whatsapp"
                   >
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                    <MessageCircle className="h-6 w-6 mr-3" />
+                    Message us on WhatsApp
                   </Button>
-                </form>
+                  
+                  {/* Call Button */}
+                  <Button 
+                    onClick={handleCall}
+                    className="w-full h-16 bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold border-0 no-default-hover-elevate"
+                    data-testid="button-contact-call"
+                  >
+                    <Phone className="h-6 w-6 mr-3" />
+                    Call us at +91 70144 31277
+                  </Button>
+                  
+                  {/* Email Button */}
+                  <Button 
+                    onClick={handleEmail}
+                    className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground text-lg font-semibold border-0 no-default-hover-elevate"
+                    data-testid="button-contact-email"
+                  >
+                    <Mail className="h-6 w-6 mr-3" />
+                    Email Satya.yogigrowth@gmail.com
+                  </Button>
+                  
+                  <div className="mt-8 text-center">
+                    <p className="text-sm text-muted-foreground">
+                      Available Monday to Saturday, 9 AM - 7 PM IST
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
