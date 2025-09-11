@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# XML Sitemap
+Sitemap: https://growth11.in/sitemap.xml
+
+# Allow search engines to crawl all content
+Crawl-delay: 1
+
+# Specific directives for common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /

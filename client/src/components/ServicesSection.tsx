@@ -123,7 +123,7 @@ export default function ServicesSection() {
                     <div className="relative h-48 overflow-hidden">
                       <img 
                         src={service.image} 
-                        alt={service.name}
+                        alt={`${service.name} - Growth11 Ajmer digital marketing service featuring modern tools and professional setup`}
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

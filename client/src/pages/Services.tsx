@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSEO } from "@/hooks/useSEO";
+import { ServiceSchema } from "@/components/SchemaMarkup";
 
 export default function Services() {
   useSEO({
@@ -19,6 +20,13 @@ export default function Services() {
 
   return (
     <div className="min-h-screen">
+      <ServiceSchema
+        name="Digital Marketing Services"
+        description="Comprehensive digital marketing services including SEO, social media marketing, website development, and performance marketing for businesses in Ajmer, Rajasthan."
+        provider="Growth11"
+        areaServed={["Ajmer", "Rajasthan", "Jaipur", "Pushkar", "Beawar"]}
+        serviceType="Digital Marketing"
+      />
       <Navigation />
       <main>
         <ServicesSection />
