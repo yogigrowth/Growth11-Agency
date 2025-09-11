@@ -104,9 +104,6 @@ export default function ServicesSection() {
           {services.map((category, categoryIndex) => (
             <div key={category.category}>
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <category.icon className="h-6 w-6 text-primary" />
-                </div>
                 <h3 className="text-2xl font-bold" data-testid={`text-category-${category.category.toLowerCase()}`}>
                   {category.category}
                 </h3>
@@ -129,12 +126,7 @@ export default function ServicesSection() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
                     <CardHeader className="pb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-primary/10">
-                          <service.icon className="h-5 w-5 text-primary" />
-                        </div>
-                        <CardTitle className="text-lg">{service.name}</CardTitle>
-                      </div>
+                      <CardTitle className="text-lg">{service.name}</CardTitle>
                     </CardHeader>
                     <CardContent className="pt-0">
                       <CardDescription className="text-sm leading-relaxed">
