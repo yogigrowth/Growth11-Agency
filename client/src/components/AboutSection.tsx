@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Building2 } from "lucide-react";
 import satyapremPhoto from "@assets/WhatsApp Image 2025-09-11 at 13.50.34_1757578936202.jpeg";
+import himanshuPhoto from "@assets/1755399159592_1757579526986.png";
 
 const teamMembers = [
   {
@@ -32,7 +33,7 @@ const teamMembers = [
       { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
     ],
     education: "B.Tech Computer Science, IIT Delhi",
-    photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+    photo: himanshuPhoto
   },
   {
     name: "Nandini",
