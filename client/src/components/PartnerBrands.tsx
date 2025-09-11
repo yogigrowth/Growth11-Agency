@@ -29,12 +29,21 @@ const partners = [
     name: "Satyam Ayurveda",
     id: "satyam-ayurveda", 
     logoSrc: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40" viewBox="0 0 120 40"><rect width="120" height="40" fill="#f8f9fa" stroke="#e9ecef"/><text x="60" y="24" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="bold" fill="#666">Satyam</text></svg>`)}`
+  },
+  {
+    name: "Women in the Hood",
+    id: "women-in-the-hood",
+    logoSrc: `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40" viewBox="0 0 120 40"><rect width="120" height="40" fill="#f8f9fa" stroke="#e9ecef"/><text x="60" y="20" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#666">Women in</text><text x="60" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#666">the Hood</text></svg>`)}`
   }
 ];
 
 export default function PartnerBrands() {
   const handlePartnerClick = (partner: typeof partners[0]) => {
     console.log(`${partner.name} clicked`);
+    // If the partner has a website, open it
+    if (partner.id === 'women-in-the-hood') {
+      window.open('https://womeninthehood.in/', '_blank');
+    }
   };
 
   return (
