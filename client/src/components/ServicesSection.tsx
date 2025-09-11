@@ -86,16 +86,16 @@ export default function ServicesSection() {
   };
 
   return (
-    <section className="py-24 bg-muted/50">
+    <section className="py-24 bg-gradient-to-br from-muted/30 via-muted/50 to-muted/30">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <Badge variant="outline" className="mb-4" data-testid="badge-services">
+        <div className="text-center mb-16 animate-fade-in">
+          <Badge variant="outline" className="mb-4 animate-pulse-glow" data-testid="badge-services">
             Our Services
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-services-title">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-slide-up" data-testid="text-services-title">
             Comprehensive Growth Solutions
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-services-description">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-slide-up" data-testid="text-services-description">
             From tech infrastructure to marketing excellence, we provide end-to-end solutions for sustainable business growth.
           </p>
         </div>
@@ -103,17 +103,17 @@ export default function ServicesSection() {
         <div className="grid gap-8 md:gap-12">
           {services.map((category, categoryIndex) => (
             <div key={category.category}>
-              <div className="flex items-center gap-3 mb-6">
-                <h3 className="text-2xl font-bold" data-testid={`text-category-${category.category.toLowerCase()}`}>
+              <div className="flex items-center gap-3 mb-8 animate-fade-in">
+                <h3 className="text-3xl font-bold text-gradient" data-testid={`text-category-${category.category.toLowerCase()}`}>
                   {category.category}
                 </h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {category.services.map((service, serviceIndex) => (
                   <Card 
                     key={service.name}
-                    className="hover-elevate cursor-pointer transition-all duration-200 overflow-hidden"
+                    className="card-enhanced cursor-pointer overflow-hidden gradient-card border-0 shadow-lg animate-scale-in"
                     onClick={() => handleServiceClick(service.name)}
                     data-testid={`card-service-${service.name.toLowerCase().replace(/\s+/g, '-')}`}
                   >
