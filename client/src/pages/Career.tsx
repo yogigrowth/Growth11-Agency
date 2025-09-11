@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Users } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 // todo: remove mock functionality - replace with real job postings
 const jobPostings = [
@@ -31,6 +32,13 @@ const jobPostings = [
 ];
 
 export default function Career() {
+  useSEO({
+    title: "Careers at Growth11 Ajmer - Digital Marketing Jobs | Join Our Team in Rajasthan",
+    description: "Join Growth11 Ajmer team! Digital marketing career opportunities in Ajmer, Rajasthan. Work with expert growth team in leading digital marketing agency.",
+    ogTitle: "Careers at Growth11 Ajmer - Digital Marketing Jobs in Rajasthan",
+    ogDescription: "Digital marketing career opportunities at Growth11 Ajmer. Join our expert team and build your career in Rajasthan's leading growth agency."
+  });
+
   const handleApply = (jobTitle: string) => {
     console.log(`Apply clicked for ${jobTitle}`);
   };
@@ -43,13 +51,13 @@ export default function Career() {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <Badge variant="outline" className="mb-4" data-testid="badge-career-page">
-                Join Our Team
+                Join Growth11 Ajmer Team
               </Badge>
               <h1 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-career-page-title">
-                Build the Future of Growth with Us
+                Build the Future of Growth with Us in Ajmer
               </h1>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8" data-testid="text-career-page-intro">
-                Join a team of entrepreneurs and growth experts. Help businesses scale while growing your own career in a fast-paced, results-driven environment.
+                Join Growth11 Ajmer team of entrepreneurs and growth experts. Help Rajasthan businesses scale while growing your career in Ajmer's leading digital marketing agency.
               </p>
             </div>
 

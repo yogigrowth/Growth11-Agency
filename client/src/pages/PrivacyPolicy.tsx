@@ -1,8 +1,16 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function PrivacyPolicy() {
+  useSEO({
+    title: "Privacy Policy - Growth11 Ajmer | Digital Marketing Agency Privacy in Rajasthan",
+    description: "Privacy Policy for Growth11 Ajmer digital marketing agency. Learn how we protect your data and privacy in our digital marketing services in Ajmer, Rajasthan.",
+    ogTitle: "Privacy Policy - Growth11 Ajmer, Rajasthan",
+    ogDescription: "Privacy Policy for Growth11 Ajmer digital marketing agency. Data protection and privacy information for clients in Rajasthan."
+  });
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -10,13 +18,13 @@ export default function PrivacyPolicy() {
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-12">
             <Badge variant="outline" className="mb-4" data-testid="badge-privacy-policy">
-              Legal Information
+              Legal Information - Ajmer
             </Badge>
             <h1 className="text-4xl md:text-5xl font-bold mb-6" data-testid="text-privacy-policy-title">
-              Privacy Policy
+              Privacy Policy - Growth11 Ajmer
             </h1>
             <p className="text-lg text-muted-foreground" data-testid="text-privacy-policy-subtitle">
-              Effective Date: September 11, 2025
+              Effective Date: September 11, 2025 | Yogi Growth LLP, Ajmer, Rajasthan
             </p>
           </div>
 

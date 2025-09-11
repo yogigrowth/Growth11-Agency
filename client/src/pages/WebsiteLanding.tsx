@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
+import { useSEO } from "@/hooks/useSEO";
 
 const features = [
   {
@@ -131,6 +132,13 @@ const faqs = [
 ];
 
 export default function WebsiteLanding() {
+  useSEO({
+    title: "₹9999 Website Package Ajmer - Professional Websites | Growth11 Ajmer, Rajasthan",
+    description: "Get professional website in just ₹9999 by Growth11 Ajmer! Complete website development in 7 days for businesses in Ajmer, Rajasthan. SEO optimized & mobile-friendly.",
+    ogTitle: "₹9999 Website Package - Growth11 Ajmer",
+    ogDescription: "Professional website development in Ajmer starting at ₹9999. Complete web solutions for businesses in Rajasthan with 7-day delivery."
+  });
+
   const handleContactClick = (method: string) => {
     console.log(`${method} contact clicked`);
     if (method === 'whatsapp') {

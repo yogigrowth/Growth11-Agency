@@ -22,6 +22,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import aiVideoImage from "@assets/generated_images/AI_video_creation_setup_18eeaf60.png";
+import { useSEO } from "@/hooks/useSEO";
 
 // Sample video imports
 import sampleVideo1 from "@assets/WhatsApp Video 2025-09-06 at 13.21.34_1757577539991.mp4";
@@ -176,6 +177,13 @@ const sampleVideos = [
 ];
 
 export default function AIVideosLanding() {
+  useSEO({
+    title: "₹10,000 AI Videos Package Ajmer - Professional AI Video Creation | Growth11 Rajasthan",
+    description: "Get 10 professional AI videos for just ₹10,000 by Growth11 Ajmer! AI video creation services for businesses in Ajmer, Rajasthan. Perfect for marketing & social media.",
+    ogTitle: "₹10,000 AI Videos Package - Growth11 Ajmer",
+    ogDescription: "Professional AI video creation services in Ajmer starting at ₹10,000. Get 10 custom AI videos for your business in Rajasthan with fast delivery."
+  });
+
   const handleContactClick = (method: string) => {
     console.log(`${method} contact clicked`);
     if (method === 'whatsapp') {
