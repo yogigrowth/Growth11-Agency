@@ -185,7 +185,7 @@ export default function ContactForm() {
                     <Mail className="h-5 w-5 text-primary mt-1" />
                     <div>
                       <div className="font-medium">Email</div>
-                      <div className="text-sm text-muted-foreground">hello@growth11.com</div>
+                      <div className="text-sm text-muted-foreground">Satya.yogigrowth@gmail.com</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3" data-testid="contact-phone">
