@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import logoImage from "@assets/Logo2_1757568676458.png";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -20,7 +21,12 @@ export default function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="font-bold text-2xl text-primary">Growth11</div>
+            <img 
+              src={logoImage} 
+              alt="Growth11 Digital Marketing Agency" 
+              className="h-10 w-auto"
+              data-testid="logo-navigation"
+            />
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">

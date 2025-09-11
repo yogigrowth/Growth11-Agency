@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import logoImage from "@assets/Logo2_1757568676458.png";
 
 const footerLinks = {
   company: [
@@ -33,7 +34,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center space-x-2 mb-4">
-              <div className="font-bold text-2xl text-primary" data-testid="text-footer-logo">Growth11</div>
+              <img 
+                src={logoImage} 
+                alt="Growth11 Digital Marketing Agency" 
+                className="h-8 w-auto"
+                data-testid="logo-footer"
+              />
             </Link>
             <p className="text-muted-foreground mb-6" data-testid="text-footer-description">
               Entrepreneurs helping businesses scale revenue through proven growth strategies. 
