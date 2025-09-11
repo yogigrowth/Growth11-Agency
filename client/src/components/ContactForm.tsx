@@ -192,7 +192,7 @@ export default function ContactForm() {
                     <Phone className="h-5 w-5 text-primary mt-1" />
                     <div>
                       <div className="font-medium">Phone</div>
-                      <div className="text-sm text-muted-foreground">+91 XXXXX XXXXX</div>
+                      <div className="text-sm text-muted-foreground">+91 70144 31277</div>
                     </div>
                   </div>
                   <div className="flex items-start gap-3" data-testid="contact-location">
