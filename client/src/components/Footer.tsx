@@ -32,15 +32,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-muted/50 border-t">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-br from-muted/30 via-muted/50 to-muted/70 border-t shadow-lg">
+      <div className="container mx-auto px-4 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="lg:col-span-1">
-            <Link href="/" className="flex items-center space-x-2 mb-4">
+            <Link href="/" className="flex items-center space-x-2 mb-6">
               <img 
                 src={logoImage} 
                 alt="Growth11 Digital Marketing Agency" 
-                className="h-8 w-auto"
+                className="h-12 w-auto transition-transform duration-300 hover:scale-105"
                 data-testid="logo-footer"
               />
             </Link>

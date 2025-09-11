@@ -86,7 +86,9 @@ export default function ServicesSection() {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-muted/30 via-muted/50 to-muted/30">
+    <section className="py-24" style={{ 
+      background: 'linear-gradient(135deg, hsl(220 6% 94% / 0.3) 0%, hsl(220 6% 94% / 0.5) 50%, hsl(220 6% 94% / 0.3) 100%)'
+    }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
           <Badge variant="outline" className="mb-4 animate-pulse-glow" data-testid="badge-services">
@@ -104,7 +106,16 @@ export default function ServicesSection() {
           {services.map((category, categoryIndex) => (
             <div key={category.category}>
               <div className="flex items-center gap-3 mb-8 animate-fade-in">
-                <h3 className="text-3xl font-bold text-gradient" data-testid={`text-category-${category.category.toLowerCase()}`}>
+                <h3 
+                  className="text-3xl font-bold animate-fade-in"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(347, 84%, 48%) 0%, hsl(347, 84%, 58%) 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                  data-testid={`text-category-${category.category.toLowerCase()}`}
+                >
                   {category.category}
                 </h3>
               </div>
@@ -113,9 +124,13 @@ export default function ServicesSection() {
                 {category.services.map((service, serviceIndex) => (
                   <Card 
                     key={service.name}
-                    className="card-enhanced cursor-pointer overflow-hidden gradient-card border-0 shadow-lg animate-scale-in"
+                    className="cursor-pointer overflow-hidden border-0 shadow-lg transition-all duration-300 hover:transform hover:scale-105 hover:shadow-xl animate-scale-in"
                     onClick={() => handleServiceClick(service.name)}
                     data-testid={`card-service-${service.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.98) 100%)',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
                   >
                     <div className="relative h-48 overflow-hidden">
                       <img 
