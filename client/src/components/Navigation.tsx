@@ -17,14 +17,14 @@ export default function Navigation() {
   const [location] = useLocation();
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-18 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <img 
               src={logoImage} 
               alt="Growth11 Digital Marketing Agency" 
-              className="h-14 w-auto"
+              className="h-16 w-auto transition-transform duration-300 hover:scale-105"
               data-testid="logo-navigation"
             />
           </Link>
@@ -43,7 +43,7 @@ export default function Navigation() {
 
           <div className="hidden md:flex">
             <Link href="/contact">
-              <Button data-testid="button-contact-us">
+              <Button className="btn-gradient shadow-glow" data-testid="button-contact-us">
                 Contact Us
               </Button>
             </Link>
