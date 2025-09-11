@@ -20,6 +20,7 @@ const footerLinks = {
     { label: "Blog", href: "/blog" },
     { label: "Partner Brands", href: "/partners" },
     { label: "Website at 9999 Rs Only", href: "/website-9999" },
+    { label: "AI Videos at 10000 Rs Only", href: "/ai-videos-10000" },
     { label: "Contact", href: "/contact" }
   ]
 };

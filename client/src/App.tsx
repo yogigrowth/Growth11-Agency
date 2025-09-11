@@ -14,6 +14,7 @@ import Career from "@/pages/Career";
 import Blog from "@/pages/Blog";
 import Contact from "@/pages/Contact";
 import WebsiteLanding from "@/pages/WebsiteLanding";
+import AIVideosLanding from "@/pages/AIVideosLanding";
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/blog" component={Blog} />
       <Route path="/contact" component={Contact} />
       <Route path="/website-9999" component={WebsiteLanding} />
+      <Route path="/ai-videos-10000" component={AIVideosLanding} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
