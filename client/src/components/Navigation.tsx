@@ -24,7 +24,7 @@ export default function Navigation() {
             <img 
               src={logoImage} 
               alt="Growth11 Digital Marketing Agency" 
-              className="h-10 w-auto"
+              className="h-14 w-auto"
               data-testid="logo-navigation"
             />
           </Link>
@@ -32,7 +32,7 @@ export default function Navigation() {
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href}>
-                <span className={`text-sm font-medium transition-colors hover:text-primary ${
+                <span className={`text-lg font-medium transition-colors hover:text-primary ${
                   location === link.href ? "text-primary" : "text-muted-foreground"
                 }`}>
                   {link.label}
@@ -63,7 +63,7 @@ export default function Navigation() {
             <div className="px-2 pt-2 pb-3 space-y-1 border-t">
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href}>
-                  <span className={`block px-3 py-2 text-base font-medium transition-colors hover:text-primary ${
+                  <span className={`block px-3 py-2 text-xl font-medium transition-colors hover:text-primary ${
                     location === link.href ? "text-primary bg-primary/10" : "text-muted-foreground"
                   }`}>
                     {link.label}
