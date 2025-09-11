@@ -8,7 +8,7 @@ const footerLinks = {
     { label: "Case Studies", href: "/case-study" },
     { label: "Career", href: "/career" },
     { label: "Blog", href: "/blog" },
-    { label: "Contact", href: "/contact" }
+    { label: "+91 70144 31277 Contact", href: "/contact" }
   ],
   services: [
     { label: "Website Building", href: "/services#tech" },
@@ -21,7 +21,7 @@ const footerLinks = {
     { label: "Clients", href: "/partners" },
     { label: "Website at 10,000 Rs Only", href: "/website-9999" },
     { label: "AI Videos at 10000 Rs Only", href: "/ai-videos-10000" },
-    { label: "Contact", href: "/contact" }
+    { label: "+91 70144 31277 Contact", href: "/contact" }
   ]
 };
 
