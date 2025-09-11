@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Building2 } from "lucide-react";
+import satyapremPhoto from "@assets/WhatsApp Image 2025-09-11 at 13.50.34_1757578936202.jpeg";
 
 const teamMembers = [
   {
-    name: "Satyaprem Upadhyay",
+    name: "Satyaprem",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
     description: "Led Nojoto's growth from bootstrap to 100 Cr valuation with strategic business development and growth initiatives",
     workExperience: 12,
@@ -17,10 +18,10 @@ const teamMembers = [
       { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
     ],
     education: "B.Tech, MPUAT, Udaipur (Gold Medalist)",
-    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    photo: satyapremPhoto
   },
   {
-    name: "Himanshu Sharma", 
+    name: "Himanshu", 
     linkedin: "https://www.linkedin.com/in/himanshucmo/",
     description: "Architected Nojoto's technology platform serving 80L+ MAU and led product innovation across multiple verticals",
     workExperience: 14,
@@ -34,7 +35,7 @@ const teamMembers = [
     photo: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
   },
   {
-    name: "Nandini Upadhyay",
+    name: "Nandini",
     linkedin: "https://www.linkedin.com/in/nandini-upadhyay0127/",
     description: "Spearheading Growth11's expansion initiatives and operational excellence with focus on client success and revenue growth",
     workExperience: 8,
