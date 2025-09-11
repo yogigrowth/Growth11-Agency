@@ -60,7 +60,7 @@ export default function PartnerBrands() {
               <div className="bg-background border border-border rounded-md p-6 h-20 md:h-24 flex items-center justify-center relative overflow-hidden">
                 <img 
                   src={partner.logoSrc}
-                  alt={`${partner.name} logo`}
+                  alt={`${partner.name} - Trusted client of Growth11 Ajmer digital marketing agency`}
                   className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
                 />
               </div>

@@ -135,7 +135,7 @@ export default function AboutSection() {
                   {/* Large Avatar on Left */}
                   <div className="flex-shrink-0 flex justify-center md:justify-start">
                     <Avatar className="w-32 h-32">
-                      <AvatarImage src={member.photo} alt={`${member.name} profile`} />
+                      <AvatarImage src={member.photo} alt={`${member.name}, Co-Founder of Growth11 Ajmer digital marketing agency`} />
                       <AvatarFallback className="text-2xl font-semibold">
                         {member.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>

@@ -23,6 +23,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import aiVideoImage from "@assets/generated_images/AI_video_creation_setup_18eeaf60.png";
 import { useSEO } from "@/hooks/useSEO";
+import { FAQSchema } from "@/components/SchemaMarkup";
 
 // Sample video imports
 import sampleVideo1 from "@assets/WhatsApp Video 2025-09-06 at 13.21.34_1757577539991.mp4";
@@ -198,6 +199,7 @@ export default function AIVideosLanding() {
 
   return (
     <div className="min-h-screen">
+      <FAQSchema faqs={faqs} />
       <Navigation />
       <main>
         {/* Hero Section */}

@@ -19,6 +19,7 @@ import {
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { useSEO } from "@/hooks/useSEO";
+import { FAQSchema } from "@/components/SchemaMarkup";
 
 const features = [
   {
@@ -153,6 +154,7 @@ export default function WebsiteLanding() {
 
   return (
     <div className="min-h-screen">
+      <FAQSchema faqs={faqs} />
       <Navigation />
       <main>
         {/* Hero Section */}
