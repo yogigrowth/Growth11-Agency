@@ -16,12 +16,9 @@ const footerLinks = {
     { label: "Social Media Marketing", href: "/services#marketing" },
     { label: "Performance Marketing", href: "/services#marketing" }
   ],
-  resources: [
-    { label: "Blog", href: "/blog" },
-    { label: "Clients", href: "/partners" },
+  currentOffers: [
     { label: "Website at 10,000 Rs Only", href: "/website-9999" },
-    { label: "AI Videos at 10000 Rs Only", href: "/ai-videos-10000" },
-    { label: "Contact us", href: "/contact" }
+    { label: "AI Videos at 10000 Rs Only", href: "/ai-videos-10000" }
   ]
 };
 
@@ -104,15 +101,15 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4" data-testid="text-footer-resources">Resources</h4>
+            <h4 className="font-semibold mb-4" data-testid="text-footer-current-offers">Current Offers</h4>
             <ul className="space-y-2">
-              {footerLinks.resources.map((link) => (
+              {footerLinks.currentOffers.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href}>
                     <span 
                       className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
                       onClick={() => handleLinkClick(link.href)}
-                      data-testid={`link-footer-resource-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                      data-testid={`link-footer-offer-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
                     >
                       {link.label}
                     </span>
