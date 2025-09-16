@@ -177,6 +177,65 @@ export function FAQSchema({ faqs }: FAQSchemaProps) {
   );
 }
 
+interface ArticleSchemaProps {
+  headline: string;
+  description: string;
+  author: string;
+  datePublished: string;
+  dateModified?: string;
+  url: string;
+  image?: string;
+}
+
+export function ArticleSchema({
+  headline,
+  description,
+  author,
+  datePublished,
+  dateModified,
+  url,
+  image
+}: ArticleSchemaProps) {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": headline,
+    "description": description,
+    "url": url,
+    "author": {
+      "@type": "Organization",
+      "name": author
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Growth11",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://growth11.in/logo.png"
+      }
+    },
+    "datePublished": datePublished,
+    "dateModified": dateModified || datePublished,
+    ...(image && {
+      "image": {
+        "@type": "ImageObject", 
+        "url": image
+      }
+    }),
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": url
+    }
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 // Organization Schema for About page
 export function OrganizationSchema() {
   const schema = {

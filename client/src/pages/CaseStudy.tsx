@@ -3,6 +3,7 @@ import CaseStudySection from "@/components/CaseStudySection";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { useSEO } from "@/hooks/useSEO";
+import { ArticleSchema } from "@/components/SchemaMarkup";
 
 export default function CaseStudy() {
   useSEO({
@@ -14,6 +15,14 @@ export default function CaseStudy() {
 
   return (
     <div className="min-h-screen">
+      <ArticleSchema
+        headline="How Growth11 Scaled Akiso Fashion to 12L+ Monthly Revenue with 4X ROAS"
+        description="Complete case study of how Growth11's digital marketing strategies helped Akiso Fashion achieve exceptional growth through SEO, social media marketing, and performance optimization."
+        author="Growth11"
+        datePublished="2024-01-15"
+        dateModified="2024-12-01"
+        url="https://growth11.in/case-study"
+      />
       <Navigation />
       <main>
         <CaseStudySection />
