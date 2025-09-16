@@ -9,10 +9,10 @@ import { LocalBusinessSchema } from "@/components/SchemaMarkup";
 
 export default function Home() {
   useSEO({
-    title: "Growth11 Ajmer - Digital Marketing Agency | Expert Growth Solutions in Ajmer, Rajasthan",
-    description: "Leading digital marketing agency in Ajmer, Rajasthan. Growth11 helps businesses scale revenue through expert SEO, social media marketing, and tech services in Ajmer.",
-    ogTitle: "Growth11 Ajmer - #1 Digital Marketing Agency in Ajmer, Rajasthan",
-    ogDescription: "Expert digital marketing and growth solutions in Ajmer. Proven track record scaling businesses with SEO, social media, and tech services in Rajasthan."
+    title: "Digital Marketing Agency | SEO, Website, App & Social Media–Growth11",
+    description: "Growth11 offers SEO, social media marketing, website design, app development, performance marketing to help businesses grow revenue, leads, and sales",
+    ogTitle: "Digital Marketing Agency | SEO, Website, App & Social Media–Growth11",
+    ogDescription: "Growth11 offers SEO, social media marketing, website design, app development, performance marketing to help businesses grow revenue, leads, and sales"
   });
 
   return (
