@@ -48,15 +48,6 @@ export default function HeroSection() {
               Get Free Consultation
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              onClick={handleLearnMore}
-              data-testid="button-hero-learn-more"
-              className="hover-elevate backdrop-blur-sm bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-            >
-              View Case Studies
-            </Button>
           </div>
         </div>
       </div>
