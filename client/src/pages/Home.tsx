@@ -47,10 +47,10 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
+        <AboutSectionHome />
         <ServicesSection />
         <PartnerBrands />
         <CaseStudySection />
-        <AboutSectionHome />
       </main>
       <Footer />
     </div>
