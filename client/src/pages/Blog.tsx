@@ -44,51 +44,62 @@ function BlogSchema() {
   );
 }
 
-const initialBlogPosts = [
+type PostPreview = {
+  id: string;
+  title: string;
+  category: string;
+  date: string;
+  readTime: string;
+  mediaType: "image" | "video";
+  mediaUrl: string;
+  likes: number;
+};
+
+const initialBlogPosts: PostPreview[] = [
   {
     id: "1",
     title: "How We Scaled Nojoto to 80L MAU: Lessons in Product-Led Growth",
-    excerpt: "The complete story of how we built and scaled Nojoto from a bootstrap startup to 80 lakh monthly active users.",
     category: "Growth Strategy",
     date: "Dec 15, 2024",
     readTime: "8 min read",
-    image: growthWorkspaceImg,
+    mediaType: "image",
+    mediaUrl: growthWorkspaceImg,
     likes: 127
   },
   {
     id: "2",
     title: "Performance Marketing for D2C Brands: A Complete Guide",
-    excerpt: "Learn how to create high-converting campaigns that deliver 4X ROAS and drive sustainable growth.",
     category: "Marketing",
     date: "Dec 10, 2024", 
     readTime: "12 min read",
-    image: performanceMarketingImg,
+    mediaType: "image",
+    mediaUrl: performanceMarketingImg,
     likes: 143
   },
   {
     id: "3",
     title: "Building Conversion Funnels That Actually Convert",
-    excerpt: "Practical strategies for optimizing your e-commerce funnel to maximize revenue and retention.",
     category: "Conversion",
     date: "Dec 5, 2024",
     readTime: "10 min read",
-    image: conversionFunnelImg,
+    mediaType: "image",
+    mediaUrl: conversionFunnelImg,
     likes: 118
   },
   {
     id: "4",
     title: "The Future of AI in Digital Marketing",
-    excerpt: "How AI-powered tools are revolutionizing content creation, targeting, and campaign optimization.",
     category: "Technology",
     date: "Nov 28, 2024",
     readTime: "6 min read",
-    image: aiMarketingImg,
+    mediaType: "image",
+    mediaUrl: aiMarketingImg,
     likes: 135
   }
 ];
 
 export default function Blog() {
-  const [blogPosts, setBlogPosts] = useState(initialBlogPosts);
+  const [blogPosts, setBlogPosts] = useState<PostPreview[]>(initialBlogPosts);
 
   useSEO({
     title: "Digital Marketing Blog - Growth11 Ajmer | Marketing Insights & Strategies for Rajasthan",
@@ -141,12 +152,24 @@ export default function Blog() {
                   >
                     {/* Image/Video Container */}
                     <div className="relative aspect-square overflow-hidden bg-muted">
-                      <img 
-                        src={post.image}
-                        alt={`${post.title} - Growth11 digital marketing visual story`}
-                        className="w-full h-full object-cover"
-                        data-testid={`img-post-${index}`}
-                      />
+                      {post.mediaType === "video" ? (
+                        <video
+                          src={post.mediaUrl}
+                          className="w-full h-full object-cover"
+                          controls={false}
+                          muted
+                          loop
+                          playsInline
+                          data-testid={`video-post-${index}`}
+                        />
+                      ) : (
+                        <img 
+                          src={post.mediaUrl}
+                          alt={`${post.title} - Growth11 digital marketing visual story`}
+                          className="w-full h-full object-cover"
+                          data-testid={`img-post-${index}`}
+                        />
+                      )}
                       <div className="absolute top-3 right-3">
                         <Badge 
                           variant="secondary" 
@@ -177,13 +200,10 @@ export default function Blog() {
                         {post.likes} likes
                       </div>
 
-                      {/* Title and excerpt */}
-                      <h3 className="font-semibold text-sm leading-tight mb-2" data-testid={`text-title-${index}`}>
+                      {/* Title */}
+                      <h3 className="font-semibold text-sm leading-tight mb-3" data-testid={`text-title-${index}`}>
                         {post.title}
                       </h3>
-                      <p className="text-xs text-muted-foreground mb-3 line-clamp-2" data-testid={`text-excerpt-${index}`}>
-                        {post.excerpt}
-                      </p>
 
                       {/* Meta info */}
                       <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">

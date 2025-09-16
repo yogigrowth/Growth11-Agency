@@ -12,10 +12,10 @@ export const users = pgTable("users", {
 export const blogPosts = pgTable("blog_posts", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
-  excerpt: text("excerpt").notNull(),
   content: text("content").notNull(),
   category: text("category").notNull(),
-  image: text("image"),
+  mediaType: text("media_type").notNull().default("image"), // 'image' or 'video'
+  mediaUrl: text("media_url"),
   published: boolean("published").default(false),
   likes: integer("likes").default(0),
   comments: integer("comments").default(0),
@@ -32,6 +32,9 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  mediaType: z.enum(["image", "video"]),
+  mediaUrl: z.string().url().nullable().optional(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

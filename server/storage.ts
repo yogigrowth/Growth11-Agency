@@ -59,7 +59,8 @@ export class MemStorage implements IStorage {
     const now = new Date();
     const post: BlogPost = { 
       ...insertPost,
-      image: insertPost.image || null,
+      mediaType: insertPost.mediaType || "image",
+      mediaUrl: insertPost.mediaUrl || null,
       published: insertPost.published || false,
       likes: insertPost.likes || 0,
       comments: insertPost.comments || 0,
