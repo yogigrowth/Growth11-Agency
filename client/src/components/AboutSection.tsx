@@ -14,6 +14,7 @@ import autumnWorldwideLogo from "@assets/images (1)_1758000353752.png";
 import internshalaLogo from "@assets/internshala_og_image_1758000353751.jpg";
 import himanshuNojotoLogo from "@assets/Nojoto_1758000353752.jpg";
 import micaLogo from "@assets/upload__1668751152376_1758000489126.jpeg";
+import LazyImage from "@/components/LazyImage";
 
 const teamMembers = [
   {
@@ -203,7 +204,7 @@ export default function AboutSection() {
                         {member.companies.map((company, companyIndex) => (
                           <div key={company.name} className="flex items-center">
                             {company.logoSrc ? (
-                              <img
+                              <LazyImage
                                 src={company.logoSrc}
                                 alt={`${company.name} logo`}
                                 className="h-9 w-auto object-contain"

@@ -14,6 +14,7 @@ import hpLogoPath from "@assets/HP_logo_2025.svg_1758001852504.png";
 import microsoftLogoPath from "@assets/images (2)_1758001852504.png";
 import withLogoPath from "@assets/with-logo-text_1758001852504.webp";
 import akisoLogoPath from "@assets/Akiso_LOGO_PnG_1758001852504.webp";
+import LazyImage from "@/components/LazyImage";
 
 // Partner brands with real client logos
 const partners = [
@@ -128,10 +129,11 @@ export default function PartnerBrands() {
               data-testid={`logo-partner-${partner.id}`}
             >
               <div className="flex items-center justify-center h-32 md:h-40">
-                <img 
+                <LazyImage 
                   src={partner.logoSrc}
                   alt={`${partner.name} - Trusted client of Growth11 digital marketing agency`}
                   className="max-w-full max-h-full object-contain transition-transform duration-300"
+                  data-testid={`logo-partner-${partner.id}`}
                 />
               </div>
             </div>

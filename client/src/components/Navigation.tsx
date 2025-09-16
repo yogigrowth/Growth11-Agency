@@ -51,9 +51,10 @@ export default function Navigation() {
             </div>
 
             <button
-              className="md:hidden"
+              className="md:hidden p-3 -m-1 rounded-md hover:bg-accent transition-colors min-h-11 min-w-11 flex items-center justify-center"
               onClick={() => setIsOpen(!isOpen)}
               data-testid="button-mobile-menu"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
