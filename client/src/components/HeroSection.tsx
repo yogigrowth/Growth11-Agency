@@ -3,8 +3,8 @@ import { ArrowRight, TrendingUp } from "lucide-react";
 import heroImage from "@assets/generated_images/Tech_office_hero_background_0b520503.png";
 
 export default function HeroSection() {
-  const handleGetStarted = () => {
-    console.log('Get started clicked');
+  const handleGetConsultation = () => {
+    window.open(`tel:+917014431277`, '_self');
   };
 
   const handleLearnMore = () => {
@@ -42,11 +42,11 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row gap-4 mb-12 animate-scale-in">
             <Button 
               size="lg" 
-              onClick={handleGetStarted}
-              data-testid="button-hero-get-started"
+              onClick={handleGetConsultation}
+              data-testid="button-hero-get-consultation"
               className="btn-gradient shadow-glow transition-all duration-300 hover:scale-105"
             >
-              Get Started Today
+              Get Free Consultation
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
             <Button 
