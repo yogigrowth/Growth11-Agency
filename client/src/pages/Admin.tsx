@@ -43,10 +43,10 @@ export default function Admin() {
     resolver: zodResolver(insertBlogPostSchema),
     defaultValues: {
       title: "",
-      excerpt: "",
       content: "",
       category: "",
-      image: "",
+      mediaType: "image",
+      mediaUrl: "",
       published: false,
       likes: 0,
       comments: 0,
@@ -112,10 +112,10 @@ export default function Admin() {
     setIsCreating(true);
     form.reset({
       title: post.title,
-      excerpt: post.excerpt,
       content: post.content,
       category: post.category,
-      image: post.image || "",
+      mediaType: post.mediaType || "image",
+      mediaUrl: post.mediaUrl || "",
       published: post.published || false,
       likes: post.likes || 0,
       comments: post.comments || 0,
@@ -210,18 +210,21 @@ export default function Admin() {
 
                         <FormField
                           control={form.control}
-                          name="excerpt"
+                          name="mediaType"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Excerpt</FormLabel>
-                              <FormControl>
-                                <Textarea 
-                                  placeholder="Brief description of the blog post" 
-                                  className="min-h-[100px]"
-                                  {...field} 
-                                  data-testid="textarea-excerpt"
-                                />
-                              </FormControl>
+                              <FormLabel>Media Type</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger data-testid="select-media-type">
+                                    <SelectValue placeholder="Select media type" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem value="image">Image</SelectItem>
+                                  <SelectItem value="video">Video</SelectItem>
+                                </SelectContent>
+                              </Select>
                               <FormMessage />
                             </FormItem>
                           )}
@@ -248,16 +251,16 @@ export default function Admin() {
 
                         <FormField
                           control={form.control}
-                          name="image"
+                          name="mediaUrl"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Image URL</FormLabel>
+                              <FormLabel>Media URL</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="https://example.com/image.jpg" 
+                                  placeholder="https://example.com/media.jpg" 
                                   {...field}
                                   value={field.value || ""}
-                                  data-testid="input-image"
+                                  data-testid="input-media-url"
                                 />
                               </FormControl>
                               <FormMessage />
@@ -356,8 +359,8 @@ export default function Admin() {
                           <CardTitle className="text-lg leading-tight" data-testid={`text-title-${post.id}`}>
                             {post.title}
                           </CardTitle>
-                          <CardDescription data-testid={`text-excerpt-${post.id}`}>
-                            {post.excerpt}
+                          <CardDescription data-testid={`text-media-type-${post.id}`}>
+                            {post.mediaType} content
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
