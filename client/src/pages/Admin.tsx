@@ -275,13 +275,16 @@ export default function Admin() {
                             render={({ field }) => (
                               <FormItem className="flex items-center space-x-2">
                                 <FormControl>
-                                  <Switch
-                                    checked={field.value || false}
-                                    onCheckedChange={field.onChange}
-                                    data-testid="switch-published"
-                                  />
+                                  <Button
+                                    type="button"
+                                    variant={field.value ? "default" : "outline"}
+                                    onClick={() => field.onChange(!field.value)}
+                                    data-testid="button-publish-toggle"
+                                  >
+                                    {field.value ? "Unpublish" : "Publish"}
+                                  </Button>
                                 </FormControl>
-                                <Label>Published</Label>
+                                <Label className="text-sm text-muted-foreground">Publication Status</Label>
                               </FormItem>
                             )}
                           />
