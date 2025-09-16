@@ -16,22 +16,8 @@ export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [location] = useLocation();
 
-  const handleContactClick = () => {
-    window.open(`tel:+917014431277`, '_self');
-  };
-
   return (
     <>
-      {/* Contact Banner at Top */}
-      <div className="bg-primary text-primary-foreground py-2 text-center">
-        <div className="container mx-auto px-4">
-          <div className="text-sm font-medium cursor-pointer" onClick={handleContactClick}>
-            <div>Contact us:</div>
-            <div className="font-bold">70144-31277</div>
-          </div>
-        </div>
-      </div>
-      
       <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex h-18 items-center justify-between">
