@@ -92,16 +92,6 @@ export default function CaseStudySection() {
                     View Case Studies
                   </Button>
                 </Link>
-                <Link href="/case-study">
-                  <Button 
-                    variant="outline" 
-                    onClick={handleViewCaseStudies}
-                    data-testid="button-contact-case-study"
-                    className="hover-elevate"
-                  >
-                    View Case Studies
-                  </Button>
-                </Link>
               </div>
             </CardContent>
           </Card>
