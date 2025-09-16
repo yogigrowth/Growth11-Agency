@@ -9,6 +9,10 @@ import tcsLogo from "@assets/TCS_Logo_(cropped)_1758000142373.jpg";
 import snapdealLogo from "@assets/Snapdeal_logo_new_1758000142373.png";
 import network18Logo from "@assets/Network18_1758000142373.webp";
 import nojotoLogo from "@assets/Nojoto_1758000142372.jpg";
+import grapesDigitalLogo from "@assets/images_1758000353752.png";
+import autumnWorldwideLogo from "@assets/images (1)_1758000353752.png";
+import internshalaLogo from "@assets/internshala_og_image_1758000353751.jpg";
+import himanshuNojotoLogo from "@assets/Nojoto_1758000353752.jpg";
 
 const teamMembers = [
   {
@@ -33,10 +37,10 @@ const teamMembers = [
     description: "A marketing leader with 10+ years of experience in digital growth, user acquisition, and branding, Himanshu co-founded Nojoto in 2017 and has since been instrumental in its rise as one of India's premier storytelling platforms. He leads all marketing, user growth, community building, and brand strategy efforts, having built scalable campaigns across performance ads, content, social, and product-led marketing.\n\nBefore Nojoto, Himanshu sharpened his skills at companies like Grapes Digital (digital account planning), Autumn Worldwide (social media marketing), and Internshala. His early exposure includes work in community building and even radio, which contributes to his deep understanding of audience, content, and engagement.\n\nHe holds a B.Tech in Electrical & Electronics Engineering from Bhagwant University. Passionate about creative storytelling & data-driven strategies, Himanshu believes in empowering creators, fostering authentic communities, and scaling brands through measurable growth.",
     workExperience: 10,
     companies: [
-      { name: "Grapes Digital", logoSrc: "https://via.placeholder.com/120x40/6366F1/FFFFFF?text=Grapes+Digital" },
-      { name: "Autumn Worldwide", logoSrc: "https://via.placeholder.com/120x40/10B981/FFFFFF?text=Autumn+WW" },
-      { name: "Internshala", logoSrc: "https://logos-world.net/wp-content/uploads/2021/02/Internshala-Logo.png" },
-      { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
+      { name: "Grapes Digital", logoSrc: grapesDigitalLogo },
+      { name: "Autumn Worldwide", logoSrc: autumnWorldwideLogo },
+      { name: "Internshala", logoSrc: internshalaLogo },
+      { name: "Nojoto", logoSrc: himanshuNojotoLogo }
     ],
     education: "B.Tech in Electrical & Electronics Engineering, Bhagwant University",
     photo: himanshuPhoto
