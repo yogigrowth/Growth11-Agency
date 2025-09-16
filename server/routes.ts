@@ -17,6 +17,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Serve robots.txt from public directory
+  app.get("/robots.txt", (req, res) => {
+    const robotsPath = path.resolve(import.meta.dirname, "..", "public", "robots.txt");
+    
+    if (fs.existsSync(robotsPath)) {
+      res.set('Content-Type', 'text/plain');
+      res.sendFile(robotsPath);
+    } else {
+      res.status(404).send('Robots.txt not found');
+    }
+  });
+
   // put application routes here
   // prefix all routes with /api
 
