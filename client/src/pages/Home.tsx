@@ -3,6 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ServicesSection from "@/components/ServicesSection";
 import PartnerBrands from "@/components/PartnerBrands";
 import CaseStudySection from "@/components/CaseStudySection";
+import AboutSectionHome from "@/components/AboutSectionHome";
 import Footer from "@/components/Footer";
 import { useSEO } from "@/hooks/useSEO";
 import { LocalBusinessSchema } from "@/components/SchemaMarkup";
@@ -49,6 +50,7 @@ export default function Home() {
         <ServicesSection />
         <PartnerBrands />
         <CaseStudySection />
+        <AboutSectionHome />
       </main>
       <Footer />
     </div>
