@@ -116,19 +116,19 @@ export default function PartnerBrands() {
   return (
     <section className="py-24">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12">
           {partners.map((partner) => (
             <div
               key={partner.id}
-              className="group cursor-pointer hover-elevate transition-all duration-300"
+              className="group cursor-pointer transition-all duration-300 hover:scale-105"
               onClick={() => handlePartnerClick(partner)}
               data-testid={`logo-partner-${partner.id}`}
             >
-              <div className="bg-background border border-border rounded-md p-6 h-20 md:h-24 flex items-center justify-center relative overflow-hidden">
+              <div className="flex items-center justify-center h-32 md:h-40">
                 <img 
                   src={partner.logoSrc}
                   alt={`${partner.name} - Trusted client of Growth11 digital marketing agency`}
-                  className="max-w-full max-h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                  className="max-w-full max-h-full object-contain transition-transform duration-300"
                 />
               </div>
             </div>
