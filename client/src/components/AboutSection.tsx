@@ -13,6 +13,7 @@ import grapesDigitalLogo from "@assets/images_1758000353752.png";
 import autumnWorldwideLogo from "@assets/images (1)_1758000353752.png";
 import internshalaLogo from "@assets/internshala_og_image_1758000353751.jpg";
 import himanshuNojotoLogo from "@assets/Nojoto_1758000353752.jpg";
+import micaLogo from "@assets/upload__1668751152376_1758000489126.jpeg";
 
 const teamMembers = [
   {
@@ -25,9 +26,10 @@ const teamMembers = [
       { name: "TCS", logoSrc: tcsLogo },
       { name: "Snapdeal", logoSrc: snapdealLogo },
       { name: "Network18", logoSrc: network18Logo },
-      { name: "Nojoto", logoSrc: nojotoLogo }
+      { name: "Nojoto", logoSrc: nojotoLogo },
+      { name: "MICA", logoSrc: micaLogo }
     ],
-    education: "B.Tech, MPUAT, Udaipur (Gold Medalist)",
+    education: "MBA, MICA Ahmedabad | B.Tech, MPUAT, Udaipur (Gold Medalist)",
     photo: satyapremPhoto
   },
   {
