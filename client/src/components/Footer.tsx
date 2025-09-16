@@ -143,6 +143,15 @@ export default function Footer() {
             >
               Terms of Service
             </button>
+            <Link href="/admin">
+              <span 
+                onClick={() => handleLinkClick('/admin')}
+                className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                data-testid="link-footer-admin"
+              >
+                Admin
+              </span>
+            </Link>
             <a 
               href="/sitemap.xml"
               target="_blank"

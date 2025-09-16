@@ -12,6 +12,7 @@ import Partners from "@/pages/Partners";
 import CaseStudy from "@/pages/CaseStudy";
 import Career from "@/pages/Career";
 import Blog from "@/pages/Blog";
+import Admin from "@/pages/Admin";
 import Contact from "@/pages/Contact";
 import WebsiteLanding from "@/pages/WebsiteLanding";
 import AIVideosLanding from "@/pages/AIVideosLanding";
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/case-study" component={CaseStudy} />
       <Route path="/career" component={Career} />
       <Route path="/blog" component={Blog} />
+      <Route path="/admin" component={Admin} />
       <Route path="/contact" component={Contact} />
       <Route path="/website-9999" component={WebsiteLanding} />
       <Route path="/ai-videos-10000" component={AIVideosLanding} />
