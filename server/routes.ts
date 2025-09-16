@@ -1,11 +1,37 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertBlogPostSchema } from "../shared/schema";
 import path from "path";
 import fs from "fs";
+import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
+
+// Authentication middleware
+function requireAuth(req: Request, res: Response, next: NextFunction) {
+  const token = req.cookies.adminToken;
+  
+  if (!token) {
+    return res.status(401).json({ error: "Authentication required" });
+  }
+  
+  try {
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+      console.error("JWT_SECRET environment variable is required");
+      process.exit(1);
+    }
+    
+    jwt.verify(token, secret);
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Add cookie parser middleware
+  app.use(cookieParser());
   // Serve sitemap.xml from public directory
   app.get("/sitemap.xml", (req, res) => {
     const sitemapPath = path.resolve(import.meta.dirname, "..", "public", "sitemap.xml");
@@ -52,7 +78,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/blog-posts", async (req, res) => {
+  app.post("/api/blog-posts", requireAuth, async (req, res) => {
     try {
       // Validate request body against schema
       const validatedData = insertBlogPostSchema.parse(req.body);
@@ -71,7 +97,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/blog-posts/:id", async (req, res) => {
+  app.patch("/api/blog-posts/:id", requireAuth, async (req, res) => {
     try {
       // For updates, validate partial data
       const validatedData = insertBlogPostSchema.partial().parse(req.body);
@@ -93,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/blog-posts/:id", async (req, res) => {
+  app.delete("/api/blog-posts/:id", requireAuth, async (req, res) => {
     try {
       const deleted = await storage.deleteBlogPost(req.params.id);
       if (!deleted) {
@@ -103,6 +129,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ error: "Failed to delete blog post" });
     }
+  });
+
+  // Admin authentication endpoints
+  app.post("/api/admin/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      const adminUsername = process.env.ADMIN_USERNAME;
+      const adminPassword = process.env.ADMIN_PASSWORD;
+      const jwtSecret = process.env.JWT_SECRET;
+      
+      if (!adminUsername || !adminPassword || !jwtSecret) {
+        console.error("Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET");
+        return res.status(500).json({ success: false, error: "Server configuration error" });
+      }
+      
+      if (username === adminUsername && password === adminPassword) {
+        const token = jwt.sign(
+          { admin: true },
+          jwtSecret,
+          { expiresIn: '24h' }
+        );
+        
+        res.cookie('adminToken', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        });
+        
+        res.json({ success: true });
+      } else {
+        res.status(401).json({ success: false, error: "Invalid credentials" });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Server error" });
+    }
+  });
+
+  app.post("/api/admin/logout", (req, res) => {
+    res.clearCookie('adminToken');
+    res.json({ success: true });
+  });
+
+  // Admin status check endpoint
+  app.get("/api/admin/status", requireAuth, (req, res) => {
+    res.json({ authenticated: true });
   });
 
   const httpServer = createServer(app);
