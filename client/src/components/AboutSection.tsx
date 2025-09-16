@@ -206,7 +206,7 @@ export default function AboutSection() {
                               <img
                                 src={company.logoSrc}
                                 alt={`${company.name} logo`}
-                                className="h-12 w-auto object-contain"
+                                className="h-9 w-auto object-contain"
                                 data-testid={`img-team-member-${index + 1}-company-logo-${companyIndex + 1}`}
                                 onError={(e) => {
                                   // Fallback to badge if image fails to load
