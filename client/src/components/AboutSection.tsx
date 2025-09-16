@@ -24,7 +24,7 @@ const teamMembers = [
   },
   {
     name: "Himanshu",
-    title: "Co-Founder, Nojoto",
+    title: "Founding Partner, Growth11",
     linkedin: "https://www.linkedin.com/in/himanshucmo/",
     description: "A marketing leader with 10+ years of experience in digital growth, user acquisition, and branding, Himanshu co-founded Nojoto in 2017 and has since been instrumental in its rise as one of India's premier storytelling platforms. He leads all marketing, user growth, community building, and brand strategy efforts, having built scalable campaigns across performance ads, content, social, and product-led marketing.\n\nBefore Nojoto, Himanshu sharpened his skills at companies like Grapes Digital (digital account planning), Autumn Worldwide (social media marketing), and Internshala. His early exposure includes work in community building and even radio, which contributes to his deep understanding of audience, content, and engagement.\n\nHe holds a B.Tech in Electrical & Electronics Engineering from Bhagwant University. Passionate about creative storytelling & data-driven strategies, Himanshu believes in empowering creators, fostering authentic communities, and scaling brands through measurable growth.",
     workExperience: 10,
