@@ -5,6 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExternalLink, Users, TrendingUp, Award, Briefcase, GraduationCap, Building2 } from "lucide-react";
 import satyapremPhoto from "@assets/WhatsApp Image 2025-09-11 at 13.50.34_1757578936202.jpeg";
 import himanshuPhoto from "@assets/1755399159592_1757579526986.png";
+import tcsLogo from "@assets/TCS_Logo_(cropped)_1758000142373.jpg";
+import snapdealLogo from "@assets/Snapdeal_logo_new_1758000142373.png";
+import network18Logo from "@assets/Network18_1758000142373.webp";
+import nojotoLogo from "@assets/Nojoto_1758000142372.jpg";
 
 const teamMembers = [
   {
@@ -14,10 +18,10 @@ const teamMembers = [
     description: "Led Nojoto's journey from bootstrap to a ₹100 Cr valuation, scaling it to 8M+ MAUs with strategic business development, growth marketing, and product innovation.\n\nWith 12+ years of experience, Satyaprem brings expertise in digital marketing, business strategy, and AI-driven growth systems, having worked with top companies like TCS, Snapdeal, and Network18.\n\nA B.Tech Gold Medalist from MPUAT, Udaipur, Satyaprem blends technical expertise with entrepreneurial vision.\n\nAt Growth11, he helps businesses unlock exponential growth through performance marketing, brand strategy, and data-driven campaigns, focusing on D2C brands, SaaS, and high-growth startups.",
     workExperience: 12,
     companies: [
-      { name: "TCS", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/TCS-Logo.png" },
-      { name: "Snapdeal", logoSrc: "https://logos-world.net/wp-content/uploads/2020/11/Snapdeal-Logo.png" },
-      { name: "Network18", logoSrc: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Network18_logo.svg/320px-Network18_logo.svg.png" },
-      { name: "Nojoto", logoSrc: "https://nojoto.com/static/img/nojoto-logo.png" }
+      { name: "TCS", logoSrc: tcsLogo },
+      { name: "Snapdeal", logoSrc: snapdealLogo },
+      { name: "Network18", logoSrc: network18Logo },
+      { name: "Nojoto", logoSrc: nojotoLogo }
     ],
     education: "B.Tech, MPUAT, Udaipur (Gold Medalist)",
     photo: satyapremPhoto
