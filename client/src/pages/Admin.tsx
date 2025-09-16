@@ -17,8 +17,9 @@ import { useSEO } from "@/hooks/useSEO";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { insertBlogPostSchema } from "@shared/schema";
-import { Plus, Edit, Trash2, Eye, Calendar } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, Calendar, LogOut } from "lucide-react";
 import type { BlogPost, InsertBlogPost } from "@shared/schema";
+import { z } from "zod";
 
 const categories = [
   "Growth Strategy",
@@ -29,15 +30,147 @@ const categories = [
   "Insights"
 ];
 
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+type LoginForm = z.infer<typeof loginSchema>;
+
 export default function Admin() {
   const [isCreating, setIsCreating] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        await apiRequest('/api/admin/status', 'GET', {});
+        setIsAuthenticated(true);
+        sessionStorage.setItem('admin_authenticated', 'true');
+      } catch (error) {
+        setIsAuthenticated(false);
+        sessionStorage.removeItem('admin_authenticated');
+      }
+    };
+    
+    checkAuthStatus();
+  }, []);
   const { toast } = useToast();
 
   useSEO({
     title: "Admin Panel - Growth11 Blog Management",
     description: "Admin panel for managing Growth11 blog posts and content",
   });
+
+  // Login form
+  const loginForm = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const handleLogin = async (data: LoginForm) => {
+    try {
+      const response = await apiRequest('/api/admin/login', 'POST', data);
+      
+      if (response.success) {
+        sessionStorage.setItem('admin_authenticated', 'true');
+        setIsAuthenticated(true);
+        toast({ title: "Login successful", description: "Welcome to admin panel" });
+        loginForm.reset();
+      } else {
+        toast({ title: "Login failed", description: "Invalid credentials", variant: "destructive" });
+      }
+    } catch (error) {
+      toast({ title: "Login failed", description: "Invalid credentials", variant: "destructive" });
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest('/api/admin/logout', 'POST', {});
+    } catch (error) {
+      // Continue logout even if API call fails
+    }
+    
+    sessionStorage.removeItem('admin_authenticated');
+    setIsAuthenticated(false);
+    setIsCreating(false);
+    setEditingPost(null);
+    toast({ title: "Logged out", description: "You have been logged out" });
+  };
+
+  // If not authenticated, show login form
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <main className="container mx-auto px-4 py-16">
+          <div className="max-w-md mx-auto">
+            <Card>
+              <CardHeader>
+                <CardTitle>Admin Login</CardTitle>
+                <CardDescription>Enter your credentials to access the admin panel</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Form {...loginForm}>
+                  <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
+                    <FormField
+                      control={loginForm.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter username" 
+                              {...field} 
+                              data-testid="input-admin-username"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={loginForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="password"
+                              placeholder="Enter password" 
+                              {...field} 
+                              data-testid="input-admin-password"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button 
+                      type="submit" 
+                      className="w-full"
+                      data-testid="button-admin-login"
+                    >
+                      Login
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   const form = useForm<InsertBlogPost>({
     resolver: zodResolver(insertBlogPostSchema),
@@ -140,7 +273,17 @@ export default function Admin() {
       <main>
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 relative">
+              <div className="absolute top-0 right-0">
+                <Button 
+                  variant="outline" 
+                  onClick={handleLogout}
+                  data-testid="button-admin-logout"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
               <Badge variant="outline" className="mb-4" data-testid="badge-admin-page">
                 Admin Panel
               </Badge>
