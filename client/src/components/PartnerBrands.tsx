@@ -117,9 +117,14 @@ export default function PartnerBrands() {
   return (
     <section className="py-24">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-16">
-          Brands we have partnered:
-        </h1>
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            Trusted by Leading Brands
+          </h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            We've partnered with industry leaders across various sectors to drive their digital growth and achieve remarkable results.
+          </p>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12">
           {partners.map((partner) => (
             <div
