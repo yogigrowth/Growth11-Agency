@@ -1,13 +1,35 @@
 User-agent: *
 Allow: /
-
-# XML Sitemap
-Sitemap: https://growth11.in/sitemap.xml
-
-# Allow search engines to crawl all content
 Crawl-delay: 1
 
-# Specific directives for common bots
+# Allow important resources for page rendering
+Allow: /assets/*
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.webp
+Allow: /*.svg
+Allow: /*.ico
+
+# Block AI training bots (2025 best practice)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+# Specific directives for search engines
 User-agent: Googlebot
 Allow: /
 
@@ -16,3 +38,15 @@ Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# XML Sitemap
+Sitemap: https://growth11.in/sitemap.xml
+
+# Host directive (optional)
+Host: https://growth11.in
