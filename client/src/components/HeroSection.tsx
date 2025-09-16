@@ -29,7 +29,7 @@ export default function HeroSection() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-slide-up" data-testid="text-hero-title">
-            Your Partner for Growth across 
+            Your Partner for Growth 
             <span className="text-gradient">SEO, Website, Apps & Social Media Marketing</span>
           </h1>
           
