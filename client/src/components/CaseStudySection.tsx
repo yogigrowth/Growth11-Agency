@@ -2,14 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, DollarSign, Target, Globe } from "lucide-react";
+import { Link } from "wouter";
 
 export default function CaseStudySection() {
-  const handleViewDetails = () => {
-    console.log('View case study details clicked');
-  };
-
-  const handleContactUs = () => {
-    console.log('Contact us clicked');
+  const handleViewCaseStudies = () => {
+    console.log('View case studies clicked');
   };
 
   return (
@@ -86,21 +83,25 @@ export default function CaseStudySection() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  onClick={handleViewDetails}
-                  data-testid="button-view-case-study"
-                  className="hover-elevate"
-                >
-                  View Full Case Study
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={handleContactUs}
-                  data-testid="button-contact-case-study"
-                  className="hover-elevate"
-                >
-                  Discuss Your Project
-                </Button>
+                <Link href="/case-study">
+                  <Button 
+                    onClick={handleViewCaseStudies}
+                    data-testid="button-view-case-study"
+                    className="hover-elevate"
+                  >
+                    View Case Studies
+                  </Button>
+                </Link>
+                <Link href="/case-study">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleViewCaseStudies}
+                    data-testid="button-contact-case-study"
+                    className="hover-elevate"
+                  >
+                    View Case Studies
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
