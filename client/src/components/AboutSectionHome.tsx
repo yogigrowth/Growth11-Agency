@@ -53,7 +53,7 @@ export default function AboutSectionHome() {
               <CardContent className="p-8">
                 <div className="flex flex-col items-center text-center mb-6">
                   <Avatar className="w-24 h-24 mb-4 ring-2 ring-primary/10">
-                    <AvatarImage src={founder.photo} alt={founder.name} />
+                    <AvatarImage src={founder.photo} alt={`${founder.name}, ${founder.title} - Co-founder of Growth11 digital marketing agency`} />
                     <AvatarFallback className="text-lg font-semibold">
                       {founder.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
