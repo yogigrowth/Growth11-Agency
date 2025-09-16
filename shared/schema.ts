@@ -34,7 +34,7 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
   updatedAt: true,
 }).extend({
   mediaType: z.enum(["image", "video"]),
-  mediaUrl: z.string().url().nullable().optional(),
+  mediaUrl: z.string().optional().nullable(),
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
