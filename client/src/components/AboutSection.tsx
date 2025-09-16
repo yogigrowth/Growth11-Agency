@@ -11,7 +11,7 @@ const teamMembers = [
     name: "Satyaprem",
     title: "Co-Founder & CEO, Growth11",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
-    description: "Led Nojoto's journey from bootstrap to a ₹100 Cr valuation, scaling it to 8M+ MAUs with strategic business development, growth marketing, and product innovation. With 12+ years of experience, Satyaprem brings expertise in digital marketing, business strategy, and AI-driven growth systems, having worked with top companies like TCS, Snapdeal, and Network18. A B.Tech Gold Medalist from MPUAT, Udaipur, Satyaprem blends technical expertise with entrepreneurial vision. At Growth11, he helps businesses unlock exponential growth through performance marketing, brand strategy, and data-driven campaigns, focusing on D2C brands, SaaS, and high-growth startups.",
+    description: "Led Nojoto's journey from bootstrap to a ₹100 Cr valuation, scaling it to 8M+ MAUs with strategic business development, growth marketing, and product innovation.\n\nWith 12+ years of experience, Satyaprem brings expertise in digital marketing, business strategy, and AI-driven growth systems, having worked with top companies like TCS, Snapdeal, and Network18.\n\nA B.Tech Gold Medalist from MPUAT, Udaipur, Satyaprem blends technical expertise with entrepreneurial vision.\n\nAt Growth11, he helps businesses unlock exponential growth through performance marketing, brand strategy, and data-driven campaigns, focusing on D2C brands, SaaS, and high-growth startups.",
     workExperience: 12,
     companies: [
       { name: "TCS", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/TCS-Logo.png" },
@@ -158,9 +158,13 @@ export default function AboutSection() {
                     </div>
                     
                     {/* Description */}
-                    <p className="text-muted-foreground" data-testid={`text-team-member-${index + 1}-description`}>
-                      {member.description}
-                    </p>
+                    <div className="text-muted-foreground space-y-3" data-testid={`text-team-member-${index + 1}-description`}>
+                      {member.description.split('\n\n').map((paragraph, paragraphIndex) => (
+                        <p key={paragraphIndex}>
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
                     
                     {/* Work Experience */}
                     <div className="flex items-center gap-2">
