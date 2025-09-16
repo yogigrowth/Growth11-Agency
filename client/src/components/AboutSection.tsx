@@ -9,8 +9,9 @@ import himanshuPhoto from "@assets/1755399159592_1757579526986.png";
 const teamMembers = [
   {
     name: "Satyaprem",
+    title: "Co-Founder & CEO, Growth11",
     linkedin: "https://www.linkedin.com/in/satyaprem-upadhyay-%F0%9F%9A%80-24844016/",
-    description: "Led Nojoto's growth from bootstrap to 100 Cr valuation with strategic business development and growth initiatives",
+    description: "Led Nojoto's journey from bootstrap to a ₹100 Cr valuation, scaling it to 8M+ MAUs with strategic business development, growth marketing, and product innovation. With 12+ years of experience, Satyaprem brings expertise in digital marketing, business strategy, and AI-driven growth systems, having worked with top companies like TCS, Snapdeal, and Network18. A B.Tech Gold Medalist from MPUAT, Udaipur, Satyaprem blends technical expertise with entrepreneurial vision. At Growth11, he helps businesses unlock exponential growth through performance marketing, brand strategy, and data-driven campaigns, focusing on D2C brands, SaaS, and high-growth startups.",
     workExperience: 12,
     companies: [
       { name: "TCS", logoSrc: "https://logos-world.net/wp-content/uploads/2020/09/TCS-Logo.png" },
@@ -149,6 +150,11 @@ export default function AboutSection() {
                       <h4 className="font-bold text-2xl mb-1" data-testid={`text-team-member-${index + 1}-name`}>
                         {member.name}
                       </h4>
+                      {member.title && (
+                        <p className="text-lg text-primary font-semibold mb-2" data-testid={`text-team-member-${index + 1}-title`}>
+                          {member.title}
+                        </p>
+                      )}
                     </div>
                     
                     {/* Description */}
