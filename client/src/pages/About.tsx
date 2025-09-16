@@ -3,6 +3,7 @@ import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { useSEO } from "@/hooks/useSEO";
+import { OrganizationSchema } from "@/components/SchemaMarkup";
 
 export default function About() {
   useSEO({
@@ -14,6 +15,7 @@ export default function About() {
 
   return (
     <div className="min-h-screen">
+      <OrganizationSchema />
       <Navigation />
       <main>
         <section className="py-24">
