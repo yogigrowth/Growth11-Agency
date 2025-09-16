@@ -30,7 +30,7 @@ export default function HeroSection() {
           
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mb-6 animate-slide-up" data-testid="text-hero-title">
             Your Partner for Growth 
-            <span className="text-gradient">SEO<br />Website, Apps & Social Media Marketing</span>
+            <span className="text-gradient">Website, Apps &<br />SEO, Social Media Marketing</span>
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl" data-testid="text-hero-description">
