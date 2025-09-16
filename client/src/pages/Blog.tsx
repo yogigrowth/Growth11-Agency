@@ -1,9 +1,10 @@
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Heart, MessageCircle, Bookmark } from "lucide-react";
+import { Calendar, Clock, Heart, MessageCircle } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 
 // Import generated blog images
@@ -43,50 +44,52 @@ function BlogSchema() {
   );
 }
 
-const blogPosts = [
+const initialBlogPosts = [
   {
+    id: "1",
     title: "How We Scaled Nojoto to 80L MAU: Lessons in Product-Led Growth",
     excerpt: "The complete story of how we built and scaled Nojoto from a bootstrap startup to 80 lakh monthly active users.",
     category: "Growth Strategy",
     date: "Dec 15, 2024",
     readTime: "8 min read",
     image: growthWorkspaceImg,
-    likes: 156,
-    comments: 23
+    likes: 127
   },
   {
+    id: "2",
     title: "Performance Marketing for D2C Brands: A Complete Guide",
     excerpt: "Learn how to create high-converting campaigns that deliver 4X ROAS and drive sustainable growth.",
     category: "Marketing",
     date: "Dec 10, 2024", 
     readTime: "12 min read",
     image: performanceMarketingImg,
-    likes: 98,
-    comments: 15
+    likes: 143
   },
   {
+    id: "3",
     title: "Building Conversion Funnels That Actually Convert",
     excerpt: "Practical strategies for optimizing your e-commerce funnel to maximize revenue and retention.",
     category: "Conversion",
     date: "Dec 5, 2024",
     readTime: "10 min read",
     image: conversionFunnelImg,
-    likes: 132,
-    comments: 28
+    likes: 118
   },
   {
+    id: "4",
     title: "The Future of AI in Digital Marketing",
     excerpt: "How AI-powered tools are revolutionizing content creation, targeting, and campaign optimization.",
     category: "Technology",
     date: "Nov 28, 2024",
     readTime: "6 min read",
     image: aiMarketingImg,
-    likes: 204,
-    comments: 41
+    likes: 135
   }
 ];
 
 export default function Blog() {
+  const [blogPosts, setBlogPosts] = useState(initialBlogPosts);
+
   useSEO({
     title: "Digital Marketing Blog - Growth11 Ajmer | Marketing Insights & Strategies for Rajasthan",
     description: "Growth11 Ajmer blog - Digital marketing insights, growth strategies, and business tips for entrepreneurs in Ajmer, Rajasthan. Learn from expert marketers.",
@@ -98,8 +101,14 @@ export default function Blog() {
     console.log(`Read story clicked for: ${postTitle}`);
   };
 
-  const handleLike = (postTitle: string) => {
-    console.log(`Liked post: ${postTitle}`);
+  const handleLike = (postId: string) => {
+    setBlogPosts(prevPosts => 
+      prevPosts.map(post => 
+        post.id === postId 
+          ? { ...post, likes: post.likes + 1 }
+          : post
+      )
+    );
   };
 
   return (
@@ -152,18 +161,15 @@ export default function Blog() {
                     {/* Content Below Image */}
                     <div className="p-4">
                       {/* Instagram-style interaction icons */}
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-4">
-                          <button 
-                            onClick={() => handleLike(post.title)}
-                            className="hover:scale-110 transition-transform"
-                            data-testid={`button-like-${index}`}
-                          >
-                            <Heart className="h-5 w-5 hover:text-red-500 transition-colors" />
-                          </button>
-                          <MessageCircle className="h-5 w-5 text-muted-foreground" />
-                        </div>
-                        <Bookmark className="h-5 w-5 text-muted-foreground" />
+                      <div className="flex items-center gap-4 mb-3">
+                        <button 
+                          onClick={() => handleLike(post.id)}
+                          className="hover:scale-110 transition-transform"
+                          data-testid={`button-like-${index}`}
+                        >
+                          <Heart className="h-5 w-5 hover:text-red-500 transition-colors" />
+                        </button>
+                        <MessageCircle className="h-5 w-5 text-muted-foreground" />
                       </div>
 
                       {/* Likes and engagement */}
@@ -201,11 +207,6 @@ export default function Blog() {
                       >
                         Read Story
                       </Button>
-
-                      {/* Comments count */}
-                      <div className="text-xs text-muted-foreground mt-2" data-testid={`text-comments-${index}`}>
-                        View all {post.comments} comments
-                      </div>
                     </div>
                   </div>
                 ))}
