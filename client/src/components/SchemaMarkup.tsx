@@ -60,8 +60,8 @@ export function LocalBusinessSchema({
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "26.4499",
-      "longitude": "74.6399"
+      "latitude": 26.4499,
+      "longitude": 74.6399
     },
     "areaServed": [
       {
@@ -77,10 +77,10 @@ export function LocalBusinessSchema({
       "@type": "GeoCircle",
       "geoMidpoint": {
         "@type": "GeoCoordinates",
-        "latitude": "26.4499",
-        "longitude": "74.6399"
+        "latitude": 26.4499,
+        "longitude": 74.6399
       },
-      "geoRadius": "50000"
+      "geoRadius": 50000
     },
     "foundingDate": foundingDate,
     "priceRange": priceRange,
@@ -198,7 +198,7 @@ export function ArticleSchema({
 }: ArticleSchemaProps) {
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "CaseStudy",
     "headline": headline,
     "description": description,
     "url": url,
@@ -272,7 +272,11 @@ export function OrganizationSchema() {
         "jobTitle": "Co-Founder"
       }
     ],
-    "numberOfEmployees": "10-50",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "minValue": 10,
+      "maxValue": 50
+    },
     "foundingLocation": {
       "@type": "Place",
       "address": {
