@@ -6,6 +6,37 @@ import { Button } from "@/components/ui/button";
 import { Calendar, Clock, ArrowRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
 
+// Blog Schema Markup Component
+function BlogSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Growth11 Digital Marketing Blog",
+    "description": "Digital marketing insights, growth strategies, and business tips from Growth11 Ajmer team",
+    "url": "https://growth11.in/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Growth11",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://growth11.in/logo.png"
+      }
+    },
+    "inLanguage": "en-IN",
+    "about": {
+      "@type": "Thing",
+      "name": "Digital Marketing"
+    }
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 // todo: remove mock functionality - replace with real blog posts
 const blogPosts = [
   {
@@ -59,6 +90,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen">
+      <BlogSchema />
       <Navigation />
       <main>
         <section className="py-24">
