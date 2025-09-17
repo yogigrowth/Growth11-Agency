@@ -21,99 +21,96 @@ const partners = [
   {
     name: "Stage",
     id: "stage",
-    logoSrc: stageLogoPath
+    logoSrc: stageLogoPath,
+    website: "https://stage.in/"
   },
   {
     name: "Tattva Wellness", 
     id: "tattva-wellness",
-    logoSrc: tattvaLogoPath
+    logoSrc: tattvaLogoPath,
+    website: "https://www.tattvawellness.com/"
   },
   {
     name: "Maruti Suzuki",
     id: "maruti-suzuki", 
-    logoSrc: marutiSuzukiLogoPath
+    logoSrc: marutiSuzukiLogoPath,
+    website: "https://www.marutisuzuki.com/"
   },
   {
     name: "District by Zomato",
     id: "district-zomato",
-    logoSrc: districtLogoPath
+    logoSrc: districtLogoPath,
+    website: "https://www.zomato.com/"
   },
   {
     name: "BookMyShow",
     id: "bookmyshow",
-    logoSrc: bookmyshowLogoPath
+    logoSrc: bookmyshowLogoPath,
+    website: "https://in.bookmyshow.com/"
   },
   {
     name: "Lavella Wellness",
     id: "lavella-wellness", 
-    logoSrc: lavellaLogoPath
+    logoSrc: lavellaLogoPath,
+    website: "https://lavellagroup.com/"
   },
   {
     name: "Nurture Farm",
     id: "nurture-farm",
-    logoSrc: nurtureFarmLogoPath
+    logoSrc: nurtureFarmLogoPath,
+    website: "https://nurturefarm.in/"
   },
   {
     name: "Greenfortune",
     id: "greenfortune",
-    logoSrc: greenfortuneLogoPath
+    logoSrc: greenfortuneLogoPath,
+    website: "https://greenfortune.in/"
   },
   {
     name: "IndiaMART",
     id: "indiamart",
-    logoSrc: indiamartLogoPath
+    logoSrc: indiamartLogoPath,
+    website: "https://www.indiamart.com/"
   },
   {
     name: "Skype",
     id: "skype",
-    logoSrc: skypeLogoPath
+    logoSrc: skypeLogoPath,
+    website: "https://www.skype.com/"
   },
   {
     name: "NEXA",
     id: "nexa",
-    logoSrc: nexaLogoPath
+    logoSrc: nexaLogoPath,
+    website: "https://www.nexaexperience.com/"
   },
   {
     name: "HP",
     id: "hp",
-    logoSrc: hpLogoPath
+    logoSrc: hpLogoPath,
+    website: "https://www.hp.com/"
   },
   {
     name: "Microsoft",
     id: "microsoft",
-    logoSrc: microsoftLogoPath
+    logoSrc: microsoftLogoPath,
+    website: "https://www.microsoft.com/"
   },
   {
     name: "With",
     id: "with-women-hood",
-    logoSrc: withLogoPath
+    logoSrc: withLogoPath,
+    website: "https://womeninthehood.in/"
   },
   {
     name: "Akiso",
     id: "akiso",
-    logoSrc: akisoLogoPath
+    logoSrc: akisoLogoPath,
+    website: "https://akiso.in/"
   }
 ];
 
 export default function PartnerBrands() {
-  const handlePartnerClick = (partner: typeof partners[0]) => {
-    console.log(`${partner.name} clicked`);
-    // Add specific partner website URLs if needed
-    if (partner.id === 'with-women-hood') {
-      window.open('https://womeninthehood.in/', '_blank');
-    } else if (partner.id === 'bookmyshow') {
-      window.open('https://in.bookmyshow.com/', '_blank');
-    } else if (partner.id === 'skype') {
-      window.open('https://www.skype.com/', '_blank');
-    } else if (partner.id === 'microsoft') {
-      window.open('https://www.microsoft.com/', '_blank');
-    } else if (partner.id === 'hp') {
-      window.open('https://www.hp.com/', '_blank');
-    } else if (partner.id === 'indiamart') {
-      window.open('https://www.indiamart.com/', '_blank');
-    }
-  };
-
   return (
     <section className="py-24">
       <div className="container mx-auto px-4">
@@ -127,21 +124,23 @@ export default function PartnerBrands() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12">
           {partners.map((partner) => (
-            <div
+            <a
               key={partner.id}
-              className="group cursor-pointer transition-all duration-300 hover:scale-105"
-              onClick={() => handlePartnerClick(partner)}
-              data-testid={`logo-partner-${partner.id}`}
+              href={partner.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group transition-all duration-300 hover:scale-105"
+              data-testid={`link-client-${partner.id}`}
             >
               <div className="flex items-center justify-center h-32 md:h-40">
                 <LazyImage 
                   src={partner.logoSrc}
-                  alt={`${partner.name} - Trusted client of Growth11 digital marketing agency`}
+                  alt={`${partner.name} logo`}
                   className="max-w-full max-h-full object-contain transition-transform duration-300"
-                  data-testid={`logo-partner-${partner.id}`}
+                  data-testid={`img-client-${partner.id}`}
                 />
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
