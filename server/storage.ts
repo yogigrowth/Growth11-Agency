@@ -30,6 +30,83 @@ export class MemStorage implements IStorage {
     this.users = new Map();
     this.blogPosts = new Map();
     this.comments = new Map();
+    
+    // Add seed blog posts to match frontend expectations
+    this.initializeSeedData();
+  }
+  
+  private initializeSeedData() {
+    const seedPosts: BlogPost[] = [
+      {
+        id: "1",
+        title: "How We Scaled Nojoto to 80L MAU: Lessons in Product-Led Growth",
+        content: "Product-led growth has become the cornerstone of successful scaling strategies. In our journey with Nojoto, we discovered that the key to reaching 80 lakh Monthly Active Users lies in creating a product that sells itself through exceptional user experience and organic growth mechanics.",
+        excerpt: "Learn how we scaled Nojoto to 80 lakh MAU through product-led growth strategies and user-centric design principles.",
+        category: "Growth Strategy",
+        author: "Growth11 Team",
+        slug: "nojoto-scaling-product-led-growth",
+        published: true,
+        mediaType: "image" as const,
+        mediaUrl: null,
+        likes: 127,
+        comments: 0,
+        createdAt: new Date("2024-12-15"),
+        updatedAt: new Date("2024-12-15")
+      },
+      {
+        id: "2",
+        title: "Performance Marketing for D2C Brands: A Complete Guide",
+        content: "Performance marketing has become the backbone of successful D2C brands. In our experience helping businesses scale at Growth11 Ajmer, we've seen how the right performance marketing strategy can transform a small business into a market leader.",
+        excerpt: "A comprehensive guide to performance marketing strategies that help D2C brands achieve measurable growth and ROI.",
+        category: "Marketing",
+        author: "Growth11 Team",
+        slug: "performance-marketing-d2c-brands-guide",
+        published: true,
+        mediaType: "image" as const,
+        mediaUrl: null,
+        likes: 143,
+        comments: 0,
+        createdAt: new Date("2024-12-10"),
+        updatedAt: new Date("2024-12-10")
+      },
+      {
+        id: "3",
+        title: "Building Conversion Funnels That Actually Convert",
+        content: "Conversion funnels are the backbone of any successful digital marketing strategy. At Growth11, we've helped dozens of companies optimize their funnels to achieve conversion rates that seemed impossible before our intervention.",
+        excerpt: "Learn the proven strategies for building high-converting funnels that turn visitors into customers.",
+        category: "Conversion",
+        author: "Growth11 Team",
+        slug: "building-high-converting-funnels",
+        published: true,
+        mediaType: "image" as const,
+        mediaUrl: null,
+        likes: 118,
+        comments: 0,
+        createdAt: new Date("2024-12-05"),
+        updatedAt: new Date("2024-12-05")
+      },
+      {
+        id: "4",
+        title: "The Future of AI in Digital Marketing",
+        content: "Artificial Intelligence is revolutionizing digital marketing in ways we couldn't imagine just a few years ago. From personalized content creation to predictive analytics, AI is helping businesses connect with their customers more effectively than ever before.",
+        excerpt: "Explore how AI is transforming digital marketing and what it means for the future of customer engagement.",
+        category: "Technology",
+        author: "Growth11 Team",
+        slug: "future-ai-digital-marketing",
+        published: true,
+        mediaType: "image" as const,
+        mediaUrl: null,
+        likes: 135,
+        comments: 0,
+        createdAt: new Date("2024-11-28"),
+        updatedAt: new Date("2024-11-28")
+      }
+    ];
+    
+    // Add seed posts to the storage
+    seedPosts.forEach(post => {
+      this.blogPosts.set(post.id, post);
+    });
   }
 
   async getUser(id: string): Promise<User | undefined> {
