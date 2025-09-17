@@ -46,7 +46,7 @@ export default function Admin() {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        await apiRequest('GET', '/api/admin/status', {});
+        await apiRequest('GET', '/api/admin/status');
         setIsAuthenticated(true);
         sessionStorage.setItem('admin_authenticated', 'true');
       } catch (error) {
@@ -92,7 +92,7 @@ export default function Admin() {
 
   const handleLogout = async () => {
     try {
-      await apiRequest('POST', '/api/admin/logout', {});
+      await apiRequest('POST', '/api/admin/logout');
     } catch (error) {
       // Continue logout even if API call fails
     }
