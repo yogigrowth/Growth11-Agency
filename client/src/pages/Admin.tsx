@@ -262,7 +262,7 @@ export default function Admin() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm("Are you sure you want to delete this blog post?")) {
+    if (confirm("Are you sure you want to delete this diary entry?")) {
       deletePostMutation.mutate(id);
     }
   };
@@ -288,10 +288,10 @@ export default function Admin() {
                 Admin Panel
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-admin-title">
-                Blog Management
+                Our Diary Management
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-admin-description">
-                Create, edit, and manage your Growth11 blog posts
+                Create, edit, and manage your Growth11 diary entries
               </p>
             </div>
 
@@ -301,10 +301,10 @@ export default function Admin() {
                 <Card className="mb-8">
                   <CardHeader>
                     <CardTitle data-testid="text-form-title">
-                      {editingPost ? "Edit Blog Post" : "Create New Blog Post"}
+                      {editingPost ? "Edit Diary Entry" : "Create New Diary Entry"}
                     </CardTitle>
                     <CardDescription>
-                      {editingPost ? "Update your blog post details" : "Add a new blog post to your website"}
+                      {editingPost ? "Update your diary entry details" : "Add a new diary entry to your website"}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -318,7 +318,7 @@ export default function Admin() {
                               <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                  <Input placeholder="Blog post title" {...field} data-testid="input-title" />
+                                  <Input placeholder="Diary entry title" {...field} data-testid="input-title" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -381,7 +381,7 @@ export default function Admin() {
                               <FormLabel>Content</FormLabel>
                               <FormControl>
                                 <Textarea 
-                                  placeholder="Full blog post content" 
+                                  placeholder="Full diary entry content" 
                                   className="min-h-[300px]"
                                   {...field} 
                                   data-testid="textarea-content"
@@ -465,24 +465,24 @@ export default function Admin() {
                     data-testid="button-create-new"
                   >
                     <Plus className="mr-2 h-4 w-4" />
-                    Create New Blog Post
+                    Create New Diary Entry
                   </Button>
                 </div>
               )}
 
               {/* Blog Posts List */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold" data-testid="text-posts-list">Existing Blog Posts</h2>
+                <h2 className="text-2xl font-bold" data-testid="text-posts-list">Existing Diary Entries</h2>
                 
                 {isLoading ? (
                   <div className="text-center py-8" data-testid="text-loading">
-                    Loading blog posts...
+                    Loading diary entries...
                   </div>
                 ) : posts.length === 0 ? (
                   <Card>
                     <CardContent className="p-8 text-center">
                       <p className="text-muted-foreground" data-testid="text-no-posts">
-                        No blog posts yet. Create your first blog post to get started!
+                        No diary entries yet. Create your first diary entry to get started!
                       </p>
                     </CardContent>
                   </Card>

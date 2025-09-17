@@ -13,14 +13,14 @@ import performanceMarketingImg from "@assets/generated_images/Performance_market
 import conversionFunnelImg from "@assets/generated_images/Conversion_funnel_optimization_charts_a2d062d6.png";
 import aiMarketingImg from "@assets/generated_images/AI_marketing_tools_interface_49f50fcd.png";
 
-// Blog Schema Markup Component
-function BlogSchema() {
+// Our Diary Schema Markup Component
+function OurDiarySchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Growth11 Digital Marketing Blog",
-    "description": "Digital marketing insights, growth strategies, and business tips from Growth11 Ajmer team",
-    "url": "https://growth11.in/blog",
+    "name": "Growth11 Our Diary",
+    "description": "Growth stories, insights and behind-the-scenes moments from Growth11 Ajmer team",
+    "url": "https://growth11.in/our-diary",
     "publisher": {
       "@type": "Organization",
       "name": "Growth11",
@@ -102,10 +102,10 @@ export default function Blog() {
   const [blogPosts, setBlogPosts] = useState<PostPreview[]>(initialBlogPosts);
 
   useSEO({
-    title: "Digital Marketing Blog - Growth11 Ajmer | Marketing Insights & Strategies for Rajasthan",
-    description: "Growth11 Ajmer blog - Digital marketing insights, growth strategies, and business tips for entrepreneurs in Ajmer, Rajasthan. Learn from expert marketers.",
-    ogTitle: "Digital Marketing Blog - Growth11 Ajmer, Rajasthan",
-    ogDescription: "Expert digital marketing insights and growth strategies from Growth11 Ajmer. Business tips and lessons for entrepreneurs in Rajasthan."
+    title: "Our Diary - Growth11 Ajmer | Growth Stories & Insights from Rajasthan",
+    description: "Growth11 Ajmer diary - Growth stories, insights and behind-the-scenes moments from our team in Ajmer, Rajasthan. Real lessons from real growth.",
+    ogTitle: "Our Diary - Growth11 Ajmer, Rajasthan",
+    ogDescription: "Growth stories and insights from Growth11 Ajmer. Behind-the-scenes moments and lessons from entrepreneurs in Rajasthan."
   });
 
   const handleReadStory = (postTitle: string) => {
@@ -124,7 +124,7 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen">
-      <BlogSchema />
+      <OurDiarySchema />
       <Navigation />
       <main>
         <section className="py-12">
