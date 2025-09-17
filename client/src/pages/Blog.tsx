@@ -135,7 +135,7 @@ export default function Blog() {
                 Blog: Digital World
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-blog-page-title">
-                Visual Stories & Insights
+                News about Digital World
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto" data-testid="text-blog-page-intro">
                 Behind-the-scenes moments and growth lessons from Growth11 Ajmer
