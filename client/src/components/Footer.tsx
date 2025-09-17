@@ -11,7 +11,7 @@ const footerLinks = {
     { label: "Call: 70144 31277", href: "/contact" }
   ],
   services: [
-    { label: "Website Building", href: "/services#tech" },
+    { label: "Website Building", href: "/website-9999" },
     { label: "SEO", href: "/services#tech" },
     { label: "Social Media & PR", href: "/services#marketing" },
     { label: "Influencer Marketing", href: "/services#marketing" },
