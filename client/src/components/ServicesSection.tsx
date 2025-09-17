@@ -83,6 +83,10 @@ const services = [
 export default function ServicesSection() {
   const handleServiceClick = (serviceName: string) => {
     console.log(`${serviceName} service clicked`);
+    
+    if (serviceName === "Website Building") {
+      window.location.href = "/website-9999";
+    }
   };
 
   return (
