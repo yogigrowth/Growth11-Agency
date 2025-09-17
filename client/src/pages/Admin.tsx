@@ -193,7 +193,7 @@ export default function Admin() {
 
   // Create blog post mutation
   const createPostMutation = useMutation({
-    mutationFn: (data: InsertBlogPost) => apiRequest("/api/blog-posts", "POST", data),
+    mutationFn: (data: InsertBlogPost) => apiRequest("POST", "/api/blog-posts", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
       toast({ title: "Success", description: "Blog post created successfully!" });
@@ -208,7 +208,7 @@ export default function Admin() {
   // Update blog post mutation
   const updatePostMutation = useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<InsertBlogPost> }) => 
-      apiRequest(`/api/blog-posts/${id}`, "PATCH", data),
+      apiRequest("PATCH", `/api/blog-posts/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
       toast({ title: "Success", description: "Blog post updated successfully!" });
@@ -222,7 +222,7 @@ export default function Admin() {
 
   // Delete blog post mutation
   const deletePostMutation = useMutation({
-    mutationFn: (id: string) => apiRequest(`/api/blog-posts/${id}`, "DELETE"),
+    mutationFn: (id: string) => apiRequest("DELETE", `/api/blog-posts/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
       toast({ title: "Success", description: "Blog post deleted successfully!" });
