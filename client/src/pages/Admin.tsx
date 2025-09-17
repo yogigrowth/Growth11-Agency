@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -75,9 +75,9 @@ export default function Admin() {
 
   const handleLogin = async (data: LoginForm) => {
     try {
-      const response = await apiRequest('/api/admin/login', 'POST', data);
+      const response = await apiRequest('/api/admin/login', 'POST', data) as any;
       
-      if (response.success) {
+      if (response?.success) {
         sessionStorage.setItem('admin_authenticated', 'true');
         setIsAuthenticated(true);
         toast({ title: "Login successful", description: "Welcome to admin panel" });
@@ -247,7 +247,7 @@ export default function Admin() {
       title: post.title,
       content: post.content,
       category: post.category,
-      mediaType: post.mediaType || "image",
+      mediaType: (post.mediaType as "image" | "video") || "image",
       mediaUrl: post.mediaUrl || "",
       published: post.published || false,
       likes: post.likes || 0,
