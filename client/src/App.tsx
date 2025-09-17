@@ -16,6 +16,12 @@ import Admin from "@/pages/Admin";
 import Contact from "@/pages/Contact";
 import WebsiteLanding from "@/pages/WebsiteLanding";
 import AIVideosLanding from "@/pages/AIVideosLanding";
+import SEOLanding from "@/pages/SEOLanding";
+import SocialMediaPRLanding from "@/pages/SocialMediaPRLanding";
+import InfluencerMarketingLanding from "@/pages/InfluencerMarketingLanding";
+import PerformanceMarketingLanding from "@/pages/PerformanceMarketingLanding";
+import ConversionRetentionLanding from "@/pages/ConversionRetentionLanding";
+import ProductGrowthLanding from "@/pages/ProductGrowthLanding";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
 import BlogDetail from "@/pages/BlogDetail";
@@ -36,6 +42,12 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/website-9999" component={WebsiteLanding} />
       <Route path="/ai-videos-10000" component={AIVideosLanding} />
+      <Route path="/seo-landing" component={SEOLanding} />
+      <Route path="/social-media-pr-landing" component={SocialMediaPRLanding} />
+      <Route path="/influencer-marketing-landing" component={InfluencerMarketingLanding} />
+      <Route path="/performance-marketing-landing" component={PerformanceMarketingLanding} />
+      <Route path="/conversion-retention-landing" component={ConversionRetentionLanding} />
+      <Route path="/product-growth-landing" component={ProductGrowthLanding} />
       <Route path="/privacy" component={PrivacyPolicy} />
       <Route path="/terms" component={TermsOfService} />
       {/* Fallback to 404 */}
