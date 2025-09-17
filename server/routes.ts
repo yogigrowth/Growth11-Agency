@@ -7,6 +7,87 @@ import fs from "fs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
+// Dynamic sitemap generation function
+async function generateSitemap(): Promise<string> {
+  // Use configurable base URL with fallback
+  const baseUrl = process.env.BASE_URL || "https://growth11.in";
+  
+  // Fixed date for static pages (when they were last updated)
+  const staticPageDate = "2025-09-17";
+  
+  // Current date for dynamic content only
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+  
+  // Static pages with their priorities and change frequencies
+  const staticPages = [
+    { url: "/", lastmod: staticPageDate, changefreq: "weekly", priority: "1.0" },
+    { url: "/about", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/services", lastmod: staticPageDate, changefreq: "weekly", priority: "0.9" },
+    { url: "/partners", lastmod: staticPageDate, changefreq: "monthly", priority: "0.7" },
+    { url: "/case-study", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/contact", lastmod: staticPageDate, changefreq: "monthly", priority: "0.6" },
+    { url: "/career", lastmod: staticPageDate, changefreq: "monthly", priority: "0.5" },
+    { url: "/our-diary", lastmod: staticPageDate, changefreq: "weekly", priority: "0.6" },
+    { url: "/privacy", lastmod: staticPageDate, changefreq: "yearly", priority: "0.3" },
+    { url: "/terms", lastmod: staticPageDate, changefreq: "yearly", priority: "0.3" }
+  ];
+  
+  // Service landing pages with higher priority
+  const serviceLandingPages = [
+    { url: "/website-9999", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/ai-videos-10000", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/seo-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/social-media-pr-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/influencer-marketing-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/performance-marketing-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/conversion-retention-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
+    { url: "/product-growth-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" }
+  ];
+  
+  // Get all published blog posts
+  const allBlogPosts = await storage.getAllBlogPosts();
+  const publishedBlogPosts = allBlogPosts.filter(post => post.published);
+  
+  // Create blog post URLs
+  const blogPostPages = publishedBlogPosts.map(post => ({
+    url: `/our-diary/${post.id}`,
+    lastmod: (post.updatedAt || post.createdAt || new Date()).toISOString().split('T')[0],
+    changefreq: "weekly",
+    priority: "0.7"
+  }));
+  
+  // Combine all pages
+  const allPages = [...staticPages, ...serviceLandingPages, ...blogPostPages];
+  
+  // Generate XML sitemap
+  let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+`;
+  
+  // Add each page to the sitemap
+  allPages.forEach(page => {
+    sitemap += `  <url>
+`;
+    sitemap += `    <loc>${baseUrl}${page.url}</loc>
+`;
+    sitemap += `    <lastmod>${page.lastmod}</lastmod>
+`;
+    sitemap += `    <changefreq>${page.changefreq}</changefreq>
+`;
+    sitemap += `    <priority>${page.priority}</priority>
+`;
+    sitemap += `  </url>
+`;
+  });
+  
+  sitemap += `</urlset>`;
+  
+  return sitemap;
+}
+
 // Authentication middleware
 function requireAuth(req: Request, res: Response, next: NextFunction) {
   const token = req.cookies.adminToken;
@@ -32,15 +113,15 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Add cookie parser middleware
   app.use(cookieParser());
-  // Serve sitemap.xml from public directory
-  app.get("/sitemap.xml", (req, res) => {
-    const sitemapPath = path.resolve(import.meta.dirname, "..", "public", "sitemap.xml");
-    
-    if (fs.existsSync(sitemapPath)) {
+  // Generate dynamic sitemap.xml
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      const sitemap = await generateSitemap();
       res.set('Content-Type', 'application/xml');
-      res.sendFile(sitemapPath);
-    } else {
-      res.status(404).send('Sitemap not found');
+      res.send(sitemap);
+    } catch (error) {
+      console.error("Error generating sitemap:", error);
+      res.status(500).send('Error generating sitemap');
     }
   });
 
