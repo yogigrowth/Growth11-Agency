@@ -18,6 +18,7 @@ import WebsiteLanding from "@/pages/WebsiteLanding";
 import AIVideosLanding from "@/pages/AIVideosLanding";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import TermsOfService from "@/pages/TermsOfService";
+import BlogDetail from "@/pages/BlogDetail";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/case-study" component={CaseStudy} />
       <Route path="/career" component={Career} />
       <Route path="/our-diary" component={Blog} />
+      <Route path="/our-diary/:id" component={BlogDetail} />
       <Route path="/blog" component={() => { window.location.replace('/our-diary'); return null; }} />
       <Route path="/admin" component={Admin} />
       <Route path="/contact" component={Contact} />

@@ -24,11 +24,11 @@ const teamMembers = [
     description: "Led Nojoto's journey from bootstrap to a ₹100 Cr valuation, scaling it to 8M+ MAUs with strategic business development, growth marketing, and product innovation.\n\nWith 12+ years of experience, Satyaprem brings expertise in digital marketing, business strategy, and AI-driven growth systems, having worked with top companies like TCS, Snapdeal, and Network18.\n\nA B.Tech Gold Medalist from MPUAT, Udaipur, Satyaprem blends technical expertise with entrepreneurial vision.\n\nAt Growth11, he helps businesses unlock exponential growth through performance marketing, brand strategy, and data-driven campaigns, focusing on D2C brands, SaaS, and high-growth startups.",
     workExperience: 12,
     companies: [
-      { name: "TCS", logoSrc: tcsLogo },
-      { name: "Snapdeal", logoSrc: snapdealLogo },
-      { name: "Network18", logoSrc: network18Logo },
-      { name: "Nojoto", logoSrc: nojotoLogo },
-      { name: "MICA", logoSrc: micaLogo }
+      { name: "TCS", logoSrc: tcsLogo, website: "https://www.tcs.com" },
+      { name: "Snapdeal", logoSrc: snapdealLogo, website: "https://www.snapdeal.com" },
+      { name: "Network18", logoSrc: network18Logo, website: "https://www.network18.com" },
+      { name: "Nojoto", logoSrc: nojotoLogo, website: "https://www.nojoto.com" },
+      { name: "MICA", logoSrc: micaLogo, website: "https://www.micaahmedabad.edu.in" }
     ],
     education: "MBA, MICA Ahmedabad | B.Tech, MPUAT, Udaipur (Gold Medalist)",
     photo: satyapremPhoto
@@ -40,10 +40,10 @@ const teamMembers = [
     description: "A marketing leader with 10+ years of experience in digital growth, user acquisition, and branding, Himanshu co-founded Nojoto in 2017 and has since been instrumental in its rise as one of India's premier storytelling platforms. He leads all marketing, user growth, community building, and brand strategy efforts, having built scalable campaigns across performance ads, content, social, and product-led marketing.\n\nBefore Nojoto, Himanshu sharpened his skills at companies like Grapes Digital (digital account planning), Autumn Worldwide (social media marketing), and Internshala. His early exposure includes work in community building and even radio, which contributes to his deep understanding of audience, content, and engagement.\n\nHe holds a B.Tech in Electrical & Electronics Engineering from Bhagwant University. Passionate about creative storytelling & data-driven strategies, Himanshu believes in empowering creators, fostering authentic communities, and scaling brands through measurable growth.",
     workExperience: 10,
     companies: [
-      { name: "Grapes Digital", logoSrc: grapesDigitalLogo },
-      { name: "Autumn Worldwide", logoSrc: autumnWorldwideLogo },
-      { name: "Internshala", logoSrc: internshalaLogo },
-      { name: "Nojoto", logoSrc: himanshuNojotoLogo }
+      { name: "Grapes Digital", logoSrc: grapesDigitalLogo, website: "https://grapesdigital.com" },
+      { name: "Autumn Worldwide", logoSrc: autumnWorldwideLogo, website: "https://autumnworldwide.com" },
+      { name: "Internshala", logoSrc: internshalaLogo, website: "https://internshala.com" },
+      { name: "Nojoto", logoSrc: himanshuNojotoLogo, website: "https://www.nojoto.com" }
     ],
     education: "B.Tech in Electrical & Electronics Engineering, Bhagwant University",
     photo: himanshuPhoto
@@ -54,17 +54,34 @@ const teamMembers = [
     description: "Spearheading Growth11's expansion initiatives and operational excellence with focus on client success and revenue growth",
     workExperience: 8,
     companies: [
-      { name: "McKinsey", logoSrc: "https://logos-world.net/wp-content/uploads/2021/08/McKinsey-Logo.png" },
-      { name: "Accenture", logoSrc: "https://logos-world.net/wp-content/uploads/2020/06/Accenture-Logo.png" },
-      { name: "Deloitte", logoSrc: "https://logos-world.net/wp-content/uploads/2021/02/Deloitte-Logo.png" },
-      { name: "Growth11", logoSrc: "https://via.placeholder.com/120x40/EC4899/FFFFFF?text=Growth11" }
+      { name: "McKinsey", logoSrc: "https://logos-world.net/wp-content/uploads/2021/08/McKinsey-Logo.png", website: "https://www.mckinsey.com" },
+      { name: "Accenture", logoSrc: "https://logos-world.net/wp-content/uploads/2020/06/Accenture-Logo.png", website: "https://www.accenture.com" },
+      { name: "Deloitte", logoSrc: "https://logos-world.net/wp-content/uploads/2021/02/Deloitte-Logo.png", website: "https://www2.deloitte.com" },
+      { name: "Growth11", logoSrc: "https://via.placeholder.com/120x40/EC4899/FFFFFF?text=Growth11", website: "https://growth11.in" }
     ],
     education: "MBA Strategy & Operations, IIM Ahmedabad",
     photo: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
   }
 ];
 
+// Calculate company test IDs ahead of time
+const getCompanyTestIds = () => {
+  let globalIndex = 0;
+  const testIdMap = new Map();
+  
+  teamMembers.forEach((member) => {
+    member.companies.forEach((company) => {
+      globalIndex++;
+      testIdMap.set(`${member.name}-${company.name}`, globalIndex);
+    });
+  });
+  
+  return testIdMap;
+};
+
 export default function AboutSection() {
+  const companyTestIds = getCompanyTestIds();
+
   const handleLinkedInClick = (linkedin: string, memberName: string) => {
     console.log(`${memberName} LinkedIn clicked`);
     window.open(linkedin, '_blank');
@@ -72,6 +89,16 @@ export default function AboutSection() {
 
   const handleLearnMore = () => {
     console.log('Learn more about our journey clicked');
+  };
+
+  const handleCompanyLogoError = (e: React.SyntheticEvent<HTMLImageElement>, company: { name: string }, testId: number) => {
+    const target = e.target as HTMLImageElement;
+    const linkElement = target.parentNode as HTMLAnchorElement;
+    const badge = document.createElement('span');
+    badge.className = 'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80';
+    badge.textContent = company.name;
+    badge.setAttribute('data-testid', `badge-company-${testId}`);
+    linkElement.replaceChild(badge, target);
   };
 
   return (
@@ -201,35 +228,46 @@ export default function AboutSection() {
                         <span className="text-sm text-muted-foreground">Companies</span>
                       </div>
                       <div className="flex flex-wrap gap-3 items-center">
-                        {member.companies.map((company, companyIndex) => (
-                          <div key={company.name} className="flex items-center">
-                            {company.logoSrc ? (
-                              <LazyImage
-                                src={company.logoSrc}
-                                alt={`${company.name} logo`}
-                                className="h-9 w-auto object-contain"
-                                data-testid={`img-team-member-${index + 1}-company-logo-${companyIndex + 1}`}
-                                onError={(e) => {
-                                  // Fallback to badge if image fails to load
-                                  const target = e.target as HTMLImageElement;
-                                  const badge = document.createElement('div');
-                                  badge.className = 'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80';
-                                  badge.textContent = company.name;
-                                  badge.setAttribute('data-testid', `badge-team-member-${index + 1}-company-${companyIndex + 1}`);
-                                  target.parentNode?.replaceChild(badge, target);
-                                }}
-                              />
-                            ) : (
-                              <Badge 
-                                variant="secondary" 
-                                className="text-xs"
-                                data-testid={`badge-team-member-${index + 1}-company-${companyIndex + 1}`}
-                              >
-                                {company.name}
-                              </Badge>
-                            )}
-                          </div>
-                        ))}
+                        {member.companies.map((company) => {
+                          const testId = companyTestIds.get(`${member.name}-${company.name}`);
+                          return (
+                            <div key={company.name} className="flex items-center">
+                              {company.logoSrc ? (
+                                <a 
+                                  href={company.website || '#'} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="hover:opacity-75 transition-opacity"
+                                  data-testid={`link-company-${testId}`}
+                                >
+                                  <LazyImage
+                                    src={company.logoSrc}
+                                    alt={`Visit ${company.name} official website - ${company.name} company logo`}
+                                    className="h-9 w-auto object-contain hover-elevate"
+                                    data-testid={`img-company-${testId}`}
+                                    onError={(e) => handleCompanyLogoError(e, company, testId!)}
+                                  />
+                                </a>
+                              ) : (
+                                <a 
+                                  href={company.website || '#'} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="hover:opacity-75 transition-opacity"
+                                  data-testid={`link-company-${testId}`}
+                                >
+                                  <Badge 
+                                    variant="secondary" 
+                                    className="text-xs hover-elevate"
+                                    data-testid={`badge-company-${testId}`}
+                                  >
+                                    {company.name}
+                                  </Badge>
+                                </a>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                     
