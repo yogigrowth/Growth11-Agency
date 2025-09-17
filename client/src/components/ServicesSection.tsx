@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Globe, Search, Users, Video, Target, Megaphone, ShoppingCart, Repeat } from "lucide-react";
+import { useLocation } from "wouter";
 import websiteBuildingImg from "@assets/generated_images/Website_building_workspace_6f5bce90.png";
 import seoImg from "@assets/generated_images/SEO_analytics_dashboard_be8c4a6f.png";
 import socialMediaImg from "@assets/generated_images/Social_media_marketing_setup_3a484532.png";
@@ -81,11 +82,25 @@ const services = [
 ];
 
 export default function ServicesSection() {
+  const [, navigate] = useLocation();
+  
   const handleServiceClick = (serviceName: string) => {
     console.log(`${serviceName} service clicked`);
     
     if (serviceName === "Website Building") {
-      window.location.href = "/website-9999";
+      navigate("/website-9999");
+    } else if (serviceName === "SEO") {
+      navigate("/seo-landing");
+    } else if (serviceName === "Social Media & PR") {
+      navigate("/social-media-pr-landing");
+    } else if (serviceName === "Influencer Marketing") {
+      navigate("/influencer-marketing-landing");
+    } else if (serviceName === "Performance Marketing") {
+      navigate("/performance-marketing-landing");
+    } else if (serviceName === "Conversion & Retention") {
+      navigate("/conversion-retention-landing");
+    } else if (serviceName === "Product Driven Growth") {
+      navigate("/product-growth-landing");
     } else if (serviceName === "AI Video Creation") {
       window.open("https://replit.com/@nandiniupadhya5/Growth11Agency", "_blank");
     }
