@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type BlogPost, type InsertBlogPost } from "@shared/schema";
+import { type User, type InsertUser, type BlogPost, type InsertBlogPost, type Comment, type InsertComment } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // modify the interface with any CRUD methods
@@ -15,15 +15,21 @@ export interface IStorage {
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
   updateBlogPost(id: string, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined>;
   deleteBlogPost(id: string): Promise<boolean>;
+  
+  // Comment methods
+  getCommentsByBlogPostId(blogPostId: string): Promise<Comment[]>;
+  createComment(comment: InsertComment): Promise<Comment>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private blogPosts: Map<string, BlogPost>;
+  private comments: Map<string, Comment>;
 
   constructor() {
     this.users = new Map();
     this.blogPosts = new Map();
+    this.comments = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -90,6 +96,37 @@ export class MemStorage implements IStorage {
 
   async deleteBlogPost(id: string): Promise<boolean> {
     return this.blogPosts.delete(id);
+  }
+
+  // Comment methods
+  async getCommentsByBlogPostId(blogPostId: string): Promise<Comment[]> {
+    return Array.from(this.comments.values())
+      .filter(comment => comment.blogPostId === blogPostId)
+      .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
+  }
+
+  async createComment(insertComment: InsertComment): Promise<Comment> {
+    const id = randomUUID();
+    const now = new Date();
+    const comment: Comment = {
+      ...insertComment,
+      id,
+      createdAt: now
+    };
+    this.comments.set(id, comment);
+    
+    // Update blog post comment count
+    const blogPost = this.blogPosts.get(insertComment.blogPostId);
+    if (blogPost) {
+      const updatedPost: BlogPost = {
+        ...blogPost,
+        comments: (blogPost.comments || 0) + 1,
+        updatedAt: now
+      };
+      this.blogPosts.set(insertComment.blogPostId, updatedPost);
+    }
+    
+    return comment;
   }
 }
 

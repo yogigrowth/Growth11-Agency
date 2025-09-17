@@ -1,7 +1,7 @@
 import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertBlogPostSchema } from "../shared/schema";
+import { insertBlogPostSchema, insertCommentSchema } from "../shared/schema";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
@@ -176,6 +176,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin status check endpoint
   app.get("/api/admin/status", requireAuth, (req, res) => {
     res.json({ authenticated: true });
+  });
+
+  // Comment routes
+  app.get("/api/blog-posts/:id/comments", async (req, res) => {
+    try {
+      const comments = await storage.getCommentsByBlogPostId(req.params.id);
+      res.json(comments);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch comments" });
+    }
+  });
+
+  app.post("/api/blog-posts/:id/comments", async (req, res) => {
+    try {
+      // Validate request body against schema
+      const validatedData = insertCommentSchema.parse({
+        ...req.body,
+        blogPostId: req.params.id
+      });
+      const comment = await storage.createComment(validatedData);
+      res.status(201).json(comment);
+    } catch (error) {
+      console.error("Failed to create comment:", error);
+      if (error instanceof Error && 'issues' in error) {
+        // Zod validation error
+        return res.status(400).json({ 
+          error: "Validation failed", 
+          details: error.issues 
+        });
+      }
+      res.status(500).json({ error: "Failed to create comment" });
+    }
   });
 
   const httpServer = createServer(app);
