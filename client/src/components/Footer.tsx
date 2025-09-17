@@ -15,7 +15,7 @@ const footerLinks = {
     { label: "SEO", href: "/services#tech" },
     { label: "Social Media & PR", href: "/services#marketing" },
     { label: "Influencer Marketing", href: "/services#marketing" },
-    { label: "AI Video Creation", href: "/services#marketing" },
+    { label: "AI Video Creation", href: "https://replit.com/@nandiniupadhya5/Growth11Agency" },
     { label: "Performance Marketing", href: "/services#marketing" },
     { label: "Conversion & Retention", href: "/services#product" },
     { label: "Product Driven Growth", href: "/services#product" }

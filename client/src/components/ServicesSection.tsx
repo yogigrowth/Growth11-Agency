@@ -86,6 +86,8 @@ export default function ServicesSection() {
     
     if (serviceName === "Website Building") {
       window.location.href = "/website-9999";
+    } else if (serviceName === "AI Video Creation") {
+      window.open("https://replit.com/@nandiniupadhya5/Growth11Agency", "_blank");
     }
   };
 
