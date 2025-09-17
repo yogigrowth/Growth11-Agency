@@ -193,11 +193,10 @@ export default function Blog() {
                           <Heart className="h-5 w-5 hover:text-red-500 transition-colors" />
                         </button>
                         <MessageCircle className="h-5 w-5 text-muted-foreground" />
-                      </div>
-
-                      {/* Likes and engagement */}
-                      <div className="text-sm font-medium mb-2" data-testid={`text-likes-${index}`}>
-                        {post.likes} likes
+                        {/* Likes count inline with buttons */}
+                        <span className="text-sm font-medium ml-auto" data-testid={`text-likes-${index}`}>
+                          {post.likes} likes
+                        </span>
                       </div>
 
                       {/* Title */}
