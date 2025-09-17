@@ -28,7 +28,7 @@ function Router() {
       <Route path="/partners" component={Partners} />
       <Route path="/case-study" component={CaseStudy} />
       <Route path="/career" component={Career} />
-      <Route path="/blog" component={Blog} />
+      <Route path="/our-diary" component={Blog} />
       <Route path="/admin" component={Admin} />
       <Route path="/contact" component={Contact} />
       <Route path="/website-9999" component={WebsiteLanding} />

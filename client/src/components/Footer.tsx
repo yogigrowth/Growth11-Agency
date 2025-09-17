@@ -7,7 +7,7 @@ const footerLinks = {
     { label: "Our Services", href: "/services" },
     { label: "Case Studies", href: "/case-study" },
     { label: "Career", href: "/career" },
-    { label: "Blog", href: "/blog" },
+    { label: "Our Diary", href: "/our-diary" },
     { label: "Call: 70144 31277", href: "/contact" }
   ],
   services: [
