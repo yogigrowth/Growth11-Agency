@@ -29,6 +29,7 @@ function Router() {
       <Route path="/case-study" component={CaseStudy} />
       <Route path="/career" component={Career} />
       <Route path="/our-diary" component={Blog} />
+      <Route path="/blog" component={() => { window.location.replace('/our-diary'); return null; }} />
       <Route path="/admin" component={Admin} />
       <Route path="/contact" component={Contact} />
       <Route path="/website-9999" component={WebsiteLanding} />
