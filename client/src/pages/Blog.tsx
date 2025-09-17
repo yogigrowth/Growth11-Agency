@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation, Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -13,12 +14,12 @@ import performanceMarketingImg from "@assets/generated_images/Performance_market
 import conversionFunnelImg from "@assets/generated_images/Conversion_funnel_optimization_charts_a2d062d6.png";
 import aiMarketingImg from "@assets/generated_images/AI_marketing_tools_interface_49f50fcd.png";
 
-// Our Diary Schema Markup Component
-function OurDiarySchema() {
+// Blog: Digital World Schema Markup Component
+function BlogDigitalWorldSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "name": "Growth11 Our Diary",
+    "name": "Growth11 Blog: Digital World",
     "description": "Growth stories, insights and behind-the-scenes moments from Growth11 Ajmer team",
     "url": "https://growth11.in/our-diary",
     "publisher": {
@@ -99,20 +100,20 @@ const initialBlogPosts: PostPreview[] = [
 ];
 
 export default function Blog() {
+  const [location, navigate] = useLocation();
   const [blogPosts, setBlogPosts] = useState<PostPreview[]>(initialBlogPosts);
 
   useSEO({
-    title: "Our Diary - Growth11 Ajmer | Growth Stories & Insights from Rajasthan",
-    description: "Growth11 Ajmer diary - Growth stories, insights and behind-the-scenes moments from our team in Ajmer, Rajasthan. Real lessons from real growth.",
-    ogTitle: "Our Diary - Growth11 Ajmer, Rajasthan",
+    title: "Blog: Digital World - Growth11 Ajmer | Growth Stories & Insights from Rajasthan",
+    description: "Growth11 Ajmer Blog: Digital World - Growth stories, insights and behind-the-scenes moments from our team in Ajmer, Rajasthan. Real lessons from real growth.",
+    ogTitle: "Blog: Digital World - Growth11 Ajmer, Rajasthan",
     ogDescription: "Growth stories and insights from Growth11 Ajmer. Behind-the-scenes moments and lessons from entrepreneurs in Rajasthan."
   });
 
-  const handleReadStory = (postTitle: string) => {
-    console.log(`Read story clicked for: ${postTitle}`);
-  };
 
-  const handleLike = (postId: string) => {
+  const handleLike = (postId: string, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
     setBlogPosts(prevPosts => 
       prevPosts.map(post => 
         post.id === postId 
@@ -124,14 +125,14 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen">
-      <OurDiarySchema />
+      <BlogDigitalWorldSchema />
       <Navigation />
       <main>
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <Badge variant="outline" className="mb-4" data-testid="badge-blog-page">
-                Growth Stories from Ajmer
+                Blog: Digital World
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold mb-4" data-testid="text-blog-page-title">
                 Visual Stories & Insights
@@ -145,9 +146,10 @@ export default function Blog() {
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
                 {blogPosts.map((post, index) => (
-                  <div 
+                  <Link 
                     key={post.title}
-                    className="bg-background rounded-lg overflow-hidden transition-transform duration-200 hover:scale-[1.02]"
+                    href={`/our-diary/${post.id}`}
+                    className="block bg-background rounded-lg overflow-hidden transition-transform duration-200 hover:scale-[1.02] cursor-pointer hover-elevate"
                     data-testid={`post-instagram-${index}`}
                   >
                     {/* Image/Video Container */}
@@ -186,7 +188,7 @@ export default function Blog() {
                       {/* Instagram-style interaction icons */}
                       <div className="flex items-center gap-4 mb-3">
                         <button 
-                          onClick={() => handleLike(post.id)}
+                          onClick={(e) => handleLike(post.id, e)}
                           className="hover:scale-110 transition-transform"
                           data-testid={`button-like-${index}`}
                         >
@@ -216,18 +218,12 @@ export default function Blog() {
                         </div>
                       </div>
 
-                      {/* Read Story CTA */}
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleReadStory(post.title)}
-                        className="w-full text-xs hover-elevate"
-                        data-testid={`button-read-story-${index}`}
-                      >
-                        Read Story
-                      </Button>
+                      {/* Click anywhere on card to read story */}
+                      <div className="text-xs text-muted-foreground text-center p-2 border border-dashed border-muted-foreground/30 rounded" data-testid={`text-click-hint-${index}`}>
+                        Click anywhere to read story
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
