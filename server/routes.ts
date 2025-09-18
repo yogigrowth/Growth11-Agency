@@ -6,6 +6,8 @@ import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
+import { ObjectPermission } from "./objectAcl";
 
 // Dynamic sitemap generation function
 async function generateSitemap(): Promise<string> {
@@ -221,14 +223,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const adminPassword = process.env.ADMIN_PASSWORD?.trim();
       const jwtSecret = process.env.JWT_SECRET?.trim();
       
-      // Debug logging
-      console.log("Login attempt:", { 
-        receivedUsername: username, 
-        receivedPassword: "***", 
-        expectedUsername: adminUsername,
-        usernameMatch: username === adminUsername,
-        passwordMatch: password === adminPassword
-      });
       
       if (!adminUsername || !adminPassword || !jwtSecret) {
         console.error("Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET");
@@ -266,6 +260,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin status check endpoint
   app.get("/api/admin/status", requireAuth, (req, res) => {
     res.json({ authenticated: true });
+  });
+
+  // File upload endpoints for admin
+  app.post("/api/objects/upload", requireAuth, async (req, res) => {
+    try {
+      const objectStorageService = new ObjectStorageService();
+      const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+      res.json({ uploadURL });
+    } catch (error) {
+      console.error("Error getting upload URL:", error);
+      res.status(500).json({ error: "Failed to get upload URL" });
+    }
+  });
+
+  app.put("/api/media/upload", requireAuth, async (req, res) => {
+    try {
+      if (!req.body.mediaURL) {
+        return res.status(400).json({ error: "mediaURL is required" });
+      }
+
+      const objectStorageService = new ObjectStorageService();
+      const objectPath = objectStorageService.normalizeObjectEntityPath(
+        req.body.mediaURL,
+      );
+
+      // Set ACL policy for uploaded media (public since it's for blog posts)
+      if (objectPath.startsWith("/objects/")) {
+        const objectFile = await objectStorageService.getObjectEntityFile(objectPath);
+        const objectPath2 = await objectStorageService.trySetObjectEntityAclPolicy(req.body.mediaURL, {
+          owner: "admin",
+          visibility: "public",
+        });
+        console.log("ACL policy set for object:", objectPath2);
+      }
+
+      res.status(200).json({
+        objectPath: objectPath,
+      });
+    } catch (error) {
+      console.error("Error processing uploaded media:", error);
+      res.status(500).json({ error: "Failed to process uploaded media" });
+    }
+  });
+
+  // Serve uploaded objects with proper ACL enforcement
+  app.get("/objects/:objectPath(*)", async (req, res) => {
+    const objectStorageService = new ObjectStorageService();
+    try {
+      const objectFile = await objectStorageService.getObjectEntityFile(
+        req.path,
+      );
+      
+      // Check if user can access this object
+      const canAccess = await objectStorageService.canAccessObjectEntity({
+        objectFile,
+        requestedPermission: ObjectPermission.READ,
+      });
+      
+      if (!canAccess) {
+        return res.sendStatus(403);
+      }
+      
+      objectStorageService.downloadObject(objectFile, res);
+    } catch (error) {
+      console.error("Error accessing object:", error);
+      if (error instanceof ObjectNotFoundError) {
+        return res.sendStatus(404);
+      }
+      return res.sendStatus(500);
+    }
   });
 
   // Comment routes

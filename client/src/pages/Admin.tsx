@@ -20,6 +20,7 @@ import { insertBlogPostSchema } from "@shared/schema";
 import { Plus, Edit, Trash2, Eye, Calendar, LogOut } from "lucide-react";
 import type { BlogPost, InsertBlogPost } from "@shared/schema";
 import { z } from "zod";
+import { ObjectUploader } from "@/components/ObjectUploader";
 
 const categories = [
   "Growth Strategy",
@@ -381,40 +382,15 @@ export default function Admin() {
                             </span>
                           </div>
                           
-                          <div className="border-2 border-dashed border-muted rounded-lg p-6">
-                            <div className="text-center space-y-4">
-                              <div className="mx-auto w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
-                                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                </svg>
-                              </div>
-                              <div>
-                                <p className="text-sm text-muted-foreground mb-2">
-                                  Drag and drop your image or video here, or click to browse
-                                </p>
-                                <input
-                                  type="file"
-                                  accept="image/*,video/*"
-                                  className="hidden"
-                                  id="media-upload"
-                                  onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                      // Handle file upload logic here
-                                      form.setValue('media', file.name);
-                                    }
-                                  }}
-                                  data-testid="input-file-upload"
-                                />
-                                <label
-                                  htmlFor="media-upload"
-                                  className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
-                                >
-                                  Choose File
-                                </label>
-                              </div>
-                            </div>
-                          </div>
+                          <ObjectUploader
+                            onComplete={(uploadedPath) => {
+                              form.setValue('media', uploadedPath);
+                              toast({
+                                title: "File uploaded",
+                                description: "Your media file has been uploaded successfully"
+                              });
+                            }}
+                          />
 
                           <div className="relative">
                             <div className="absolute inset-0 flex items-center">
