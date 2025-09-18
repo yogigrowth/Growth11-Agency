@@ -14,8 +14,7 @@ export const blogPosts = pgTable("blog_posts", {
   title: text("title").notNull(),
   content: text("content").notNull(),
   category: text("category").notNull(),
-  mediaType: text("media_type").notNull().default("image"), // 'image' or 'video'
-  mediaUrl: text("media_url"),
+  media: text("media"), // Can store file path or URL for images/videos
   published: boolean("published").default(false),
   likes: integer("likes").default(0),
   comments: integer("comments").default(0),
@@ -41,8 +40,7 @@ export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
   createdAt: true,
   updatedAt: true,
 }).extend({
-  mediaType: z.enum(["image", "video"]),
-  mediaUrl: z.string().optional().nullable(),
+  media: z.string().optional().nullable(),
 });
 
 export const insertCommentSchema = createInsertSchema(comments).omit({

@@ -65,8 +65,7 @@ export default function Admin() {
       title: "",
       content: "",
       category: "",
-      mediaType: "image",
-      mediaUrl: "",
+      media: "",
       published: false,
       likes: 0,
       comments: 0,
@@ -251,8 +250,7 @@ export default function Admin() {
       title: post.title,
       content: post.content,
       category: post.category,
-      mediaType: (post.mediaType as "image" | "video") || "image",
-      mediaUrl: post.mediaUrl || "",
+      media: post.media || "",
       published: post.published || false,
       likes: post.likes || 0,
       comments: post.comments || 0,
@@ -357,28 +355,6 @@ export default function Admin() {
 
                         <FormField
                           control={form.control}
-                          name="mediaType"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Media Type</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger data-testid="select-media-type">
-                                    <SelectValue placeholder="Select media type" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="image">Image</SelectItem>
-                                  <SelectItem value="video">Video</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-
-                        <FormField
-                          control={form.control}
                           name="content"
                           render={({ field }) => (
                             <FormItem>
@@ -396,24 +372,79 @@ export default function Admin() {
                           )}
                         />
 
-                        <FormField
-                          control={form.control}
-                          name="mediaUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Media URL</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder="https://example.com/media.jpg" 
-                                  {...field}
-                                  value={field.value || ""}
-                                  data-testid="input-media-url"
+                        {/* Media Upload Section */}
+                        <div className="space-y-4">
+                          <div className="flex items-center justify-between">
+                            <label className="text-sm font-medium">Media</label>
+                            <span className="text-xs text-muted-foreground">
+                              Upload file or paste URL
+                            </span>
+                          </div>
+                          
+                          <div className="border-2 border-dashed border-muted rounded-lg p-6">
+                            <div className="text-center space-y-4">
+                              <div className="mx-auto w-12 h-12 bg-muted rounded-lg flex items-center justify-center">
+                                <svg className="w-6 h-6 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                              </div>
+                              <div>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Drag and drop your image or video here, or click to browse
+                                </p>
+                                <input
+                                  type="file"
+                                  accept="image/*,video/*"
+                                  className="hidden"
+                                  id="media-upload"
+                                  onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                      // Handle file upload logic here
+                                      form.setValue('media', file.name);
+                                    }
+                                  }}
+                                  data-testid="input-file-upload"
                                 />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                                <label
+                                  htmlFor="media-upload"
+                                  className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary/90"
+                                >
+                                  Choose File
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                              <span className="w-full border-t" />
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                              <span className="bg-background px-2 text-muted-foreground">
+                                Or paste URL
+                              </span>
+                            </div>
+                          </div>
+
+                          <FormField
+                            control={form.control}
+                            name="media"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <Input 
+                                    placeholder="https://example.com/image.jpg or https://youtube.com/watch?v=..." 
+                                    {...field}
+                                    value={field.value || ""}
+                                    data-testid="input-media-url"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
 
                         <div className="flex items-center space-x-4">
                           <FormField
@@ -510,7 +541,7 @@ export default function Admin() {
                             {post.title}
                           </CardTitle>
                           <CardDescription data-testid={`text-media-type-${post.id}`}>
-                            {post.mediaType} content
+                            {post.media ? "Has media content" : "Text content"}
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
