@@ -42,21 +42,6 @@ export default function Admin() {
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
-  // Check authentication status on component mount
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        await apiRequest('GET', '/api/admin/status');
-        setIsAuthenticated(true);
-        sessionStorage.setItem('admin_authenticated', 'true');
-      } catch (error) {
-        setIsAuthenticated(false);
-        sessionStorage.removeItem('admin_authenticated');
-      }
-    };
-    
-    checkAuthStatus();
-  }, []);
   const { toast } = useToast();
 
   useSEO({
@@ -73,11 +58,90 @@ export default function Admin() {
     },
   });
 
+  // Blog post form - moved before conditional return
+  const form = useForm<InsertBlogPost>({
+    resolver: zodResolver(insertBlogPostSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+      category: "",
+      mediaType: "image",
+      mediaUrl: "",
+      published: false,
+      likes: 0,
+      comments: 0,
+    },
+  });
+
+  // Fetch blog posts - moved before conditional return
+  const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
+    queryKey: ["/api/blog-posts"],
+    enabled: isAuthenticated, // Only fetch when authenticated
+  });
+
+  // Create blog post mutation - moved before conditional return
+  const createPostMutation = useMutation({
+    mutationFn: (data: InsertBlogPost) => apiRequest("POST", "/api/blog-posts", data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
+      toast({ title: "Success", description: "Blog post created successfully!" });
+      setIsCreating(false);
+      form.reset();
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to create blog post", variant: "destructive" });
+    },
+  });
+
+  // Update blog post mutation - moved before conditional return
+  const updatePostMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<InsertBlogPost> }) => 
+      apiRequest("PATCH", `/api/blog-posts/${id}`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
+      toast({ title: "Success", description: "Blog post updated successfully!" });
+      setEditingPost(null);
+      form.reset();
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to update blog post", variant: "destructive" });
+    },
+  });
+
+  // Delete blog post mutation - moved before conditional return
+  const deletePostMutation = useMutation({
+    mutationFn: (id: string) => apiRequest("DELETE", `/api/blog-posts/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
+      toast({ title: "Success", description: "Blog post deleted successfully!" });
+    },
+    onError: () => {
+      toast({ title: "Error", description: "Failed to delete blog post", variant: "destructive" });
+    },
+  });
+  
+  // Check authentication status on component mount
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        await apiRequest('GET', '/api/admin/status');
+        setIsAuthenticated(true);
+        sessionStorage.setItem('admin_authenticated', 'true');
+      } catch (error) {
+        setIsAuthenticated(false);
+        sessionStorage.removeItem('admin_authenticated');
+      }
+    };
+    
+    checkAuthStatus();
+  }, []);
+
   const handleLogin = async (data: LoginForm) => {
     try {
-      const response = await apiRequest('POST', '/api/admin/login', data) as any;
+      const response = await apiRequest('POST', '/api/admin/login', data);
+      const result = await response.json();
       
-      if (response?.success) {
+      if (result?.success) {
         sessionStorage.setItem('admin_authenticated', 'true');
         setIsAuthenticated(true);
         toast({ title: "Login successful", description: "Welcome to admin panel" });
@@ -171,66 +235,6 @@ export default function Admin() {
       </div>
     );
   }
-
-  const form = useForm<InsertBlogPost>({
-    resolver: zodResolver(insertBlogPostSchema),
-    defaultValues: {
-      title: "",
-      content: "",
-      category: "",
-      mediaType: "image",
-      mediaUrl: "",
-      published: false,
-      likes: 0,
-      comments: 0,
-    },
-  });
-
-  // Fetch blog posts
-  const { data: posts = [], isLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog-posts"],
-  });
-
-  // Create blog post mutation
-  const createPostMutation = useMutation({
-    mutationFn: (data: InsertBlogPost) => apiRequest("POST", "/api/blog-posts", data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
-      toast({ title: "Success", description: "Blog post created successfully!" });
-      setIsCreating(false);
-      form.reset();
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to create blog post", variant: "destructive" });
-    },
-  });
-
-  // Update blog post mutation
-  const updatePostMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<InsertBlogPost> }) => 
-      apiRequest("PATCH", `/api/blog-posts/${id}`, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
-      toast({ title: "Success", description: "Blog post updated successfully!" });
-      setEditingPost(null);
-      form.reset();
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to update blog post", variant: "destructive" });
-    },
-  });
-
-  // Delete blog post mutation
-  const deletePostMutation = useMutation({
-    mutationFn: (id: string) => apiRequest("DELETE", `/api/blog-posts/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/blog-posts"] });
-      toast({ title: "Success", description: "Blog post deleted successfully!" });
-    },
-    onError: () => {
-      toast({ title: "Error", description: "Failed to delete blog post", variant: "destructive" });
-    },
-  });
 
   const onSubmit = (data: InsertBlogPost) => {
     if (editingPost) {

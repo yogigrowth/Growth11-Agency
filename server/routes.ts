@@ -217,9 +217,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { username, password } = req.body;
       
-      const adminUsername = process.env.ADMIN_USERNAME;
-      const adminPassword = process.env.ADMIN_PASSWORD;
-      const jwtSecret = process.env.JWT_SECRET;
+      const adminUsername = process.env.ADMIN_USERNAME?.trim();
+      const adminPassword = process.env.ADMIN_PASSWORD?.trim();
+      const jwtSecret = process.env.JWT_SECRET?.trim();
       
       if (!adminUsername || !adminPassword || !jwtSecret) {
         console.error("Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET");
