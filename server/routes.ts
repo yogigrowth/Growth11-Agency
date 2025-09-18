@@ -5,6 +5,7 @@ import { insertBlogPostSchema, insertCommentSchema } from "../shared/schema";
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import cookieParser from "cookie-parser";
 import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
 import { ObjectPermission } from "./objectAcl";
@@ -214,6 +215,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Like/unlike blog post endpoint
+  app.post("/api/blog-posts/:id/like", async (req, res) => {
+    try {
+      const post = await storage.getBlogPost(req.params.id);
+      if (!post) {
+        return res.status(404).json({ error: "Blog post not found" });
+      }
+
+      const updatedPost = await storage.updateBlogPost(req.params.id, {
+        likes: (post.likes || 0) + 1
+      });
+      
+      if (!updatedPost) {
+        return res.status(500).json({ error: "Failed to update likes" });
+      }
+      
+      res.json({ likes: updatedPost.likes });
+    } catch (error) {
+      console.error("Failed to like blog post:", error);
+      res.status(500).json({ error: "Failed to like blog post" });
+    }
+  });
+
   // Admin authentication endpoints
   app.post("/api/admin/login", async (req, res) => {
     try {
@@ -229,7 +253,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(500).json({ success: false, error: "Server configuration error" });
       }
       
-      if (username === adminUsername && password === adminPassword) {
+      // Check if we have a valid username match first
+      if (username !== adminUsername) {
+        return res.status(401).json({ success: false, error: "Invalid credentials" });
+      }
+      
+      // Use bcrypt to compare password with hashed version
+      const isPasswordValid = await bcrypt.compare(password, adminPassword);
+      
+      if (isPasswordValid) {
         const token = jwt.sign(
           { admin: true },
           jwtSecret,
@@ -260,6 +292,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin status check endpoint
   app.get("/api/admin/status", requireAuth, (req, res) => {
     res.json({ authenticated: true });
+  });
+
+  // Utility endpoint to generate hashed password (only in development)
+  app.post("/api/admin/hash-password", (req, res) => {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(403).json({ error: "Not available in production" });
+    }
+    
+    const { password } = req.body;
+    if (!password) {
+      return res.status(400).json({ error: "Password is required" });
+    }
+    
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to hash password" });
+      }
+      res.json({ hash });
+    });
   });
 
   // File upload endpoints for admin
@@ -359,6 +410,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           error: "Validation failed", 
           details: error.issues 
         });
+      }
+      // Handle blog post not found error
+      if (error instanceof Error && error.message.includes("not found")) {
+        return res.status(404).json({ error: "Blog post not found" });
       }
       res.status(500).json({ error: "Failed to create comment" });
     }
