@@ -52,28 +52,47 @@ export function ObjectUploader({
     setUploading(true);
     try {
       // Get upload URL from backend
-      const uploadResponse = await apiRequest("POST", "/api/objects/upload");
-      const uploadData = await uploadResponse.json();
+      let uploadResponse;
+      let uploadData;
+      try {
+        uploadResponse = await apiRequest("POST", "/api/objects/upload");
+        uploadData = await uploadResponse.json();
+      } catch (error) {
+        throw new Error("Failed to get upload URL from server. Please check your connection and try again.");
+      }
 
       // Upload file directly to storage using presigned URL
-      const uploadResult = await fetch(uploadData.uploadURL, {
-        method: "PUT",
-        body: selectedFile,
-        headers: {
-          "Content-Type": selectedFile.type,
-        },
-      });
+      let uploadResult;
+      try {
+        uploadResult = await fetch(uploadData.uploadURL, {
+          method: "PUT",
+          body: selectedFile,
+          headers: {
+            "Content-Type": selectedFile.type,
+          },
+        });
 
-      if (!uploadResult.ok) {
-        throw new Error("Upload failed");
+        if (!uploadResult.ok) {
+          throw new Error(`Storage upload failed: ${uploadResult.status} ${uploadResult.statusText}`);
+        }
+      } catch (error) {
+        if (error instanceof Error && error.message.includes("Storage upload failed")) {
+          throw error;
+        }
+        throw new Error("Failed to upload file to storage. Please check your connection and try again.");
       }
 
       // Update backend with uploaded media info
-      const mediaResponse = await apiRequest("PUT", "/api/media/upload", {
-        mediaURL: uploadData.uploadURL,
-      });
-      
-      const mediaData = await mediaResponse.json();
+      let mediaResponse;
+      let mediaData;
+      try {
+        mediaResponse = await apiRequest("PUT", "/api/media/upload", {
+          mediaURL: uploadData.uploadURL,
+        });
+        mediaData = await mediaResponse.json();
+      } catch (error) {
+        throw new Error("File uploaded but failed to update media information. Please contact support if this persists.");
+      }
       
       toast({
         title: "Upload successful",
@@ -84,9 +103,10 @@ export function ObjectUploader({
       setSelectedFile(null);
     } catch (error) {
       console.error("Upload error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to upload file. Please try again.";
       toast({
         title: "Upload failed",
-        description: "Failed to upload file. Please try again.",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
