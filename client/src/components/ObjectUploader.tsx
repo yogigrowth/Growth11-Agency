@@ -56,8 +56,18 @@ export function ObjectUploader({
       let uploadData;
       try {
         uploadResponse = await apiRequest("POST", "/api/objects/upload");
+        if (!uploadResponse.ok) {
+          const errorText = await uploadResponse.text();
+          throw new Error(`Server error getting upload URL: ${errorText || uploadResponse.statusText}`);
+        }
         uploadData = await uploadResponse.json();
+        if (!uploadData?.uploadURL) {
+          throw new Error("Server did not provide a valid upload URL");
+        }
       } catch (error) {
+        if (error instanceof Error && error.message.includes("Server")) {
+          throw error;
+        }
         throw new Error("Failed to get upload URL from server. Please check your connection and try again.");
       }
 
@@ -89,8 +99,18 @@ export function ObjectUploader({
         mediaResponse = await apiRequest("PUT", "/api/media/upload", {
           mediaURL: uploadData.uploadURL,
         });
+        if (!mediaResponse.ok) {
+          const errorText = await mediaResponse.text();
+          throw new Error(`Server error updating media info: ${errorText || mediaResponse.statusText}`);
+        }
         mediaData = await mediaResponse.json();
+        if (!mediaData?.objectPath) {
+          throw new Error("Server did not provide a valid object path");
+        }
       } catch (error) {
+        if (error instanceof Error && error.message.includes("Server")) {
+          throw error;
+        }
         throw new Error("File uploaded but failed to update media information. Please contact support if this persists.");
       }
       
