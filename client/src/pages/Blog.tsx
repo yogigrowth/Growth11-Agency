@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useLocation, Link } from "wouter";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -7,6 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock, Heart, MessageCircle } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 // Import generated blog images
 import growthWorkspaceImg from "@assets/generated_images/Digital_marketing_workspace_setup_7653e34b.png";
@@ -101,7 +104,32 @@ const initialBlogPosts: PostPreview[] = [
 
 export default function Blog() {
   const [location, navigate] = useLocation();
-  const [blogPosts, setBlogPosts] = useState<PostPreview[]>(initialBlogPosts);
+  const [likingPosts, setLikingPosts] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
+
+  // Fetch blog posts from API instead of using static data
+  const { 
+    data: blogPosts = [], 
+    isLoading, 
+    error,
+    refetch
+  } = useQuery({
+    queryKey: ["/api/blog-posts"],
+    select: (posts: any[]) => posts.map(post => ({
+      id: post.id,
+      title: post.title,
+      category: post.category,
+      date: new Date(post.createdAt).toLocaleDateString("en-US", { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric' 
+      }),
+      readTime: "5 min read", // Default read time
+      mediaType: "image" as const,
+      mediaUrl: post.media || growthWorkspaceImg, // Fallback to default image
+      likes: post.likes || 0
+    }))
+  });
 
   useSEO({
     title: "Blog: Digital World - Growth11 Ajmer | Growth Stories & Insights from Rajasthan",
@@ -111,16 +139,44 @@ export default function Blog() {
   });
 
 
-  const handleLike = (postId: string, event: React.MouseEvent) => {
+  const handleLike = async (postId: string, event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    setBlogPosts(prevPosts => 
-      prevPosts.map(post => 
-        post.id === postId 
-          ? { ...post, likes: post.likes + 1 }
-          : post
-      )
-    );
+    
+    // Prevent multiple likes for the same post
+    if (likingPosts.has(postId)) return;
+    
+    // Fix state mutation - create new Set without mutating prev
+    setLikingPosts(prev => {
+      const newSet = new Set(prev);
+      newSet.add(postId);
+      return newSet;
+    });
+
+    try {
+      const response = await apiRequest("POST", `/api/blog-posts/${postId}/like`);
+      const data = await response.json();
+      
+      toast({
+        title: "Liked!",
+        description: "Thank you for liking this post.",
+      });
+      
+      // Refetch data to get updated likes from server
+      refetch();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to like post. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLikingPosts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(postId);
+        return newSet;
+      });
+    }
   };
 
   return (
@@ -144,8 +200,29 @@ export default function Blog() {
 
             {/* Instagram-style 2x2 Grid */}
             <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
-                {blogPosts.map((post, index) => (
+              {isLoading ? (
+                <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="aspect-square bg-muted rounded-lg" />
+                      <div className="p-4 space-y-2">
+                        <div className="h-4 bg-muted rounded w-3/4" />
+                        <div className="h-3 bg-muted rounded w-1/2" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">Failed to load blog posts. Please try again later.</p>
+                </div>
+              ) : blogPosts.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No blog posts available yet. Check back soon!</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6">
+                  {blogPosts.map((post, index) => (
                   <Link 
                     key={post.title}
                     href={`/our-diary/${post.id}`}
@@ -190,9 +267,14 @@ export default function Blog() {
                         <button 
                           onClick={(e) => handleLike(post.id, e)}
                           className="hover:scale-110 transition-transform"
+                          disabled={likingPosts.has(post.id)}
                           data-testid={`button-like-${index}`}
                         >
-                          <Heart className="h-5 w-5 hover:text-red-500 transition-colors" />
+                          <Heart className={`h-5 w-5 transition-colors ${
+                            likingPosts.has(post.id) 
+                              ? 'text-red-500 animate-pulse' 
+                              : 'hover:text-red-500'
+                          }`} />
                         </button>
                         <MessageCircle className="h-5 w-5 text-muted-foreground" />
                         {/* Likes count inline with buttons */}
@@ -224,8 +306,9 @@ export default function Blog() {
                       </div>
                     </div>
                   </Link>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>

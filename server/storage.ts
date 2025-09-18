@@ -183,6 +183,12 @@ export class MemStorage implements IStorage {
   }
 
   async createComment(insertComment: InsertComment): Promise<Comment> {
+    // Validate that the blog post exists before creating comment
+    const blogPost = this.blogPosts.get(insertComment.blogPostId);
+    if (!blogPost) {
+      throw new Error(`Blog post with id ${insertComment.blogPostId} not found`);
+    }
+
     const id = randomUUID();
     const now = new Date();
     const comment: Comment = {
@@ -193,15 +199,12 @@ export class MemStorage implements IStorage {
     this.comments.set(id, comment);
     
     // Update blog post comment count
-    const blogPost = this.blogPosts.get(insertComment.blogPostId);
-    if (blogPost) {
-      const updatedPost: BlogPost = {
-        ...blogPost,
-        comments: (blogPost.comments || 0) + 1,
-        updatedAt: now
-      };
-      this.blogPosts.set(insertComment.blogPostId, updatedPost);
-    }
+    const updatedPost: BlogPost = {
+      ...blogPost,
+      comments: (blogPost.comments || 0) + 1,
+      updatedAt: now
+    };
+    this.blogPosts.set(insertComment.blogPostId, updatedPost);
     
     return comment;
   }
