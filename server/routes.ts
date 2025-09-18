@@ -221,6 +221,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const adminPassword = process.env.ADMIN_PASSWORD?.trim();
       const jwtSecret = process.env.JWT_SECRET?.trim();
       
+      // Debug logging
+      console.log("Login attempt:", { 
+        receivedUsername: username, 
+        receivedPassword: "***", 
+        expectedUsername: adminUsername,
+        usernameMatch: username === adminUsername,
+        passwordMatch: password === adminPassword
+      });
+      
       if (!adminUsername || !adminPassword || !jwtSecret) {
         console.error("Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET");
         return res.status(500).json({ success: false, error: "Server configuration error" });
