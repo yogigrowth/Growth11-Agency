@@ -213,17 +213,13 @@ export default function Career() {
   });
 
   const handleEmailResume = () => {
-    console.log("Email resume clicked");
     const subject = encodeURIComponent(
       "Resume for Growth11 Career Opportunity",
     );
     const body = encodeURIComponent(
       "Dear Growth11 Team,\n\nI am interested in joining your team in Ajmer. Please find my resume attached.\n\nBest regards",
     );
-    window.open(
-      `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`,
-      "_self",
-    );
+    window.location.href = `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const handleApplyForRole = (jobTitle: string) => {
@@ -233,10 +229,7 @@ export default function Career() {
     const body = encodeURIComponent(
       `Dear Growth11 Team,\n\nI am interested in applying for the ${jobTitle} position at your Ajmer office. Please find my resume attached.\n\nBest regards`,
     );
-    window.open(
-      `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`,
-      "_self",
-    );
+    window.location.href = `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
