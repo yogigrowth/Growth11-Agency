@@ -1,5 +1,8 @@
-import { type User, type InsertUser, type BlogPost, type InsertBlogPost, type Comment, type InsertComment } from "@shared/schema";
+import { type User, type InsertUser, type BlogPost, type InsertBlogPost, type Comment, type InsertComment, users, blogPosts, comments } from "@shared/schema";
 import { randomUUID } from "crypto";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
+import { eq, desc, asc, sql } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -21,6 +24,147 @@ export interface IStorage {
   createComment(comment: InsertComment): Promise<Comment>;
 }
 
+// PostgreSQL Database Storage using Drizzle ORM
+export class DbStorage implements IStorage {
+  private db: ReturnType<typeof drizzle>;
+
+  constructor() {
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL environment variable is required for DbStorage");
+    }
+    
+    const pool = new Pool({
+      connectionString: process.env.DATABASE_URL,
+    });
+    this.db = drizzle(pool);
+  }
+
+  // User methods
+  async getUser(id: string): Promise<User | undefined> {
+    const result = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.username, username))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    // Enforce that passwords must be bcrypt hashed before storage
+    // Bcrypt hashes start with $2a$, $2b$, or $2y$ and are 60 characters long
+    const bcryptPattern = /^\$2[ayb]\$.{56}$/;
+    if (!bcryptPattern.test(insertUser.password)) {
+      throw new Error(
+        "Password must be bcrypt hashed before storage. Use bcrypt.hash() before calling createUser."
+      );
+    }
+
+    const result = await this.db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    
+    return result[0];
+  }
+
+  // Blog post methods
+  async getBlogPost(id: string): Promise<BlogPost | undefined> {
+    const result = await this.db
+      .select()
+      .from(blogPosts)
+      .where(eq(blogPosts.id, id))
+      .limit(1);
+    
+    return result[0];
+  }
+
+  async getAllBlogPosts(): Promise<BlogPost[]> {
+    const result = await this.db
+      .select()
+      .from(blogPosts)
+      .orderBy(desc(blogPosts.createdAt));
+    
+    return result;
+  }
+
+  async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
+    const result = await this.db
+      .insert(blogPosts)
+      .values(insertPost)
+      .returning();
+    
+    return result[0];
+  }
+
+  async updateBlogPost(id: string, updateData: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
+    const result = await this.db
+      .update(blogPosts)
+      .set({
+        ...updateData,
+        updatedAt: new Date()
+      })
+      .where(eq(blogPosts.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async deleteBlogPost(id: string): Promise<boolean> {
+    const result = await this.db
+      .delete(blogPosts)
+      .where(eq(blogPosts.id, id))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  // Comment methods
+  async getCommentsByBlogPostId(blogPostId: string): Promise<Comment[]> {
+    const result = await this.db
+      .select()
+      .from(comments)
+      .where(eq(comments.blogPostId, blogPostId))
+      .orderBy(asc(comments.createdAt));
+    
+    return result;
+  }
+
+  async createComment(insertComment: InsertComment): Promise<Comment> {
+    // Use transaction to ensure atomic comment creation and count update
+    return await this.db.transaction(async (tx) => {
+      // Create the comment first (will fail with FK constraint if blog post doesn't exist)
+      const result = await tx
+        .insert(comments)
+        .values(insertComment)
+        .returning();
+      
+      // Atomically increment blog post comment count using SQL expression
+      // This prevents race conditions by computing the increment at the database level
+      // Note: Using snake_case column names as they appear in the actual database
+      await tx.execute(
+        sql`UPDATE blog_posts 
+            SET comments = COALESCE(comments, 0) + 1, 
+                updated_at = NOW() 
+            WHERE id = ${insertComment.blogPostId}`
+      );
+      
+      return result[0];
+    });
+  }
+}
+
+// In-Memory Storage (for development/testing)
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private blogPosts: Map<string, BlogPost>;
@@ -30,83 +174,6 @@ export class MemStorage implements IStorage {
     this.users = new Map();
     this.blogPosts = new Map();
     this.comments = new Map();
-    
-    // Add seed blog posts to match frontend expectations
-    this.initializeSeedData();
-  }
-  
-  private initializeSeedData() {
-    const seedPosts: BlogPost[] = [
-      {
-        id: "1",
-        title: "How We Scaled Nojoto to 80L MAU: Lessons in Product-Led Growth",
-        content: "Product-led growth has become the cornerstone of successful scaling strategies. In our journey with Nojoto, we discovered that the key to reaching 80 lakh Monthly Active Users lies in creating a product that sells itself through exceptional user experience and organic growth mechanics.",
-        excerpt: "Learn how we scaled Nojoto to 80 lakh MAU through product-led growth strategies and user-centric design principles.",
-        category: "Growth Strategy",
-        author: "Growth11 Team",
-        slug: "nojoto-scaling-product-led-growth",
-        published: true,
-        mediaType: "image" as const,
-        mediaUrl: null,
-        likes: 127,
-        comments: 0,
-        createdAt: new Date("2024-12-15"),
-        updatedAt: new Date("2024-12-15")
-      },
-      {
-        id: "2",
-        title: "Performance Marketing for D2C Brands: A Complete Guide",
-        content: "Performance marketing has become the backbone of successful D2C brands. In our experience helping businesses scale at Growth11 Ajmer, we've seen how the right performance marketing strategy can transform a small business into a market leader.",
-        excerpt: "A comprehensive guide to performance marketing strategies that help D2C brands achieve measurable growth and ROI.",
-        category: "Marketing",
-        author: "Growth11 Team",
-        slug: "performance-marketing-d2c-brands-guide",
-        published: true,
-        mediaType: "image" as const,
-        mediaUrl: null,
-        likes: 143,
-        comments: 0,
-        createdAt: new Date("2024-12-10"),
-        updatedAt: new Date("2024-12-10")
-      },
-      {
-        id: "3",
-        title: "Building Conversion Funnels That Actually Convert",
-        content: "Conversion funnels are the backbone of any successful digital marketing strategy. At Growth11, we've helped dozens of companies optimize their funnels to achieve conversion rates that seemed impossible before our intervention.",
-        excerpt: "Learn the proven strategies for building high-converting funnels that turn visitors into customers.",
-        category: "Conversion",
-        author: "Growth11 Team",
-        slug: "building-high-converting-funnels",
-        published: true,
-        mediaType: "image" as const,
-        mediaUrl: null,
-        likes: 118,
-        comments: 0,
-        createdAt: new Date("2024-12-05"),
-        updatedAt: new Date("2024-12-05")
-      },
-      {
-        id: "4",
-        title: "The Future of AI in Digital Marketing",
-        content: "Artificial Intelligence is revolutionizing digital marketing in ways we couldn't imagine just a few years ago. From personalized content creation to predictive analytics, AI is helping businesses connect with their customers more effectively than ever before.",
-        excerpt: "Explore how AI is transforming digital marketing and what it means for the future of customer engagement.",
-        category: "Technology",
-        author: "Growth11 Team",
-        slug: "future-ai-digital-marketing",
-        published: true,
-        mediaType: "image" as const,
-        mediaUrl: null,
-        likes: 135,
-        comments: 0,
-        createdAt: new Date("2024-11-28"),
-        updatedAt: new Date("2024-11-28")
-      }
-    ];
-    
-    // Add seed posts to the storage
-    seedPosts.forEach(post => {
-      this.blogPosts.set(post.id, post);
-    });
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -142,11 +209,10 @@ export class MemStorage implements IStorage {
     const now = new Date();
     const post: BlogPost = { 
       ...insertPost,
-      mediaType: insertPost.mediaType || "image",
-      mediaUrl: insertPost.mediaUrl || null,
       published: insertPost.published || false,
       likes: insertPost.likes || 0,
       comments: insertPost.comments || 0,
+      media: insertPost.media || null,
       id,
       createdAt: now,
       updatedAt: now
@@ -210,4 +276,5 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Use PostgreSQL Database Storage by default
+export const storage = new DbStorage();
