@@ -212,24 +212,26 @@ export default function Career() {
       "Career opportunities in Engineering, Marketing, and Sales at Growth11 Ajmer. Internships and jobs available in Rajasthan's top digital marketing agency.",
   });
 
-  const getEmailResumeLink = () => {
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     const subject = encodeURIComponent(
       "Resume for Growth11 Career Opportunity",
     );
     const body = encodeURIComponent(
       "Dear Growth11 Team,\n\nI am interested in joining your team in Ajmer. Please find my resume attached.\n\nBest regards",
     );
-    return `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`;
+    window.open(`mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`, '_self');
   };
 
-  const getApplyLink = (jobTitle: string) => {
+  const handleApplyClick = (e: React.MouseEvent, jobTitle: string) => {
+    e.preventDefault();
     const subject = encodeURIComponent(
       `Application for ${jobTitle} - Growth11 Ajmer`,
     );
     const body = encodeURIComponent(
       `Dear Growth11 Team,\n\nI am interested in applying for the ${jobTitle} position at your Ajmer office. Please find my resume attached.\n\nBest regards`,
     );
-    return `mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`;
+    window.open(`mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`, '_self');
   };
 
   return (
@@ -270,13 +272,11 @@ export default function Career() {
                 <Button
                   size="lg"
                   className="text-lg px-8 py-4 h-auto"
-                  asChild
+                  onClick={handleEmailClick}
                   data-testid="button-email-resume"
                 >
-                  <a href={getEmailResumeLink()}>
-                    <Mail className="mr-2 h-5 w-5" />
-                    Email Your Resume
-                  </a>
+                  <Mail className="mr-2 h-5 w-5" />
+                  Email Your Resume
                 </Button>
                 <Button
                   variant="outline"
@@ -415,14 +415,12 @@ export default function Career() {
                         </div>
                       </div>
                       <Button
-                        asChild
+                        onClick={(e) => handleApplyClick(e, job.title)}
                         data-testid={`button-apply-${index}`}
                         className="hover-elevate"
                       >
-                        <a href={getApplyLink(job.title)}>
-                          <Mail className="mr-2 h-4 w-4" />
-                          Apply Now
-                        </a>
+                        <Mail className="mr-2 h-4 w-4" />
+                        Apply Now
                       </Button>
                     </div>
                   </CardHeader>
@@ -592,13 +590,11 @@ export default function Career() {
                 <Button
                   size="lg"
                   className="text-lg px-8 py-4 h-auto"
-                  asChild
+                  onClick={handleEmailClick}
                   data-testid="button-final-apply"
                 >
-                  <a href={getEmailResumeLink()}>
-                    <Mail className="mr-2 h-5 w-5" />
-                    Email Your Resume Now
-                  </a>
+                  <Mail className="mr-2 h-5 w-5" />
+                  Email Your Resume Now
                 </Button>
                 <p
                   className="text-sm text-muted-foreground mt-4"
