@@ -1,56 +1,56 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, integer, boolean } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+export const userSchema = z.object({
+  _id: z.string(),
+  username: z.string(),
+  password: z.string(),
 });
 
-export const blogPosts = pgTable("blog_posts", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  title: text("title").notNull(),
-  content: text("content").notNull(),
-  category: text("category").notNull(),
-  media: text("media"), // Can store file path or URL for images/videos
-  published: boolean("published").default(false),
-  likes: integer("likes").default(0),
-  comments: integer("comments").default(0),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
-});
-
-export const comments = pgTable("comments", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  blogPostId: varchar("blog_post_id").notNull().references(() => blogPosts.id, { onDelete: 'cascade' }),
-  authorName: text("author_name").notNull(),
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export const insertBlogPostSchema = createInsertSchema(blogPosts).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-}).extend({
+export const blogPostSchema = z.object({
+  _id: z.string(),
+  title: z.string(),
+  content: z.string(),
+  category: z.string(),
   media: z.string().optional().nullable(),
+  published: z.boolean().default(false),
+  likes: z.number().default(0),
+  comments: z.number().default(0),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
-export const insertCommentSchema = createInsertSchema(comments).omit({
-  id: true,
-  createdAt: true,
+export const commentSchema = z.object({
+  _id: z.string(),
+  blogPostId: z.string(),
+  authorName: z.string(),
+  content: z.string(),
+  createdAt: z.date(),
 });
 
+export const insertUserSchema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
+
+export const insertBlogPostSchema = z.object({
+  title: z.string(),
+  content: z.string(),
+  category: z.string(),
+  media: z.string().optional().nullable(),
+  published: z.boolean().optional().default(false),
+  likes: z.number().optional().default(0),
+  comments: z.number().optional().default(0),
+});
+
+export const insertCommentSchema = z.object({
+  blogPostId: z.string(),
+  authorName: z.string(),
+  content: z.string(),
+});
+
+export type User = z.infer<typeof userSchema>;
+export type BlogPost = z.infer<typeof blogPostSchema>;
+export type Comment = z.infer<typeof commentSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
 export type InsertBlogPost = z.infer<typeof insertBlogPostSchema>;
-export type BlogPost = typeof blogPosts.$inferSelect;
 export type InsertComment = z.infer<typeof insertCommentSchema>;
-export type Comment = typeof comments.$inferSelect;
