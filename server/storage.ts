@@ -159,19 +159,20 @@ export class MongoDbStorage implements IStorage {
       { returnDocument: 'after' }
     );
     
-    if (!result) return undefined;
+    if (!result || !result.value) return undefined;
     
+    const doc = result.value;
     return {
-      _id: result._id.toString(),
-      title: result.title,
-      content: result.content,
-      category: result.category,
-      media: result.media || null,
-      published: result.published || false,
-      likes: result.likes || 0,
-      comments: result.comments || 0,
-      createdAt: result.createdAt,
-      updatedAt: result.updatedAt,
+      _id: doc._id.toString(),
+      title: doc.title,
+      content: doc.content,
+      category: doc.category,
+      media: doc.media || null,
+      published: doc.published || false,
+      likes: doc.likes || 0,
+      comments: doc.comments || 0,
+      createdAt: doc.createdAt,
+      updatedAt: doc.updatedAt,
     };
   }
 
