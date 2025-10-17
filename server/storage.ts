@@ -1,8 +1,5 @@
-import { type User, type InsertUser, type BlogPost, type InsertBlogPost, type Comment, type InsertComment, users, blogPosts, comments } from "@shared/schema";
-import { randomUUID } from "crypto";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { Pool } from "pg";
-import { eq, desc, asc, sql } from "drizzle-orm";
+import { type User, type InsertUser, type BlogPost, type InsertBlogPost, type Comment, type InsertComment } from "@shared/schema";
+import { MongoClient, Db, ObjectId } from "mongodb";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -24,45 +21,54 @@ export interface IStorage {
   createComment(comment: InsertComment): Promise<Comment>;
 }
 
-// PostgreSQL Database Storage using Drizzle ORM
-export class DbStorage implements IStorage {
-  private db: ReturnType<typeof drizzle>;
+// MongoDB Database Storage
+export class MongoDbStorage implements IStorage {
+  private client: MongoClient;
+  private db: Db | null = null;
 
   constructor() {
-    if (!process.env.DATABASE_URL) {
-      throw new Error("DATABASE_URL environment variable is required for DbStorage");
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI environment variable is required for MongoDbStorage");
     }
     
-    const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
-    });
-    this.db = drizzle(pool);
+    this.client = new MongoClient(process.env.MONGODB_URI);
+  }
+
+  private async getDb(): Promise<Db> {
+    if (!this.db) {
+      await this.client.connect();
+      this.db = this.client.db();
+    }
+    return this.db;
   }
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
-    const result = await this.db
-      .select()
-      .from(users)
-      .where(eq(users.id, id))
-      .limit(1);
+    const db = await this.getDb();
+    const result = await db.collection("users").findOne({ _id: new ObjectId(id) });
+    if (!result) return undefined;
     
-    return result[0];
+    return {
+      _id: result._id.toString(),
+      username: result.username,
+      password: result.password,
+    };
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const result = await this.db
-      .select()
-      .from(users)
-      .where(eq(users.username, username))
-      .limit(1);
+    const db = await this.getDb();
+    const result = await db.collection("users").findOne({ username });
+    if (!result) return undefined;
     
-    return result[0];
+    return {
+      _id: result._id.toString(),
+      username: result.username,
+      password: result.password,
+    };
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
     // Enforce that passwords must be bcrypt hashed before storage
-    // Bcrypt hashes start with $2a$, $2b$, or $2y$ and are 60 characters long
     const bcryptPattern = /^\$2[ayb]\$.{56}$/;
     if (!bcryptPattern.test(insertUser.password)) {
       throw new Error(
@@ -70,211 +76,164 @@ export class DbStorage implements IStorage {
       );
     }
 
-    const result = await this.db
-      .insert(users)
-      .values(insertUser)
-      .returning();
+    const db = await this.getDb();
+    const result = await db.collection("users").insertOne(insertUser);
     
-    return result[0];
+    return {
+      _id: result.insertedId.toString(),
+      ...insertUser,
+    };
   }
 
   // Blog post methods
   async getBlogPost(id: string): Promise<BlogPost | undefined> {
-    const result = await this.db
-      .select()
-      .from(blogPosts)
-      .where(eq(blogPosts.id, id))
-      .limit(1);
+    const db = await this.getDb();
+    const result = await db.collection("blogPosts").findOne({ _id: new ObjectId(id) });
+    if (!result) return undefined;
     
-    return result[0];
+    return {
+      _id: result._id.toString(),
+      title: result.title,
+      content: result.content,
+      category: result.category,
+      media: result.media || null,
+      published: result.published || false,
+      likes: result.likes || 0,
+      comments: result.comments || 0,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    };
   }
 
   async getAllBlogPosts(): Promise<BlogPost[]> {
-    const result = await this.db
-      .select()
-      .from(blogPosts)
-      .orderBy(desc(blogPosts.createdAt));
+    const db = await this.getDb();
+    const results = await db.collection("blogPosts")
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray();
     
-    return result;
+    return results.map(result => ({
+      _id: result._id.toString(),
+      title: result.title,
+      content: result.content,
+      category: result.category,
+      media: result.media || null,
+      published: result.published || false,
+      likes: result.likes || 0,
+      comments: result.comments || 0,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    }));
   }
 
   async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
-    const result = await this.db
-      .insert(blogPosts)
-      .values(insertPost)
-      .returning();
-    
-    return result[0];
-  }
-
-  async updateBlogPost(id: string, updateData: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
-    const result = await this.db
-      .update(blogPosts)
-      .set({
-        ...updateData,
-        updatedAt: new Date()
-      })
-      .where(eq(blogPosts.id, id))
-      .returning();
-    
-    return result[0];
-  }
-
-  async deleteBlogPost(id: string): Promise<boolean> {
-    const result = await this.db
-      .delete(blogPosts)
-      .where(eq(blogPosts.id, id))
-      .returning();
-    
-    return result.length > 0;
-  }
-
-  // Comment methods
-  async getCommentsByBlogPostId(blogPostId: string): Promise<Comment[]> {
-    const result = await this.db
-      .select()
-      .from(comments)
-      .where(eq(comments.blogPostId, blogPostId))
-      .orderBy(asc(comments.createdAt));
-    
-    return result;
-  }
-
-  async createComment(insertComment: InsertComment): Promise<Comment> {
-    // Use transaction to ensure atomic comment creation and count update
-    return await this.db.transaction(async (tx) => {
-      // Create the comment first (will fail with FK constraint if blog post doesn't exist)
-      const result = await tx
-        .insert(comments)
-        .values(insertComment)
-        .returning();
-      
-      // Atomically increment blog post comment count using SQL expression
-      // This prevents race conditions by computing the increment at the database level
-      // Note: Using snake_case column names as they appear in the actual database
-      await tx.execute(
-        sql`UPDATE blog_posts 
-            SET comments = COALESCE(comments, 0) + 1, 
-                updated_at = NOW() 
-            WHERE id = ${insertComment.blogPostId}`
-      );
-      
-      return result[0];
-    });
-  }
-}
-
-// In-Memory Storage (for development/testing)
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private blogPosts: Map<string, BlogPost>;
-  private comments: Map<string, Comment>;
-
-  constructor() {
-    this.users = new Map();
-    this.blogPosts = new Map();
-    this.comments = new Map();
-  }
-
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
-  }
-
-  // Blog post methods
-  async getBlogPost(id: string): Promise<BlogPost | undefined> {
-    return this.blogPosts.get(id);
-  }
-
-  async getAllBlogPosts(): Promise<BlogPost[]> {
-    return Array.from(this.blogPosts.values()).sort(
-      (a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()
-    );
-  }
-
-  async createBlogPost(insertPost: InsertBlogPost): Promise<BlogPost> {
-    const id = randomUUID();
+    const db = await this.getDb();
     const now = new Date();
-    const post: BlogPost = { 
+    const doc = {
       ...insertPost,
       published: insertPost.published || false,
       likes: insertPost.likes || 0,
       comments: insertPost.comments || 0,
-      media: insertPost.media || null,
-      id,
       createdAt: now,
-      updatedAt: now
+      updatedAt: now,
     };
-    this.blogPosts.set(id, post);
-    return post;
+    
+    const result = await db.collection("blogPosts").insertOne(doc);
+    
+    return {
+      _id: result.insertedId.toString(),
+      ...doc,
+    };
   }
 
   async updateBlogPost(id: string, updateData: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
-    const existingPost = this.blogPosts.get(id);
-    if (!existingPost) {
-      return undefined;
-    }
-
-    const updatedPost: BlogPost = {
-      ...existingPost,
-      ...updateData,
-      updatedAt: new Date()
-    };
+    const db = await this.getDb();
+    const result = await db.collection("blogPosts").findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { 
+        $set: {
+          ...updateData,
+          updatedAt: new Date()
+        }
+      },
+      { returnDocument: 'after' }
+    );
     
-    this.blogPosts.set(id, updatedPost);
-    return updatedPost;
+    if (!result) return undefined;
+    
+    return {
+      _id: result._id.toString(),
+      title: result.title,
+      content: result.content,
+      category: result.category,
+      media: result.media || null,
+      published: result.published || false,
+      likes: result.likes || 0,
+      comments: result.comments || 0,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    };
   }
 
   async deleteBlogPost(id: string): Promise<boolean> {
-    return this.blogPosts.delete(id);
+    const db = await this.getDb();
+    const result = await db.collection("blogPosts").deleteOne({ _id: new ObjectId(id) });
+    
+    // Also delete all associated comments
+    await db.collection("comments").deleteMany({ blogPostId: id });
+    
+    return result.deletedCount > 0;
   }
 
   // Comment methods
   async getCommentsByBlogPostId(blogPostId: string): Promise<Comment[]> {
-    return Array.from(this.comments.values())
-      .filter(comment => comment.blogPostId === blogPostId)
-      .sort((a, b) => new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime());
+    const db = await this.getDb();
+    const results = await db.collection("comments")
+      .find({ blogPostId })
+      .sort({ createdAt: 1 })
+      .toArray();
+    
+    return results.map(result => ({
+      _id: result._id.toString(),
+      blogPostId: result.blogPostId,
+      authorName: result.authorName,
+      content: result.content,
+      createdAt: result.createdAt,
+    }));
   }
 
   async createComment(insertComment: InsertComment): Promise<Comment> {
-    // Validate that the blog post exists before creating comment
-    const blogPost = this.blogPosts.get(insertComment.blogPostId);
+    const db = await this.getDb();
+    
+    // Check if blog post exists
+    const blogPost = await db.collection("blogPosts").findOne({ _id: new ObjectId(insertComment.blogPostId) });
     if (!blogPost) {
       throw new Error(`Blog post with id ${insertComment.blogPostId} not found`);
     }
 
-    const id = randomUUID();
     const now = new Date();
-    const comment: Comment = {
+    const doc = {
       ...insertComment,
-      id,
-      createdAt: now
+      createdAt: now,
     };
-    this.comments.set(id, comment);
     
-    // Update blog post comment count
-    const updatedPost: BlogPost = {
-      ...blogPost,
-      comments: (blogPost.comments || 0) + 1,
-      updatedAt: now
+    // Insert comment and increment blog post comment count atomically
+    const result = await db.collection("comments").insertOne(doc);
+    
+    await db.collection("blogPosts").updateOne(
+      { _id: new ObjectId(insertComment.blogPostId) },
+      { 
+        $inc: { comments: 1 },
+        $set: { updatedAt: now }
+      }
+    );
+    
+    return {
+      _id: result.insertedId.toString(),
+      ...doc,
     };
-    this.blogPosts.set(insertComment.blogPostId, updatedPost);
-    
-    return comment;
   }
 }
 
-// Use PostgreSQL Database Storage by default
-export const storage = new DbStorage();
+// Use MongoDB Database Storage by default
+export const storage = new MongoDbStorage();

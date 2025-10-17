@@ -53,7 +53,7 @@ async function generateSitemap(): Promise<string> {
   
   // Create blog post URLs
   const blogPostPages = publishedBlogPosts.map(post => ({
-    url: `/our-diary/${post.id}`,
+    url: `/our-diary/${post._id}`,
     lastmod: (post.updatedAt || post.createdAt || new Date()).toISOString().split('T')[0],
     changefreq: "weekly",
     priority: "0.7"

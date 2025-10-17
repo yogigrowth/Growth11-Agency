@@ -238,7 +238,7 @@ export default function Admin() {
 
   const onSubmit = (data: InsertBlogPost) => {
     if (editingPost) {
-      updatePostMutation.mutate({ id: editingPost.id, data });
+      updatePostMutation.mutate({ id: editingPost._id, data });
     } else {
       createPostMutation.mutate(data);
     }
@@ -500,33 +500,33 @@ export default function Admin() {
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {posts.map((post) => (
-                      <Card key={post.id} className="hover-elevate" data-testid={`card-post-${post.id}`}>
+                      <Card key={post._id} className="hover-elevate" data-testid={`card-post-${post._id}`}>
                         <CardHeader>
                           <div className="flex justify-between items-start mb-2">
                             <Badge 
                               variant={post.published ? "default" : "secondary"}
-                              data-testid={`badge-status-${post.id}`}
+                              data-testid={`badge-status-${post._id}`}
                             >
                               {post.published ? "Published" : "Draft"}
                             </Badge>
-                            <Badge variant="outline" data-testid={`badge-category-${post.id}`}>
+                            <Badge variant="outline" data-testid={`badge-category-${post._id}`}>
                               {post.category}
                             </Badge>
                           </div>
-                          <CardTitle className="text-lg leading-tight" data-testid={`text-title-${post.id}`}>
+                          <CardTitle className="text-lg leading-tight" data-testid={`text-title-${post._id}`}>
                             {post.title}
                           </CardTitle>
-                          <CardDescription data-testid={`text-media-type-${post.id}`}>
+                          <CardDescription data-testid={`text-media-type-${post._id}`}>
                             {post.media ? "Has media content" : "Text content"}
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
                           <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                            <div className="flex items-center gap-1" data-testid={`text-date-${post.id}`}>
+                            <div className="flex items-center gap-1" data-testid={`text-date-${post._id}`}>
                               <Calendar className="h-4 w-4" />
                               {new Date(post.createdAt!).toLocaleDateString()}
                             </div>
-                            <div className="flex items-center gap-1" data-testid={`text-engagement-${post.id}`}>
+                            <div className="flex items-center gap-1" data-testid={`text-engagement-${post._id}`}>
                               <Eye className="h-4 w-4" />
                               {post.likes} likes
                             </div>
@@ -537,15 +537,15 @@ export default function Admin() {
                               size="sm" 
                               variant="outline"
                               onClick={() => handleEdit(post)}
-                              data-testid={`button-edit-${post.id}`}
+                              data-testid={`button-edit-${post._id}`}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
                             <Button 
                               size="sm" 
                               variant="destructive"
-                              onClick={() => handleDelete(post.id)}
-                              data-testid={`button-delete-${post.id}`}
+                              onClick={() => handleDelete(post._id)}
+                              data-testid={`button-delete-${post._id}`}
                             >
                               <Trash2 className="h-4 w-4" />
                             </Button>

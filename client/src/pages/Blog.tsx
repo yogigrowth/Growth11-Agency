@@ -116,7 +116,7 @@ export default function Blog() {
   } = useQuery({
     queryKey: ["/api/blog-posts"],
     select: (posts: any[]) => posts.map(post => ({
-      id: post.id,
+      id: post._id,
       title: post.title,
       category: post.category,
       date: new Date(post.createdAt).toLocaleDateString("en-US", { 
