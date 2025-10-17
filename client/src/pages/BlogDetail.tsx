@@ -29,7 +29,7 @@ function BlogPostSchemaMarkup({ post }: { post: BlogPost }) {
     "@type": "BlogPosting",
     "headline": post.title,
     "description": post.content.substring(0, 160),
-    "image": post.mediaUrl,
+    "image": post.media,
     "author": {
       "@type": "Organization",
       "name": "Growth11"
@@ -99,7 +99,7 @@ export default function BlogDetail() {
   });
 
   // Derive display values
-  const heroUrl = post?.mediaUrl || (id ? imageMap[id] : undefined);
+  const heroUrl = post?.media || (id ? imageMap[id] : undefined);
   const readTime = post ? getReadTime(post.content) : "";
   const displayDate = post?.createdAt ? formatDisplayDate(post.createdAt) : "";
 
@@ -296,7 +296,7 @@ export default function BlogDetail() {
 
             {/* Comments Section */}
             <div className="border-t border-border pt-8">
-              <Comments blogPostId={post.id} />
+              <Comments blogPostId={post._id} />
             </div>
 
             {/* Call to Action */}
