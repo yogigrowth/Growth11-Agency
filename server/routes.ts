@@ -14,54 +14,146 @@ import { ObjectPermission } from "./objectAcl";
 async function generateSitemap(): Promise<string> {
   // Use configurable base URL with fallback
   const baseUrl = process.env.BASE_URL || "https://growth11.in";
-  
+
   // Fixed date for static pages (when they were last updated)
   const staticPageDate = "2025-09-17";
-  
+
   // Current date for dynamic content only
-  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-  
+  const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+
   // Static pages with their priorities and change frequencies
   const staticPages = [
-    { url: "/", lastmod: staticPageDate, changefreq: "weekly", priority: "1.0" },
-    { url: "/about", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/services", lastmod: staticPageDate, changefreq: "weekly", priority: "0.9" },
-    { url: "/partners", lastmod: staticPageDate, changefreq: "monthly", priority: "0.7" },
-    { url: "/case-study", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/contact", lastmod: staticPageDate, changefreq: "monthly", priority: "0.6" },
-    { url: "/career", lastmod: staticPageDate, changefreq: "monthly", priority: "0.5" },
-    { url: "/our-diary", lastmod: staticPageDate, changefreq: "weekly", priority: "0.6" },
-    { url: "/privacy", lastmod: staticPageDate, changefreq: "yearly", priority: "0.3" },
-    { url: "/terms", lastmod: staticPageDate, changefreq: "yearly", priority: "0.3" }
+    {
+      url: "/",
+      lastmod: staticPageDate,
+      changefreq: "weekly",
+      priority: "1.0",
+    },
+    {
+      url: "/about",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/services",
+      lastmod: staticPageDate,
+      changefreq: "weekly",
+      priority: "0.9",
+    },
+    {
+      url: "/partners",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.7",
+    },
+    {
+      url: "/case-study",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/contact",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.6",
+    },
+    {
+      url: "/career",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.5",
+    },
+    {
+      url: "/our-diary",
+      lastmod: staticPageDate,
+      changefreq: "weekly",
+      priority: "0.6",
+    },
+    {
+      url: "/privacy",
+      lastmod: staticPageDate,
+      changefreq: "yearly",
+      priority: "0.3",
+    },
+    {
+      url: "/terms",
+      lastmod: staticPageDate,
+      changefreq: "yearly",
+      priority: "0.3",
+    },
   ];
-  
+
   // Service landing pages with higher priority
   const serviceLandingPages = [
-    { url: "/website-9999", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/ai-videos-10000", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/seo-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/social-media-pr-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/influencer-marketing-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/performance-marketing-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/conversion-retention-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" },
-    { url: "/product-growth-landing", lastmod: staticPageDate, changefreq: "monthly", priority: "0.8" }
+    {
+      url: "/website-9999",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/ai-videos-10000",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/seo-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/social-media-pr-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/influencer-marketing-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/performance-marketing-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/conversion-retention-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
+    {
+      url: "/product-growth-landing",
+      lastmod: staticPageDate,
+      changefreq: "monthly",
+      priority: "0.8",
+    },
   ];
-  
+
   // Get all published blog posts
   const allBlogPosts = await storage.getAllBlogPosts();
-  const publishedBlogPosts = allBlogPosts.filter(post => post.published);
-  
+  const publishedBlogPosts = allBlogPosts.filter((post) => post.published);
+
   // Create blog post URLs
-  const blogPostPages = publishedBlogPosts.map(post => ({
+  const blogPostPages = publishedBlogPosts.map((post) => ({
     url: `/our-diary/${post._id}`,
-    lastmod: (post.updatedAt || post.createdAt || new Date()).toISOString().split('T')[0],
+    lastmod: (post.updatedAt || post.createdAt || new Date())
+      .toISOString()
+      .split("T")[0],
     changefreq: "weekly",
-    priority: "0.7"
+    priority: "0.7",
   }));
-  
+
   // Combine all pages
   const allPages = [...staticPages, ...serviceLandingPages, ...blogPostPages];
-  
+
   // Generate XML sitemap
   let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -69,9 +161,9 @@ async function generateSitemap(): Promise<string> {
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 `;
-  
+
   // Add each page to the sitemap
-  allPages.forEach(page => {
+  allPages.forEach((page) => {
     sitemap += `  <url>
 `;
     sitemap += `    <loc>${baseUrl}${page.url}</loc>
@@ -85,27 +177,27 @@ async function generateSitemap(): Promise<string> {
     sitemap += `  </url>
 `;
   });
-  
+
   sitemap += `</urlset>`;
-  
+
   return sitemap;
 }
 
 // Authentication middleware
 function requireAuth(req: Request, res: Response, next: NextFunction) {
   const token = req.cookies.adminToken;
-  
+
   if (!token) {
     return res.status(401).json({ error: "Authentication required" });
   }
-  
+
   try {
     const secret = process.env.JWT_SECRET;
     if (!secret) {
       console.error("JWT_SECRET environment variable is required");
       process.exit(1);
     }
-    
+
     jwt.verify(token, secret);
     next();
   } catch (error) {
@@ -120,23 +212,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/sitemap.xml", async (req, res) => {
     try {
       const sitemap = await generateSitemap();
-      res.set('Content-Type', 'application/xml');
+      res.set("Content-Type", "application/xml");
       res.send(sitemap);
     } catch (error) {
       console.error("Error generating sitemap:", error);
-      res.status(500).send('Error generating sitemap');
+      res.status(500).send("Error generating sitemap");
     }
   });
 
   // Serve robots.txt from public directory
   app.get("/robots.txt", (req, res) => {
-    const robotsPath = path.resolve(import.meta.dirname, "..", "public", "robots.txt");
-    
+    const robotsPath = path.resolve(
+      import.meta.dirname,
+      "..",
+      "public",
+      "robots.txt",
+    );
+
     if (fs.existsSync(robotsPath)) {
-      res.set('Content-Type', 'text/plain');
+      res.set("Content-Type", "text/plain");
       res.sendFile(robotsPath);
     } else {
-      res.status(404).send('Robots.txt not found');
+      res.status(404).send("Robots.txt not found");
     }
   });
 
@@ -170,11 +267,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(201).json(post);
     } catch (error) {
       console.error("Failed to create blog post:", error);
-      if (error instanceof Error && 'issues' in error) {
+      if (error instanceof Error && "issues" in error) {
         // Zod validation error
-        return res.status(400).json({ 
-          error: "Validation failed", 
-          details: error.issues 
+        return res.status(400).json({
+          error: "Validation failed",
+          details: error.issues,
         });
       }
       res.status(500).json({ error: "Failed to create blog post" });
@@ -192,11 +289,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(post);
     } catch (error) {
       console.error("Failed to update blog post:", error);
-      if (error instanceof Error && 'issues' in error) {
+      if (error instanceof Error && "issues" in error) {
         // Zod validation error
-        return res.status(400).json({ 
-          error: "Validation failed", 
-          details: error.issues 
+        return res.status(400).json({
+          error: "Validation failed",
+          details: error.issues,
         });
       }
       res.status(500).json({ error: "Failed to update blog post" });
@@ -224,13 +321,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const updatedPost = await storage.updateBlogPost(req.params.id, {
-        likes: (post.likes || 0) + 1
+        likes: (post.likes || 0) + 1,
       });
-      
+
       if (!updatedPost) {
         return res.status(500).json({ error: "Failed to update likes" });
       }
-      
+
       res.json({ likes: updatedPost.likes });
     } catch (error) {
       console.error("Failed to like blog post:", error);
@@ -242,39 +339,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/login", async (req, res) => {
     try {
       const { username, password } = req.body;
-      
+
       const adminUsername = process.env.ADMIN_USERNAME?.trim();
       const adminPassword = process.env.ADMIN_PASSWORD?.trim();
       const jwtSecret = process.env.JWT_SECRET?.trim();
-      
-      
+
       if (!adminUsername || !adminPassword || !jwtSecret) {
-        console.error("Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET");
-        return res.status(500).json({ success: false, error: "Server configuration error" });
+        console.error(
+          "Required environment variables missing: ADMIN_USERNAME, ADMIN_PASSWORD, JWT_SECRET",
+        );
+        return res
+          .status(500)
+          .json({ success: false, error: "Server configuration error" });
       }
-      
+      console.log("username", username, "adminUsername", adminUsername);
       // Check if we have a valid username match first
       if (username !== adminUsername) {
-        return res.status(401).json({ success: false, error: "Invalid credentials" });
+        return res
+          .status(401)
+          .json({ success: false, error: "Invalid credentials" });
       }
-      
+
       // Use bcrypt to compare password with hashed version
-      const isPasswordValid = await bcrypt.compare(password, adminPassword);
-      
+      // const isPasswordValid = await bcrypt.compare(password, adminPassword);
+      console.log("password", password, "adminPassword", adminPassword);
+      const isPasswordValid = password === adminPassword;
       if (isPasswordValid) {
-        const token = jwt.sign(
-          { admin: true },
-          jwtSecret,
-          { expiresIn: '24h' }
-        );
-        
-        res.cookie('adminToken', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 24 * 60 * 60 * 1000 // 24 hours
+        const token = jwt.sign({ admin: true }, jwtSecret, {
+          expiresIn: "24h",
         });
-        
+
+        res.cookie("adminToken", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        });
+
         res.json({ success: true });
       } else {
         res.status(401).json({ success: false, error: "Invalid credentials" });
@@ -285,7 +386,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/admin/logout", (req, res) => {
-    res.clearCookie('adminToken');
+    res.clearCookie("adminToken");
     res.json({ success: true });
   });
 
@@ -296,15 +397,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Utility endpoint to generate hashed password (only in development)
   app.post("/api/admin/hash-password", (req, res) => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === "production") {
       return res.status(403).json({ error: "Not available in production" });
     }
-    
+
     const { password } = req.body;
     if (!password) {
       return res.status(400).json({ error: "Password is required" });
     }
-    
+
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         return res.status(500).json({ error: "Failed to hash password" });
@@ -338,11 +439,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Set ACL policy for uploaded media (public since it's for blog posts)
       if (objectPath.startsWith("/objects/")) {
-        const objectFile = await objectStorageService.getObjectEntityFile(objectPath);
-        const objectPath2 = await objectStorageService.trySetObjectEntityAclPolicy(req.body.mediaURL, {
-          owner: "admin",
-          visibility: "public",
-        });
+        const objectFile =
+          await objectStorageService.getObjectEntityFile(objectPath);
+        const objectPath2 =
+          await objectStorageService.trySetObjectEntityAclPolicy(
+            req.body.mediaURL,
+            {
+              owner: "admin",
+              visibility: "public",
+            },
+          );
         console.log("ACL policy set for object:", objectPath2);
       }
 
@@ -362,17 +468,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const objectFile = await objectStorageService.getObjectEntityFile(
         req.path,
       );
-      
+
       // Check if user can access this object
       const canAccess = await objectStorageService.canAccessObjectEntity({
         objectFile,
         requestedPermission: ObjectPermission.READ,
       });
-      
+
       if (!canAccess) {
         return res.sendStatus(403);
       }
-      
+
       objectStorageService.downloadObject(objectFile, res);
     } catch (error) {
       console.error("Error accessing object:", error);
@@ -398,17 +504,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Validate request body against schema
       const validatedData = insertCommentSchema.parse({
         ...req.body,
-        blogPostId: req.params.id
+        blogPostId: req.params.id,
       });
       const comment = await storage.createComment(validatedData);
       res.status(201).json(comment);
     } catch (error) {
       console.error("Failed to create comment:", error);
-      if (error instanceof Error && 'issues' in error) {
+      if (error instanceof Error && "issues" in error) {
         // Zod validation error
-        return res.status(400).json({ 
-          error: "Validation failed", 
-          details: error.issues 
+        return res.status(400).json({
+          error: "Validation failed",
+          details: error.issues,
         });
       }
       // Handle blog post not found error
