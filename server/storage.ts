@@ -38,8 +38,42 @@ export class MongoDbStorage implements IStorage {
     if (!this.db) {
       await this.client.connect();
       this.db = this.client.db();
+      await this.ensureCollections();
     }
     return this.db;
+  }
+
+  private async ensureCollections(): Promise<void> {
+    if (!this.db) return;
+
+    const collections = await this.db.listCollections().toArray();
+    const collectionNames = collections.map(c => c.name);
+
+    // Create users collection if it doesn't exist
+    if (!collectionNames.includes('users')) {
+      await this.db.createCollection('users');
+      // Create index on username for faster lookups
+      await this.db.collection('users').createIndex({ username: 1 }, { unique: true });
+      console.log('Created users collection with username index');
+    }
+
+    // Create blogPosts collection if it doesn't exist
+    if (!collectionNames.includes('blogPosts')) {
+      await this.db.createCollection('blogPosts');
+      // Create index on createdAt for sorting
+      await this.db.collection('blogPosts').createIndex({ createdAt: -1 });
+      console.log('Created blogPosts collection with createdAt index');
+    }
+
+    // Create comments collection if it doesn't exist
+    if (!collectionNames.includes('comments')) {
+      await this.db.createCollection('comments');
+      // Create index on blogPostId for faster comment lookups
+      await this.db.collection('comments').createIndex({ blogPostId: 1 });
+      // Create index on createdAt for sorting
+      await this.db.collection('comments').createIndex({ createdAt: -1 });
+      console.log('Created comments collection with indexes');
+    }
   }
 
   // User methods
