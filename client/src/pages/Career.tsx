@@ -214,24 +214,36 @@ export default function Career() {
 
   const handleEmailClick = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    const to = "satya.yogigrowth@gmail.com";
     const subject = encodeURIComponent(
       "Resume for Growth11 Career Opportunity",
     );
     const body = encodeURIComponent(
-      "Dear Growth11 Team,\n\nI am interested in joining your team in Ajmer. Please find my resume attached.\n\nBest regards",
+      "Dear Growth11 Team,\n\nI am interested in joining your team in Ajmer. Please find my resume attached.\n\nBest regards,",
     );
-    window.open(`mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`, '_self');
+
+    // Gmail compose link (opens in a new tab)
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+
+    window.open(gmailUrl, "_blank");
   };
 
   const handleApplyClick = (e: React.MouseEvent, jobTitle: string) => {
     e.preventDefault();
+
+    const to = "satya.yogigrowth@gmail.com";
     const subject = encodeURIComponent(
       `Application for ${jobTitle} - Growth11 Ajmer`,
     );
     const body = encodeURIComponent(
-      `Dear Growth11 Team,\n\nI am interested in applying for the ${jobTitle} position at your Ajmer office. Please find my resume attached.\n\nBest regards`,
+      `Dear Growth11 Team,\n\nI am interested in applying for the ${jobTitle} position at your Ajmer office. Please find my resume attached.\n\nBest regards,`,
     );
-    window.open(`mailto:satya.yogigrowth@gmail.com?subject=${subject}&body=${body}`, '_self');
+
+    // Opens Gmail compose window
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+
+    window.open(gmailUrl, "_blank"); // open in new tab
   };
 
   return (
