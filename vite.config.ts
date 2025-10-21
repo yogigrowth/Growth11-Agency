@@ -3,6 +3,10 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
+// Some environments (bundled runtime) may not provide import.meta.dirname.
+// Use a safe fallback so the config can be evaluated without throwing.
+const metaDir = (typeof import.meta !== "undefined" && (import.meta as any).dirname) || process.cwd();
+
 export default defineConfig({
   plugins: [
     react(),
@@ -16,18 +20,18 @@ export default defineConfig({
         ]
       : []),
   ],
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    resolve: {
+      alias: {
+        "@": path.resolve(metaDir, "client", "src"),
+        "@shared": path.resolve(metaDir, "shared"),
+        "@assets": path.resolve(metaDir, "attached_assets"),
+      },
     },
-  },
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
-  },
+    root: path.resolve(metaDir, "client"),
+    build: {
+      outDir: path.resolve(metaDir, "dist/public"),
+      emptyOutDir: true,
+    },
   server: {
     fs: {
       strict: true,

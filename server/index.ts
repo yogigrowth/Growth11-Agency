@@ -1,7 +1,54 @@
 import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+
+// Local logger (kept minimal and safe for production). We avoid importing
+// from ./vite here to prevent the bundler from including dev-only modules.
+export function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
+
+// A small serveStatic implementation mirroring server/vite. This avoids a
+// top-level import from ./vite which could pull dev-only code into the
+// production bundle.
+import fs from "fs";
+import path from "path";
+
+export function serveStatic(app: express.Express) {
+  // common production build locations
+  const prodPublicCandidates = [
+    path.resolve(process.cwd(), "dist", "public"), // used by our build (dist/public)
+    path.resolve(process.cwd(), "public"), // other setups
+  ];
+  const prodPublic = prodPublicCandidates.find((p) => fs.existsSync(p)) || prodPublicCandidates[0];
+  const metaDir = (typeof import.meta !== "undefined" && (import.meta as any).dirname) || process.cwd();
+
+  let distPath: string;
+  if (process.env.NODE_ENV === "production") {
+    distPath = prodPublic;
+  } else {
+    distPath = path.resolve(metaDir, "../client/dist");
+    if (!fs.existsSync(distPath) && fs.existsSync(prodPublic)) distPath = prodPublic;
+  }
+
+  if (!fs.existsSync(distPath)) {
+    throw new Error(
+      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+    );
+  }
+
+  app.use(express.static(distPath));
+  app.use("*", (_req, res) => {
+    res.sendFile(path.resolve(distPath, "index.html"));
+  });
+}
 
 const app = express();
 app.use(express.json());
@@ -48,10 +95,15 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  // only setup Vite when running in a development environment. Use the
+  // explicit NODE_ENV value rather than Express's `app.get('env')` because
+  // Docker/containers sometimes run with the default ("development") even
+  // when you intend production. Guarding on NODE_ENV prevents importing
+  // dev-only files (like vite.config.ts) inside a production container.
+  if (process.env.NODE_ENV !== "production") {
+    // dynamically import setupVite so production builds don't pull dev-only
+    // packages (like 'vite') into the server bundle
+    const { setupVite } = await import("./vite");
     await setupVite(app, server);
   } else {
     serveStatic(app);
@@ -62,11 +114,27 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || '5000', 10);
+  // choose reusePort only on platforms that support it
+  const isProduction = process.env.NODE_ENV === "production";
+
   server.listen({
     port,
-    host: "0.0.0.0",
+    host: isProduction ? "0.0.0.0" : "127.0.0.1",
     reusePort: true,
   }, () => {
-    log(`serving on port ${port}`);
+    log(`Serving on port ${port}`);
+  });
+  const supportsReusePort = ['linux', 'darwin'].includes(process.platform);
+  const listenOpts: any = { port, host: isProduction ? "0.0.0.0" : "127.0.0.1" };
+  if (supportsReusePort) listenOpts.reusePort = true;
+
+  server.listen(listenOpts, () => {
+    log(`Serving on port ${port}`);
+  });
+   
+  server.on('error', (err: any) => {
+    log('server error:', err);
+    // exit non-zero so a supervisor/container can restart if desired
+    process.exit(1);
   });
 })();

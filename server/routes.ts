@@ -222,12 +222,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Serve robots.txt from public directory
   app.get("/robots.txt", (req, res) => {
-    const robotsPath = path.resolve(
-      import.meta.dirname,
-      "..",
-      "public",
-      "robots.txt",
-    );
+    const metaDir = (typeof import.meta !== "undefined" && (import.meta as any).dirname) || process.cwd();
+    const robotsPath = path.resolve(metaDir, "..", "public", "robots.txt");
 
     if (fs.existsSync(robotsPath)) {
       res.set("Content-Type", "text/plain");
