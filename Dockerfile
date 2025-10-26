@@ -33,6 +33,11 @@ ENV NODE_ENV=production
 
 # Expose port
 EXPOSE 5000
+# Install pm2 (process manager) globally and use pm2-runtime as the container entry
+RUN npm install -g pm2@5.2.0 --no-progress --silent
 
-# Start the server
-CMD ["node", "dist/index.js"]
+# Copy PM2 ecosystem file
+COPY --from=builder /app/ecosystem.config.js ./ecosystem.config.js
+
+# Start the server with pm2-runtime (keeps PID 1 in the container and forwards logs)
+CMD ["pm2-runtime", "ecosystem.config.js"]

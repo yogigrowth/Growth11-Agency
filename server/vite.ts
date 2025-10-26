@@ -49,12 +49,18 @@ export async function setupVite(app: Express, server: Server) {
     const url = req.originalUrl;
 
     try {
-      const clientTemplate = path.resolve(
-        import.meta.dirname,
-        "..",
-        "client",
-        "index.html",
-      );
+
+      // Always resolve paths relative to process.cwd() in container environment
+      const projectRoot = process.cwd();
+      const clientTemplate = path.resolve(projectRoot, "client", "index.html");
+
+      if (!fs.existsSync(clientTemplate)) {
+        // If the client index.html isn't present (common in a fresh container or
+        // when using a mounted repo without building the client), respond with
+        // a helpful message instead of crashing.
+        res.status(500).send(`Client index.html not found at ${clientTemplate}. Run the client build or ensure client files are mounted.`);
+        return;
+      }
 
       // always reload the index.html file from disk incase it changes
       let template = await fs.promises.readFile(clientTemplate, "utf-8");
@@ -80,14 +86,12 @@ export function serveStatic(app: Express) {
   ];
   const prodPublic = prodPublicCandidates.find((p) => fs.existsSync(p)) || prodPublicCandidates[0];
 
-  // import.meta.dirname may be undefined in the bundled runtime; guard it.
-  const metaDir = (typeof import.meta !== "undefined" && (import.meta as any).dirname) || process.cwd();
-
   let distPath: string;
   if (process.env.NODE_ENV === "production") {
     distPath = prodPublic;
   } else {
-    distPath = path.resolve(metaDir, "../client/dist");
+    // In development, always resolve relative to process.cwd()
+    distPath = path.resolve(process.cwd(), "client/dist");
     // fallback to prodPublic if developer built into a different location
     if (!fs.existsSync(distPath) && fs.existsSync(prodPublic)) distPath = prodPublic;
   }

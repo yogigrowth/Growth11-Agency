@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    image: growth11-agency:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    environment:
+      # Ensure production mode for the container (overrides .env if present)
+      NODE_ENV: production
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get({host:'127.0.0.1',port:5000,path:'/health'},res=>{process.exit(res.statusCode===200?0:1)}).on('error',()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+    # If you want to run a local MongoDB instead of Atlas, uncomment depends_on and the mongo service below
+    # depends_on:
+    #   - mongo
+
+  # Local MongoDB (optional) - useful for local development/testing if you don't want to use Atlas.
+  # To use this, set MONGODB_URI in your .env to: "mongodb://mongo:27017/your-db-name"
+  # mongo:
+  #   image: mongo:6.0
+  #   restart: unless-stopped
+  #   volumes:
+  #     - mongo-data:/data/db
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: mongoadmin
+  #     MONGO_INITDB_ROOT_PASSWORD: secret
+
+# Named volumes
+volumes:
+  mongo-data:
+    driver: local

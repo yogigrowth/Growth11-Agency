@@ -206,6 +206,10 @@ function requireAuth(req: Request, res: Response, next: NextFunction) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Lightweight health endpoint used by Docker healthchecks
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok" });
+  });
   // Add cookie parser middleware
   app.use(cookieParser());
   // Generate dynamic sitemap.xml
