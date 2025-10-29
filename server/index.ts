@@ -104,6 +104,7 @@ app.use((req, res, next) => {
     // dynamically import setupVite so production builds don't pull dev-only
     // packages (like 'vite') into the server bundle
     const { setupVite } = await import("./vite");
+    console.log("Starting Vite dev server...");
     await setupVite(app, server);
   } else {
     serveStatic(app);
@@ -116,16 +117,14 @@ app.use((req, res, next) => {
   const port = parseInt(process.env.PORT || '5000', 10);
   // choose reusePort only on platforms that support it
   const isProduction = process.env.NODE_ENV === "production";
+  // allow HOST environment variable to override bind address (useful for
+  // docker-compose dev where we want to bind to 0.0.0.0)
+  const envHost = process.env.HOST;
+  const defaultHost = isProduction ? "0.0.0.0" : "127.0.0.1";
+  const bindHost = envHost || defaultHost;
 
-  server.listen({
-    port,
-    host: isProduction ? "0.0.0.0" : "127.0.0.1",
-    reusePort: true,
-  }, () => {
-    log(`Serving on port ${port}`);
-  });
   const supportsReusePort = ['linux', 'darwin'].includes(process.platform);
-  const listenOpts: any = { port, host: isProduction ? "0.0.0.0" : "127.0.0.1" };
+  const listenOpts: any = { port, host: bindHost };
   if (supportsReusePort) listenOpts.reusePort = true;
 
   server.listen(listenOpts, () => {
