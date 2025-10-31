@@ -40,4 +40,4 @@ RUN npm install -g pm2@5.2.0 --no-progress --silent
 COPY --from=builder /app/ecosystem.config.js ./ecosystem.config.js
 
 # Start the server with pm2-runtime (keeps PID 1 in the container and forwards logs)
-CMD ["pm2-runtime", "ecosystem.config.js"]
+CMD ["pm2-runtime", "ecosystem.config.cjs"]
