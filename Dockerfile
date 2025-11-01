@@ -37,7 +37,7 @@ EXPOSE 5000
 RUN npm install -g pm2@5.2.0 --no-progress --silent
 
 # Copy PM2 ecosystem file
-COPY --from=builder /app/ecosystem.config.js ./ecosystem.config.js
+COPY --from=builder /app/ecosystem.config.cjs ./ecosystem.config.cjs
 
 # Start the server with pm2-runtime (keeps PID 1 in the container and forwards logs)
 CMD ["pm2-runtime", "ecosystem.config.cjs"]
