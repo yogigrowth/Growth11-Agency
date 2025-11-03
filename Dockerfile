@@ -2,38 +2,34 @@
 FROM node:18 AS builder
 WORKDIR /app
 
-# Copy package files first (for caching)
+# Copy only package files first (for caching)
 COPY package*.json ./
 
-# Install ALL dependencies for build
-RUN npm install
+# Install only what's needed for building
+RUN npm ci --omit=optional
 
-# Copy all project files
+# Copy source files
 COPY . .
 
-# Build frontend + backend
+# Build project
 RUN npm run build
 
 # ---- Stage 2: Runtime ----
-FROM node:18
+FROM node:18-slim
 WORKDIR /app
 
-# Copy build output from builder
+# Copy only what's needed at runtime
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 
-# Copy installed node_modules from the builder so any packages that ended up
-# in the server bundle (including dev deps like vite if accidentally
-# referenced) are present at runtime. This keeps the runtime image working
-# when the server bundle contains imports that require devDependencies.
-COPY --from=builder /app/node_modules ./node_modules
+# Install only production dependencies
+RUN npm ci --only=production --omit=optional
 
-# Set NODE_ENV
+# Set environment
 ENV NODE_ENV=production
-
-# Expose port
 EXPOSE 5000
-# Install pm2 (process manager) globally and use pm2-runtime as the container entry
+
+# Install PM2 for process management
 RUN npm install -g pm2@5.2.0 --no-progress --silent
 
 # Copy PM2 ecosystem file
