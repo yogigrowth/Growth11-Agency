@@ -5,35 +5,39 @@ WORKDIR /app
 # Copy package files first (for caching)
 COPY package*.json ./
 
-# Use npm install (not ci) since there's no lockfile
-RUN npm install --omit=optional
+# Install ALL dependencies for build
+RUN npm install
 
 # Copy all project files
 COPY . .
 
-# Build project
+# Build frontend + backend
 RUN npm run build
 
 # ---- Stage 2: Runtime ----
-FROM node:18-slim
+FROM node:18
 WORKDIR /app
 
-# Copy only what's needed at runtime
+# Copy build output from builder
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 
-# Install only production dependencies
-RUN npm install --only=production --omit=optional
+# Copy installed node_modules from the builder so any packages that ended up
+# in the server bundle (including dev deps like vite if accidentally
+# referenced) are present at runtime. This keeps the runtime image working
+# when the server bundle contains imports that require devDependencies.
+COPY --from=builder /app/node_modules ./node_modules
 
-# Environment and port
+# Set NODE_ENV
 ENV NODE_ENV=production
-EXPOSE 5000
 
-# PM2 for process management
+# Expose port
+EXPOSE 5000
+# Install pm2 (process manager) globally and use pm2-runtime as the container entry
 RUN npm install -g pm2@5.2.0 --no-progress --silent
 
-# Copy PM2 ecosystem config
-COPY --from=builder /app/ecosystem.config.cjs ./
+# Copy PM2 ecosystem file
+COPY --from=builder /app/ecosystem.config.cjs ./ecosystem.config.cjs
 
-# Start the app
+# Start the server with pm2-runtime (keeps PID 1 in the container and forwards logs)
 CMD ["pm2-runtime", "ecosystem.config.cjs"]
