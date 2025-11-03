@@ -2,13 +2,13 @@
 FROM node:18 AS builder
 WORKDIR /app
 
-# Copy only package files first (for caching)
+# Copy package files first (for caching)
 COPY package*.json ./
 
-# Install only what's needed for building
-RUN npm ci --omit=optional
+# Use npm install (not ci) since there's no lockfile
+RUN npm install --omit=optional
 
-# Copy source files
+# Copy all project files
 COPY . .
 
 # Build project
@@ -23,17 +23,17 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 
 # Install only production dependencies
-RUN npm ci --only=production --omit=optional
+RUN npm install --only=production --omit=optional
 
-# Set environment
+# Environment and port
 ENV NODE_ENV=production
 EXPOSE 5000
 
-# Install PM2 for process management
+# PM2 for process management
 RUN npm install -g pm2@5.2.0 --no-progress --silent
 
-# Copy PM2 ecosystem file
-COPY --from=builder /app/ecosystem.config.cjs ./ecosystem.config.cjs
+# Copy PM2 ecosystem config
+COPY --from=builder /app/ecosystem.config.cjs ./
 
-# Start the server with pm2-runtime (keeps PID 1 in the container and forwards logs)
+# Start the app
 CMD ["pm2-runtime", "ecosystem.config.cjs"]
