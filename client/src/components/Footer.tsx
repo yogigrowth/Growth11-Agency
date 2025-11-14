@@ -134,14 +134,18 @@ export default function Footer() {
               className="text-muted-foreground hover:text-primary transition-colors"
               data-testid="link-footer-privacy"
             >
+              <Link href="/privacy">
               Privacy Policy
+              </Link>
             </button>
             <button 
               onClick={() => handleLinkClick('/terms')}
               className="text-muted-foreground hover:text-primary transition-colors"
               data-testid="link-footer-terms"
             >
+              <Link href="/terms">
               Terms of Service
+              </Link>
             </button>
             <Link href="/admin">
               <span 
